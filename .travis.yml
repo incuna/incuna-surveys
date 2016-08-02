@@ -5,6 +5,8 @@ python:
 script: make test
 notifications:
   email: false
+addons:
+  postgresql: "9.5"
 env:
   global:
     - DATABASE_URL='postgres://postgres@localhost/surveys'
