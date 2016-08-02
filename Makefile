@@ -15,7 +15,7 @@ release:
 	@python setup.py register sdist bdist_wheel upload
 
 test:
-	@coverage run test_project/manage.py test incuna-surveys --verbosity=${VERBOSITY}
+	@coverage run test_project/manage.py test surveys --verbosity=${VERBOSITY}
 	@flake8 .
 	@DJANGO_SETTINGS_MODULE=test_project.settings coverage report
 
@@ -26,7 +26,7 @@ migrations:
 	@test_project/manage.py makemigrations
 
 migrate:
-	@if [ `psql -t -c "SELECT COUNT(1) FROM pg_catalog.pg_database WHERE datname = 'incuna-surveys'"` -eq 0 ]; then \
-		psql -c "CREATE DATABASE incuna-surveys"; \
+	@if [ `psql -t -c "SELECT COUNT(1) FROM pg_catalog.pg_database WHERE datname = 'surveys'"` -eq 0 ]; then \
+		psql -c "CREATE DATABASE surveys"; \
 	fi
 	@test_project/manage.py migrate
