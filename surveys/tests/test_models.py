@@ -1,12 +1,12 @@
 from django.test import TestCase
 
-from .factories import SurveyFieldFactory, SurveyFieldsetFactory, UserResponseFactory
-from ..models import SurveyField, SurveyFieldset, UserResponse
+from . import factories
+from .. import models
 
 
 class TestSurveyField(TestCase):
-    model = SurveyField
-    factory = SurveyFieldFactory
+    model = models.SurveyField
+    factory = factories.SurveyFieldFactory
 
     def test_str(self):
         field = self.factory.build()
@@ -18,8 +18,8 @@ class TestSurveyField(TestCase):
 
 
 class TestSurveyFieldset(TestCase):
-    model = SurveyFieldset
-    factory = SurveyFieldsetFactory
+    model = models.SurveyFieldset
+    factory = factories.SurveyFieldsetFactory
 
     def test_str(self):
         fieldset = self.factory.create()
@@ -27,8 +27,8 @@ class TestSurveyFieldset(TestCase):
 
 
 class TestUserResponse(TestCase):
-    model = UserResponse
-    factory = UserResponseFactory
+    model = models.UserResponse
+    factory = factories.UserResponseFactory
 
     def test_not_required(self):
         """
