@@ -1,12 +1,12 @@
 from django.test import TestCase
 
-from . import factories
-from .. import models
+from .factories import SurveyFieldFactory, SurveyFieldsetFactory, UserResponseFactory
+from ..models import SurveyField, SurveyFieldset, UserResponse
 
 
 class TestSurveyField(TestCase):
-    model = models.SurveyField
-    factory = factories.SurveyFieldFactory
+    model = SurveyField
+    factory = SurveyFieldFactory
 
     def test_str(self):
         field = self.factory.build()
@@ -17,8 +17,18 @@ class TestSurveyField(TestCase):
         self.assertEqual(field.key, 'question-1')
 
 
+class TestSurveyFieldset(TestCase):
+    model = SurveyFieldset
+    factory = SurveyFieldsetFactory
+
+    def test_str(self):
+        fieldset = self.factory.create()
+        self.assertEqual(str(fieldset), fieldset.name)
+
+
 class TestUserResponse(TestCase):
-    model = models.UserResponse
+    model = UserResponse
+    factory = UserResponseFactory
 
     def test_not_required(self):
         """
@@ -27,18 +37,9 @@ class TestUserResponse(TestCase):
         Without accepting answers=[] on UserResponse, we can't have non-required
         questionnaire form fields.
         """
-        factories.UserResponseFactory.create(answers=[])
+        self.factory.create(answers=[])
 
     def test_num_users(self):
-        factories.UserResponseFactory.create_batch(2, user_id='first_user')
-        factories.UserResponseFactory.create(user_id='second_user')
+        self.factory.create_batch(2, user_id='first_user')
+        self.factory.create(user_id='second_user')
         self.assertEqual(self.model.objects.num_users(), 2)
-
-
-class TestSurveyFieldset(TestCase):
-    model = models.SurveyFieldset
-    factory = factories.SurveyFieldsetFactory
-
-    def test_str(self):
-        fieldset = self.factory.create()
-        self.assertEqual(str(fieldset), fieldset.name)
