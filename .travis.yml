@@ -1,6 +1,5 @@
 language: python
 python:
-  - "2.7"
   - "3.4"
   - "3.5"
 script: make test
@@ -10,7 +9,8 @@ env:
   global:
     - DATABASE_URL='postgres://postgres@localhost/surveys'
   matrix:
-    - DJANGO='django~=1.8.0'
+    - DJANGO='django~=1.9'
+    - DJANGO='django~=1.10'
 install:
   - psql -c 'CREATE DATABASE surveys' -U postgres;
   - pip install -r requirements.txt --use-wheel
