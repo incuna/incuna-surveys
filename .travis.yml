@@ -12,7 +12,6 @@ env:
     - DATABASE_URL='postgres://postgres@localhost/surveys'
   matrix:
     - DJANGO='django~=1.9'
-    - DJANGO='django~=1.10'
 install:
   - psql -c 'CREATE DATABASE surveys' -U postgres;
   - pip install -r requirements.txt --use-wheel
