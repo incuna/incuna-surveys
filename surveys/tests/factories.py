@@ -1,6 +1,8 @@
 import factory
 from django.contrib.auth import get_user_model
 
+from .. import models
+
 
 class UserFactory(factory.DjangoModelFactory):
     username = factory.Sequence('user{}'.format)
@@ -17,3 +19,34 @@ class UserFactory(factory.DjangoModelFactory):
         self.set_password(self.raw_password)
         if create:
             self.save()
+
+
+class SurveyFieldFactory(factory.DjangoModelFactory):
+    name = factory.Sequence('SurveyField {}'.format)
+
+    class Meta:
+        model = models.SurveyField
+
+
+class SurveyFieldsetFactory(factory.DjangoModelFactory):
+    name = factory.Sequence('SurveyFieldset {}'.format)
+
+    class Meta:
+        model = models.SurveyFieldset
+
+
+class SurveyFieldOrderingFactory(factory.DjangoModelFactory):
+    field = factory.SubFactory(SurveyFieldFactory)
+    fieldset = factory.SubFactory(SurveyFieldsetFactory)
+
+    class Meta:
+        model = models.SurveyFieldOrdering
+
+
+class UserResponseFactory(factory.DjangoModelFactory):
+    fieldset = factory.SubFactory(SurveyFieldsetFactory)
+    user_id = factory.Sequence('Session ID {}'.format)
+    answers = [0]
+
+    class Meta:
+        model = models.UserResponse
