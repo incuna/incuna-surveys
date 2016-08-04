@@ -21,7 +21,7 @@ class SurveyConfig(AppConfig):
             'serializer_field_factory': None,
         }),
         ('percentage', {
-            'display_text': 'Percentage slider',
+            'display_text': 'Percentage',
             'form_field_factory': None,
             'serializer_field_factory': None,
         }),
