@@ -1,6 +1,7 @@
 from collections import OrderedDict
 
 from django.apps import AppConfig
+from django.utils.translation import ugettext_lazy as _
 
 
 class SurveyConfig(AppConfig):
@@ -11,27 +12,27 @@ class SurveyConfig(AppConfig):
     # use of it (dropdown fields etc).
     field_type_data = OrderedDict((
         ('free_text', {
-            'display_text': 'Character field (free text)',
+            'display_text': _('Character field (free text)'),
             'form_field_factory': None,
             'serializer_field_factory': None,
         }),
         ('number', {
-            'display_text': 'Number',
+            'display_text': _('Number'),
             'form_field_factory': None,
             'serializer_field_factory': None,
         }),
         ('percentage', {
-            'display_text': 'Percentage',
+            'display_text': _('Percentage'),
             'form_field_factory': None,
             'serializer_field_factory': None,
         }),
         ('radio', {
-            'display_text': 'Choose one option',
+            'display_text': _('Choose one option'),
             'form_field_factory': None,
             'serializer_field_factory': None,
         }),
         ('checkbox', {
-            'display_text': 'Choose one or more options',
+            'display_text': _('Choose one or more options'),
             'form_field_factory': None,
             'serializer_field_factory': None,
         }),
