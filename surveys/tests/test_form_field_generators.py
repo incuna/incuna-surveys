@@ -9,8 +9,8 @@ class TestFormFieldGenerators(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.survey_field = SurveyFieldFactory.create()
-        cls.choices = [(n - 1, str(n)) for n in range(1, 6)]
-        cls.survey_field.answers = [c[1] for c in cls.choices]
+        cls.survey_field.answers = [str(n) for n in range(1, 6)]
+        cls.choices = list(enumerate(cls.survey_field.answers))
 
     def test_choice_field_generator(self):
         generator = form_field_generators.ChoiceFieldGenerator()
