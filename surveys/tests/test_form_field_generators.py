@@ -1,4 +1,5 @@
 from django import forms
+from django.core.exceptions import ValidationError
 from django.test import TestCase
 
 from .factories import SurveyFieldFactory
@@ -11,6 +12,33 @@ class TestFormFieldGenerators(TestCase):
         cls.survey_field = SurveyFieldFactory.create()
         cls.survey_field.answers = [str(n) for n in range(1, 6)]
         cls.choices = list(enumerate(cls.survey_field.answers))
+
+    def test_char_field_generator(self):
+        generator = form_field_generators.CharFieldGenerator()
+        field = generator.generate_field(self.survey_field)
+
+        self.assertIsInstance(field, forms.CharField)
+        self.assertTrue(field.required)
+
+    def test_number_field_generator(self):
+        generator = form_field_generators.NumberFieldGenerator()
+        field = generator.generate_field(self.survey_field)
+
+        self.assertIsInstance(field, forms.IntegerField)
+        self.assertTrue(field.required)
+
+    def test_percentage_field_generator(self):
+        generator = form_field_generators.PercentageFieldGenerator()
+        field = generator.generate_field(self.survey_field)
+
+        self.assertIsInstance(field, forms.IntegerField)
+        self.assertTrue(field.required)
+
+        with self.assertRaises(ValidationError):
+            print(field.run_validators(101))
+
+        with self.assertRaises(ValidationError):
+            field.run_validators(-1)
 
     def test_choice_field_generator(self):
         generator = form_field_generators.ChoiceFieldGenerator()
@@ -27,16 +55,6 @@ class TestFormFieldGenerators(TestCase):
         self.assertIsInstance(field, forms.ChoiceField)
         self.assertIsInstance(field.widget, forms.RadioSelect)
         self.assertEqual(field.choices, self.choices)
-        self.assertTrue(field.required)
-
-    def test_segmented_field_generator(self):
-        generator = form_field_generators.SegmentedFieldGenerator()
-        field = generator.generate_field(self.survey_field)
-
-        self.assertIsInstance(field, forms.ChoiceField)
-        self.assertIsInstance(field.widget, forms.RadioSelect)
-        self.assertEqual(field.choices, self.choices)
-        self.assertEqual(field.widget.attrs['class'], 'segmented')
         self.assertTrue(field.required)
 
     def test_multiple_choice_field_generator(self):
