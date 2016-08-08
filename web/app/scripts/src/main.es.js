@@ -1,2 +1,5 @@
+/* global console */
+// TODO: remove the following two lines
 import { myObj } from 'test';
-alert(myObj);
+/* eslint no-console: 0 */
+console.log(myObj);

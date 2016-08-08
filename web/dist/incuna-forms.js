@@ -3,7 +3,9 @@
 
 var _test = require('./test.js');
 
-alert(_test.myObj);
+/* eslint no-console: 0 */
+console.log(_test.myObj); /* global console */
+// TODO: remove the following two lines
 
 },{"./test.js":2}],2:[function(require,module,exports){
 "use strict";

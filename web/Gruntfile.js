@@ -108,7 +108,7 @@ module.exports = function (grunt) {
         grunt.task.run([
             'eslint',
             'clean',
-            'compilejs'
+            'build'
         ]);
     });
 
