@@ -1,6 +1,7 @@
 __pycache__/
 *.py[cod]
 build/
-dist/
 .coverage
 .coverage.*
+node_modules
+compiled-es5
