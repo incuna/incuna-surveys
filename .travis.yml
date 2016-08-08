@@ -21,4 +21,4 @@ install:
   - psql -c 'CREATE DATABASE surveys' -U postgres;
   - pip install -r requirements.txt --use-wheel
   - pip install $DJANGO --use-wheel
-  - npm install
+  - cd web && npm install && cd ..
