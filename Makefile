@@ -16,7 +16,7 @@ release:
 
 test:
 	@coverage run test_project/manage.py test surveys --verbosity=${VERBOSITY}
-	@flake8 .
+	@flake8 --exclude=web .
 	@DJANGO_SETTINGS_MODULE=test_project.settings coverage report
 	@cd web && grunt test && cd ..
 
