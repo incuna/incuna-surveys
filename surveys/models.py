@@ -1,7 +1,11 @@
+from django.apps import apps
 from django.contrib.postgres.fields import ArrayField, JSONField
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from orderable.models import Orderable
+
+
+survey_config = apps.get_app_config('surveys')
 
 
 class SurveyField(models.Model):
@@ -15,26 +19,13 @@ class SurveyField(models.Model):
     A SurveyField is built around a list of possible answers.  If the list is empty,
     this indicates a free text field or some similar user-submitted value.
     """
-    FIELD_TYPE_FREETEXT = 'free_text'
-    FIELD_TYPE_NUMBER = 'number'
-    FIELD_TYPE_PERCENTAGE = 'percentage'
-    FIELD_TYPE_RADIO = 'radio'
-    FIELD_TYPE_CHECKBOX = 'checkbox'
-    FIELD_TYPE_CHOICES = (
-        (FIELD_TYPE_FREETEXT, 'Character field (free text)'),
-        (FIELD_TYPE_NUMBER, 'Number'),
-        (FIELD_TYPE_PERCENTAGE, 'Percentage slider'),
-        (FIELD_TYPE_RADIO, 'Choose one option'),
-        (FIELD_TYPE_CHECKBOX, 'Choose one or more options'),
-    )
-
-    FIELD_FACTORY_CLASSES = {}
+    FIELD_TYPE_CHOICES = survey_config.field_type_choices
 
     name = models.CharField(max_length=255, unique=True)
     help_text = models.CharField(max_length=255, blank=True)
     field_type = models.CharField(
         max_length=255,
-        default=FIELD_TYPE_FREETEXT,
+        default=FIELD_TYPE_CHOICES[0][0],
         choices=FIELD_TYPE_CHOICES,
     )
     answers = ArrayField(
@@ -44,6 +35,7 @@ class SurveyField(models.Model):
             'For choice fields only. Enter one or more answers, separated by newlines.'
         ),
     )
+    required = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
