@@ -1,7 +1,8 @@
 /* global module, require */
-module.exports = function (grunt) {
 
-    'use strict';
+'use strict';
+
+module.exports = function (grunt) {
 
     if (grunt.option('help')) {
         // Load all tasks so they can be viewed in the help: grunt -h or --help.
@@ -22,7 +23,10 @@ module.exports = function (grunt) {
             srcScriptsDir: '<%= config.scriptsDir %>/src',
             compiledScriptsDir: '<%= config.scriptsDir %>/compiled-es5',
 
-            lintFiles: ['<%= config.srcScriptsDir %>', 'Gruntfile.js']
+            lintFiles: {
+                node: ['Gruntfile.js'],
+                es: ['<%= config.srcScriptsDir %>']
+            }
         }
     });
 
@@ -60,11 +64,17 @@ module.exports = function (grunt) {
             }
         },
         eslint: {
-            all: {
+            node: {
                 options: {
-                    configFile: 'eslint.json'
+                    configFile: '.eslintrc.node'
                 },
-                src: '<%= config.lintFiles %>'
+                src: '<%= config.lintFiles.node %>'
+            },
+            es: {
+                options: {
+                    configFile: '.eslintrc.es'
+                },
+                src: '<%= config.lintFiles.es %>'
             }
         },
         clean: ['<%= config.compiledScriptsDir %>', '<%= config.distDir %>'],
