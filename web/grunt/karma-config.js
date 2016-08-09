@@ -35,7 +35,5 @@ module.exports = function (grunt) {
         });
     };
 
-    return {
-        configure
-    };
+    configure();
 };

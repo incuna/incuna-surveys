@@ -102,7 +102,6 @@ module.exports = function (grunt) {
     });
 
     const karmaTask = require('./grunt/karma-config')(grunt);
-    karmaTask.configure();
 
     // - - - T A S K S - - -
 
