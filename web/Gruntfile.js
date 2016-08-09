@@ -77,6 +77,11 @@ module.exports = function (grunt) {
                 src: '<%= config.lintFiles.es %>'
             }
         },
+        jscs: {
+            all: {
+                files: ['<%= config.lintFiles %>']
+            }
+        },
         clean: ['<%= config.compiledScriptsDir %>', '<%= config.distDir %>'],
         connect: {
             dev: {
@@ -117,6 +122,7 @@ module.exports = function (grunt) {
     grunt.registerTask('test', function () {
         grunt.task.run([
             'eslint',
+            'jscs',
             'clean',
             'build'
         ]);
