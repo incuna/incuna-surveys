@@ -17,6 +17,7 @@ module.exports = function (grunt) {
         config: {
             baseDir: 'app',
             distDir: 'dist',
+            tests: 'tests/**/*.js',
             libDir: '<%= config.baseDir %>/lib',
 
             scriptsDir: '<%= config.baseDir %>/scripts',
@@ -100,6 +101,9 @@ module.exports = function (grunt) {
         }
     });
 
+    const karmaTask = require('./grunt/karma-config')(grunt);
+    karmaTask.configure();
+
     // - - - T A S K S - - -
 
     grunt.registerTask('default', 'dev');
@@ -124,7 +128,8 @@ module.exports = function (grunt) {
             'eslint',
             'jscs',
             'clean',
-            'build'
+            'build',
+            'karma:ci'
         ]);
     });
 
