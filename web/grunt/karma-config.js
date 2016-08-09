@@ -1,13 +1,11 @@
 module.exports = function (grunt) {
     'use strict';
 
-    const unitTests =  grunt.config('config.tests');
-
     const karmaTasksConfig = {
         browsers: ['Firefox'],
         frameworks: ['jasmine', 'browserify'],
         preprocessors: {
-            [unitTests]: ['browserify'],
+            '<%= config.tests %>': ['browserify'],
             '<%= config.compiledScriptsDir %>/**/*.js': ['browserify']
         },
         browserify: {
@@ -20,7 +18,7 @@ module.exports = function (grunt) {
         grunt.config.merge({
             karma: {
                 options: {
-                    files: ['<%= config.compiledScriptsDir %>/**/*.js', unitTests]
+                    files: ['<%= config.compiledScriptsDir %>/**/*.js', '<%= config.tests %>']
                 },
                 dev: karmaTasksConfig,
                 ci: Object.assign(
