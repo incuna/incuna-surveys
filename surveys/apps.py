@@ -44,12 +44,11 @@ class SurveyConfig(AppConfig):
         field_data_items = self.field_type_data.items()
 
         # Choices suitable for the field_type dropdown on SurveyField.
-        self.field_type_choices = [(k, v['display_text']) for k, v in field_data_items]
-
+        self.field_type_choices = []
         # Convenient mappings of field types to form/serializer field factories.
-        self.form_field_factories = {
-            k: v['form_field_factory'] for k, v in field_data_items
-        }
-        self.serializer_field_factories = {
-            k: v['serializer_field_factory'] for k, v in field_data_items
-        }
+        self.form_field_factories = []
+        self.serializer_field_factories = []
+        for k, v in field_data_items:
+            self.field_type_choices.append((k, v['display_text']))
+            self.form_field_factories.append((k, v['form_field_factory']))
+            self.serializer_field_factories.append((k, v['serializer_field_factory']))
