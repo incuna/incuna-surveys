@@ -1,3 +1,4 @@
+from django.forms import IntegerField
 from django.test import TestCase
 
 from . import factories
@@ -15,6 +16,11 @@ class TestSurveyField(TestCase):
     def test_key(self):
         field = self.factory.build(pk=1)
         self.assertEqual(field.key, 'question-1')
+
+    def test_get_form_field(self):
+        field = self.factory.build(field_type='number')
+        form_field = field.get_form_field()
+        self.assertIsInstance(form_field, IntegerField)
 
 
 class TestSurveyFieldset(TestCase):

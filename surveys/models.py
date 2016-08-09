@@ -45,6 +45,10 @@ class SurveyField(models.Model):
         """An id suitable for use in an HTML form."""
         return 'question-{}'.format(self.pk)
 
+    def get_form_field(self):
+        generator_class = survey_config.form_field_factories[self.field_type]
+        return generator_class().generate_field(self)
+
 
 class SurveyFieldset(Orderable):
     """
