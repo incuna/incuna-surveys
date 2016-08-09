@@ -18,6 +18,14 @@ class TestFormFieldGenerators(TestCase):
         field = generator.generate_field(self.survey_field)
 
         self.assertIsInstance(field, forms.CharField)
+        self.assertFalse(field.required)
+
+    def test_required_field(self):
+        generator = form_field_generators.CharFieldGenerator()
+        survey_field = SurveyFieldFactory.create(required=True)
+        field = generator.generate_field(survey_field)
+
+        self.assertIsInstance(field, forms.CharField)
         self.assertTrue(field.required)
 
     def test_number_field_generator(self):
@@ -25,14 +33,12 @@ class TestFormFieldGenerators(TestCase):
         field = generator.generate_field(self.survey_field)
 
         self.assertIsInstance(field, forms.IntegerField)
-        self.assertTrue(field.required)
 
     def test_percentage_field_generator(self):
         generator = form_field_generators.PercentageFieldGenerator()
         field = generator.generate_field(self.survey_field)
 
         self.assertIsInstance(field, forms.IntegerField)
-        self.assertTrue(field.required)
 
         with self.assertRaises(ValidationError):
             print(field.run_validators(101))
@@ -46,7 +52,6 @@ class TestFormFieldGenerators(TestCase):
 
         self.assertIsInstance(field, forms.ChoiceField)
         self.assertEqual(field.choices, self.choices)
-        self.assertTrue(field.required)
 
     def test_radio_field_generator(self):
         generator = form_field_generators.RadioFieldGenerator()
@@ -55,7 +60,6 @@ class TestFormFieldGenerators(TestCase):
         self.assertIsInstance(field, forms.ChoiceField)
         self.assertIsInstance(field.widget, forms.RadioSelect)
         self.assertEqual(field.choices, self.choices)
-        self.assertTrue(field.required)
 
     def test_multiple_choice_field_generator(self):
         generator = form_field_generators.MultipleChoiceFieldGenerator()
@@ -63,4 +67,3 @@ class TestFormFieldGenerators(TestCase):
 
         self.assertIsInstance(field, forms.MultipleChoiceField)
         self.assertEqual(field.choices, self.choices)
-        self.assertFalse(field.required)

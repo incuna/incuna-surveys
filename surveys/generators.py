@@ -17,10 +17,8 @@ class BaseFieldGenerator(object):
       the kwargs from get_field_kwargs() but those can be overridden or added to by
       passing more to the generate_field() call.
     """
-    required = True
-
     def get_field_kwargs(self, instance):
-        return {'required': self.required}
+        return {'required': instance.required}
 
     def generate_field(self, instance, **kwargs):
         field_kwargs = ChainMap(kwargs, self.get_field_kwargs(instance))

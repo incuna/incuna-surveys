@@ -35,6 +35,7 @@ class SurveyField(models.Model):
             'For choice fields only. Enter one or more answers, separated by newlines.'
         ),
     )
+    required = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
