@@ -12,7 +12,13 @@ env:
     - DATABASE_URL='postgres://postgres@localhost/surveys'
   matrix:
     - DJANGO='django~=1.9.0'
+before_install:
+  - nvm install 6.3.1
+  - nvm use 6.3.1
+  - node --version
+  - npm --version
 install:
   - psql -c 'CREATE DATABASE surveys' -U postgres;
   - pip install -r requirements.txt --use-wheel
   - pip install $DJANGO --use-wheel
+  - cd web && npm install && cd ..
