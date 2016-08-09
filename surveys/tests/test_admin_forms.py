@@ -1,7 +1,6 @@
 from django.test import TestCase
 
 from .. import admin_forms
-from ..models import SurveyField
 
 
 class TestSurveyFieldForm(TestCase):
@@ -17,7 +16,7 @@ class TestSurveyFieldForm(TestCase):
     def test_validation(self):
         data = {
             'name': 'Is the answer "No"?',
-            'field_type': SurveyField.FIELD_TYPE_RADIO,
+            'field_type': 'radio',
             'answers': ','.join(self.answers),
         }
         form = self.form(data)
