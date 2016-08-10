@@ -101,9 +101,9 @@ module.exports = function (grunt) {
         }
     });
 
-    const karmaTask = require('./grunt/karma-config')(grunt);
-
     // - - - T A S K S - - -
+
+    grunt.loadTasks('./grunt');
 
     grunt.registerTask('default', 'dev');
 
