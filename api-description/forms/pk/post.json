@@ -1,0 +1,23 @@
+{
+    "description": "Endpoint to answer a form",
+    "url": "http://localhost:8000/forms/1",
+    "fields": {
+        "answers": {
+            "1": "Friends",
+            "2": "one_time",
+            "3": ["two_times", "three_times"],
+            "4": 5
+        }
+    },
+    "OK": {
+        "status": 201,
+        "response_data": {
+            "answers": {
+                "1": "Friends",
+                "2": "one_time",
+                "3": ["two_times", "three_times"],
+                "4": 4
+            }
+        }
+    }
+}

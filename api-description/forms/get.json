@@ -1,0 +1,17 @@
+{
+    "description": "A list of forms created",
+    "url": "http://localhost:8000/forms",
+    "OK": {
+        "status": 200,
+        "response_data": [
+            {
+                "name": "How have you been using the site?",
+                "url": "http://localhost:8000/forms/1"
+            },
+            {
+                "name": "Another form",
+                "url": "http::localhost:8000/forms/2"
+            }
+        ]
+    }
+}
