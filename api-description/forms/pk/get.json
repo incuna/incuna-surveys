@@ -9,44 +9,50 @@
             "fieldsets": [
                 {
                     "name": "Free text field",
-                    "fields": [{
-                        "id": 1,
-                        "name": "How did you discover the site?",
-                        "help_text": "Search engine, friend...",
-                        "field_type": "free_text"
-                    }]
+                    "fields": [
+                        {
+                            "id": 1,
+                            "name": "How did you discover the site?",
+                            "help_text": "Search engine, friend...",
+                            "field_type": "free_text"
+                        }
+                    ]
                 },
                 {
                     "name": "Numeric fields",
-                    "fields": [{
-                        "id": 2,
-                        "name": "What is answer to the ultimate question of life, the universe, and everything?",
-                        "help_text": null,
-                        "field_type": "number"
-                    },
-                    {
-                        "id": 3,
-                        "name": "How much percentage does it take?",
-                        "help_text": null,
-                        "field_type": "percentage"
-                    }]
+                    "fields": [
+                        {
+                            "id": 2,
+                            "name": "What is answer to the ultimate question of life, the universe, and everything?",
+                            "help_text": null,
+                            "field_type": "number"
+                        },
+                        {
+                            "id": 3,
+                            "name": "How much percentage does it take?",
+                            "help_text": null,
+                            "field_type": "percentage"
+                        }
+                    ]
                 },
                 {
                     "name": "Choice fields",
-                    "fields": [{
-                        "id": 4,
-                        "name": "How many time do you visit the site per day?",
-                        "help_text": "Choose a valid answer.",
-                        "field_type": "radio",
-                        "choices": ["One time", "Two times", "Three times or more"]
-                    },
-                    {
-                        "id": 5,
-                        "name": "Choose more than one answer.",
-                        "help_text": null,
-                        "field_type": "checkbox",
-                        "choices": ["One time", "Two times", "Three times or more"]
-                    }]
+                    "fields": [
+                        {
+                            "id": 4,
+                            "name": "How many time do you visit the site per day?",
+                            "help_text": "Choose a valid answer.",
+                            "field_type": "radio",
+                            "choices": ["One time", "Two times", "Three times or more"]
+                        },
+                        {
+                            "id": 5,
+                            "name": "Choose more than one answer.",
+                            "help_text": null,
+                            "field_type": "checkbox",
+                            "choices": ["One time", "Two times", "Three times or more"]
+                        }
+                    ]
                 }
             ]
         }
