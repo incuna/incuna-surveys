@@ -9,6 +9,7 @@
             "fieldsets": [
                 {
                     "name": "Free text field",
+                    "description": "Some additional text expanding on the above",
                     "fields": [
                         {
                             "id": 1,
@@ -20,6 +21,7 @@
                 },
                 {
                     "name": "Numeric fields",
+                    "description": "Some additional text expanding on the above",
                     "fields": [
                         {
                             "id": 2,
@@ -37,6 +39,7 @@
                 },
                 {
                     "name": "Choice fields",
+                    "description": "Some additional text expanding on the above",
                     "fields": [
                         {
                             "id": 4,
