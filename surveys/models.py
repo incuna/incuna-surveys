@@ -62,6 +62,7 @@ class SurveyFieldset(Orderable):
     displayed on the iPads for users to respond to.
     """
     name = models.CharField(max_length=255)
+    description = models.TextField(blank=True)
     fields = models.ManyToManyField(
         SurveyField,
         related_name='fieldsets',
