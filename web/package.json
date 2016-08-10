@@ -25,5 +25,9 @@
     "karma-browserify": "^5.1.0",
     "karma-firefox-launcher": "^1.0.0",
     "karma-jasmine": "^1.0.2"
+  },
+  "dependencies": {
+    "angular": "^1.5.8",
+    "angular-mocks": "^1.5.8"
   }
 }

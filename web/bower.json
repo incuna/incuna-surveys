@@ -6,5 +6,9 @@
     "Incuna"
   ],
   "license": "MIT",
-  "homepage": "https://github.com/incuna/incuna-surveys"
+  "homepage": "https://github.com/incuna/incuna-surveys",
+  "dependencies": {
+    "angular": "1.5.8",
+    "angular-mocks": "1.5.8"
+  }
 }
