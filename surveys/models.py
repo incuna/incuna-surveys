@@ -49,6 +49,10 @@ class SurveyField(models.Model):
         generator_class = survey_config.form_field_factories[self.field_type]
         return generator_class().generate_field(self)
 
+    def get_serializer_field(self):
+        generator_class = survey_config.serializer_field_factories[self.field_type]
+        return generator_class().generate_field(self)
+
 
 class SurveyFieldset(Orderable):
     """
