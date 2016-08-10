@@ -3,12 +3,9 @@ from collections import OrderedDict
 from django.apps import AppConfig
 from django.utils.translation import ugettext_lazy as _
 
-from .form_field_generators import (
-    CharFieldGenerator,
-    MultipleChoiceFieldGenerator,
-    NumberFieldGenerator,
-    PercentageFieldGenerator,
-    RadioFieldGenerator,
+from . import (
+    form_field_generators as form_fields,
+    serializer_field_generators as serializer_fields,
 )
 
 
@@ -21,28 +18,28 @@ class SurveyConfig(AppConfig):
     field_type_data = OrderedDict((
         ('free_text', {
             'display_text': _('Character field (free text)'),
-            'form_field_factory': CharFieldGenerator,
-            'serializer_field_factory': None,
+            'form_field_factory': form_fields.CharFieldGenerator,
+            'serializer_field_factory': serializer_fields.CharFieldGenerator,
         }),
         ('number', {
             'display_text': _('Number'),
-            'form_field_factory': NumberFieldGenerator,
-            'serializer_field_factory': None,
+            'form_field_factory': form_fields.NumberFieldGenerator,
+            'serializer_field_factory': serializer_fields.NumberFieldGenerator,
         }),
         ('percentage', {
             'display_text': _('Percentage'),
-            'form_field_factory': PercentageFieldGenerator,
-            'serializer_field_factory': None,
+            'form_field_factory': form_fields.PercentageFieldGenerator,
+            'serializer_field_factory': serializer_fields.PercentageFieldGenerator,
         }),
         ('radio', {
             'display_text': _('Choose one option'),
-            'form_field_factory': RadioFieldGenerator,
-            'serializer_field_factory': None,
+            'form_field_factory': form_fields.RadioFieldGenerator,
+            'serializer_field_factory': serializer_fields.ChoiceFieldGenerator,
         }),
         ('checkbox', {
             'display_text': _('Choose one or more options'),
-            'form_field_factory': MultipleChoiceFieldGenerator,
-            'serializer_field_factory': None,
+            'form_field_factory': form_fields.MultipleChoiceFieldGenerator,
+            'serializer_field_factory': serializer_fields.MultipleChoiceFieldGenerator,
         }),
     ))
 
