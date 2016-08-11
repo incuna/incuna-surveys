@@ -54,19 +54,28 @@ class SurveyField(models.Model):
         return generator_class().generate_field(self)
 
 
-class SurveyFieldset(Orderable):
-    """
-    A group of questions that make up a complete form.
-
-    A SurveyFieldset can be 'activated' by the presenter. While active, it will be
-    displayed on the iPads for users to respond to.
-    """
-    name = models.CharField(max_length=255)
+class SurveyFieldset(models.Model):
+    """A group of questions that make up a complete form."""
+    name = models.CharField(max_length=255, unique=True)
     description = models.TextField(blank=True)
     fields = models.ManyToManyField(
         SurveyField,
         related_name='fieldsets',
         through='SurveyFieldOrdering',
+    )
+
+    def __str__(self):
+        return self.name
+
+
+class Survey(models.Model):
+    """An entire survey form.  Contains one or more ordered fieldsets."""
+    name = models.CharField(max_length=255, unique=True)
+    description = models.TextField(blank=True)
+    fieldsets = models.ManyToManyField(
+        SurveyFieldset,
+        related_name='surveys',
+        through='SurveyFieldsetOrdering',
     )
 
     def __str__(self):
@@ -83,6 +92,18 @@ class SurveyFieldOrdering(Orderable):
 
     class Meta:
         unique_together = ('field', 'fieldset')
+
+
+class SurveyFieldsetOrdering(Orderable):
+    """
+    A through table for SurveyFieldset and Survey, allowing fieldsets to be arranged
+    in any order in the survey.
+    """
+    fieldset = models.ForeignKey(SurveyFieldset, on_delete=models.CASCADE)
+    survey = models.ForeignKey(Survey, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('survey', 'fieldset')
 
 
 class UserResponseQuerySet(models.QuerySet):
@@ -103,10 +124,11 @@ class UserResponse(models.Model):
     have to register, and might be identified by a session ID instead.
     """
     fieldset = models.ForeignKey(SurveyFieldset)
+    survey = models.ForeignKey(Survey)
     user_id = models.CharField(max_length=255)
     answers = JSONField()
 
     objects = UserResponseQuerySet.as_manager()
 
     class Meta:
-        unique_together = ('fieldset', 'user_id')
+        unique_together = ('fieldset', 'survey', 'user_id')
