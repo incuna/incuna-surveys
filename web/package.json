@@ -24,7 +24,9 @@
     "karma": "^1.1.2",
     "karma-browserify": "^5.1.0",
     "karma-firefox-launcher": "^1.0.0",
-    "karma-jasmine": "^1.0.2"
+    "karma-fixture": "^0.2.6",
+    "karma-jasmine": "^1.0.2",
+    "karma-json-fixtures-preprocessor": "0.0.6"
   },
   "dependencies": {
     "angular": "^1.5.8",
