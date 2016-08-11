@@ -17,4 +17,4 @@ This project uses `babel` and `browserify`. Source files are located in `web/app
 
 The are two `grunt karma` targets:
 * `grunt karma:dev` once run will continue to watch the compiled `.js` files directory and the test files.
-* `grunt karma:ci` target only runs once
+* `grunt karma:ci` target only runs once. This target is also used in Travis

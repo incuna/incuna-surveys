@@ -43,7 +43,23 @@ class SurveyFieldOrderingFactory(factory.DjangoModelFactory):
         model = models.SurveyFieldOrdering
 
 
+class SurveyFactory(factory.DjangoModelFactory):
+    name = factory.Sequence('Survey {}'.format)
+
+    class Meta:
+        model = models.Survey
+
+
+class SurveyFieldsetOrderingFactory(factory.DjangoModelFactory):
+    survey = factory.SubFactory(SurveyFactory)
+    fieldset = factory.SubFactory(SurveyFieldsetFactory)
+
+    class Meta:
+        model = models.SurveyFieldsetOrdering
+
+
 class UserResponseFactory(factory.DjangoModelFactory):
+    survey = factory.SubFactory(SurveyFactory)
     fieldset = factory.SubFactory(SurveyFieldsetFactory)
     user_id = factory.Sequence('Session ID {}'.format)
     answers = [0]

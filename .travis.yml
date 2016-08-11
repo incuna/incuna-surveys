@@ -2,11 +2,11 @@ language: python
 python:
   - "3.4"
   - "3.5"
-script: make test
 notifications:
   email: false
 addons:
   postgresql: "9.4"
+  firefox: "47.0"
 env:
   global:
     - DATABASE_URL='postgres://postgres@localhost/surveys'
@@ -22,3 +22,7 @@ install:
   - pip install -r requirements.txt --use-wheel
   - pip install $DJANGO --use-wheel
   - cd web && npm install && cd ..
+before_script:
+  - export DISPLAY=:99.0
+  - sh -e /etc/init.d/xvfb start
+script: make test

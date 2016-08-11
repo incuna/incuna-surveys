@@ -1,13 +1,11 @@
 module.exports = function (grunt) {
     'use strict';
 
-    const unitTests =  grunt.config('config.tests');
-
     const karmaTasksConfig = {
         browsers: ['Firefox'],
         frameworks: ['jasmine', 'browserify', 'fixture'],
         preprocessors: {
-            [unitTests]: ['browserify'],
+            '<%= config.tests %>': ['browserify'],
             '<%= config.compiledScriptsDir %>/**/*.js': ['browserify'],
             '<%= config.jsonFixtures %>/**/*.json': 'json_fixtures'
         },
@@ -30,7 +28,7 @@ module.exports = function (grunt) {
                         '<%= config.jsonFixtures %>/**/*.json',
 
                         '<%= config.compiledScriptsDir %>/**/*.js',
-                        unitTests
+                        '<%= config.tests %>'
                     ]
                 },
                 dev: karmaTasksConfig,
@@ -46,7 +44,5 @@ module.exports = function (grunt) {
         });
     };
 
-    return {
-        configure
-    };
+    configure();
 };
