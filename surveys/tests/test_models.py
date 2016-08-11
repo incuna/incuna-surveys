@@ -1,4 +1,6 @@
+from django.forms import IntegerField as FormIntegerField
 from django.test import TestCase
+from rest_framework.serializers import IntegerField as SerializerIntegerField
 
 from . import factories
 from .. import models
@@ -8,13 +10,23 @@ class TestSurveyField(TestCase):
     model = models.SurveyField
     factory = factories.SurveyFieldFactory
 
+    @classmethod
+    def setUpTestData(cls):
+        cls.field = factories.SurveyFieldFactory.build(pk=1, field_type='number')
+
     def test_str(self):
-        field = self.factory.build()
-        self.assertEqual(str(field), field.name)
+        self.assertEqual(str(self.field), self.field.name)
 
     def test_key(self):
-        field = self.factory.build(pk=1)
-        self.assertEqual(field.key, 'question-1')
+        self.assertEqual(self.field.key, 'question-1')
+
+    def test_get_form_field(self):
+        form_field = self.field.get_form_field()
+        self.assertIsInstance(form_field, FormIntegerField)
+
+    def test_get_serializer_field(self):
+        form_field = self.field.get_serializer_field()
+        self.assertIsInstance(form_field, SerializerIntegerField)
 
 
 class TestSurveyFieldset(TestCase):
