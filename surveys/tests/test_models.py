@@ -38,6 +38,15 @@ class TestSurveyFieldset(TestCase):
         self.assertEqual(str(fieldset), fieldset.name)
 
 
+class TestSurvey(TestCase):
+    model = models.Survey
+    factory = factories.SurveyFactory
+
+    def test_str(self):
+        survey = self.factory.create()
+        self.assertEqual(str(survey), survey.name)
+
+
 class TestUserResponse(TestCase):
     model = models.UserResponse
     factory = factories.UserResponseFactory
