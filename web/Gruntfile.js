@@ -17,7 +17,9 @@ module.exports = function (grunt) {
         config: {
             baseDir: 'app',
             distDir: 'dist',
-            tests: 'tests/**/*.js',
+            testsDir: 'tests',
+            tests: '<%= config.testsDir %>/**/*.js',
+            jsonFixtures: '<%= config.testsDir %>/api-description',
             libDir: '<%= config.baseDir %>/lib',
 
             scriptsDir: '<%= config.baseDir %>/scripts',

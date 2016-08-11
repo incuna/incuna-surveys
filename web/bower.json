@@ -1,0 +1,14 @@
+{
+  "name": "incuna-surveys",
+  "description": "",
+  "main": "",
+  "authors": [
+    "Incuna"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/incuna/incuna-surveys",
+  "dependencies": {
+    "angular": "1.5.x",
+    "angular-mocks": "1.5.x"
+  }
+}

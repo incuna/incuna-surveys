@@ -1,6 +1,7 @@
 __pycache__/
 *.py[cod]
 build/
+lib
 .coverage
 .coverage.*
 node_modules

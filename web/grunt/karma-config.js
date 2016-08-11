@@ -3,10 +3,15 @@ module.exports = function (grunt) {
 
     const karmaTasksConfig = {
         browsers: ['Firefox'],
-        frameworks: ['jasmine', 'browserify'],
+        frameworks: ['jasmine', 'browserify', 'fixture'],
         preprocessors: {
             '<%= config.tests %>': ['browserify'],
-            '<%= config.compiledScriptsDir %>/**/*.js': ['browserify']
+            '<%= config.compiledScriptsDir %>/**/*.js': ['browserify'],
+            '<%= config.jsonFixtures %>/**/*.json': 'json_fixtures'
+        },
+        jsonFixturesPreprocessor: {
+            variableName: '__json__',
+            stripPrefix: '<%= config.jsonFixtures %>/'
         },
         browserify: {
             debug: true,
@@ -18,7 +23,13 @@ module.exports = function (grunt) {
         grunt.config.merge({
             karma: {
                 options: {
-                    files: ['<%= config.compiledScriptsDir %>/**/*.js', '<%= config.tests %>']
+                    files: [
+                        '<%= config.libDir %>/angular/angular.js',
+                        '<%= config.jsonFixtures %>/**/*.json',
+
+                        '<%= config.compiledScriptsDir %>/**/*.js',
+                        '<%= config.tests %>'
+                    ]
                 },
                 dev: karmaTasksConfig,
                 ci: Object.assign(
