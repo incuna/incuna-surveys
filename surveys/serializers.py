@@ -28,7 +28,20 @@ class SurveySerializer(serializers.ModelSerializer):
 class UserResponseSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.UserResponse
+        fields = ['fieldset', 'user_id', 'answers']
 
 
 class SurveyResponseSerializer(serializers.Serializer):
-    fieldsets = UserResponseSerializer(many=True)
+    user_responses = UserResponseSerializer(many=True)
+    survey = serializers.PrimaryKeyRelatedField(queryset=models.Survey.objects.all())
+
+    class Meta:
+        fields = ['survey', 'user_responses']
+
+    def create(self, validated_data):
+        response_data = validated_data['user_responses']
+        responses = []
+        for response in response_data:
+            response['survey'] = validated_data['survey']
+            responses.append(UserResponseSerializer(data=response).create(response))
+        return responses

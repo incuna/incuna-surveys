@@ -2,22 +2,36 @@
     "description": "Endpoint to answer a form",
     "url": "http://localhost:8000/forms/1",
     "fields": {
-        "answers": {
-            "1": "Friends",
-            "2": "one_time",
-            "3": ["two_times", "three_times"],
-            "4": 5
-        }
+        "survey": 1,
+        "user_responses": [
+            {
+                "fieldset": 1,
+                "user_id": "User#20#",
+                "answers": {
+                    "1": "Friends",
+                    "2": "one_time",
+                    "3": ["two_times", "three_times"],
+                    "4": 5
+                }
+            }
+        ]
     },
     "OK": {
         "status": 201,
         "response_data": {
-            "answers": {
-                "1": "Friends",
-                "2": "one_time",
-                "3": ["two_times", "three_times"],
-                "4": 5
-            }
+            "survey": 1,
+            "user_responses": [
+                {
+                    "fieldset": 1,
+                    "user_id": "User#20#",
+                    "answers": {
+                        "1": "Friends",
+                        "2": "one_time",
+                        "3": ["two_times", "three_times"],
+                        "4": 5
+                    }
+                }
+            ]
         }
     }
 }
