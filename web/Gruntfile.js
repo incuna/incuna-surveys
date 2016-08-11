@@ -17,6 +17,7 @@ module.exports = function (grunt) {
         config: {
             baseDir: 'app',
             distDir: 'dist',
+            tests: 'tests/**/*.js',
             libDir: '<%= config.baseDir %>/lib',
 
             scriptsDir: '<%= config.baseDir %>/scripts',
@@ -102,6 +103,8 @@ module.exports = function (grunt) {
 
     // - - - T A S K S - - -
 
+    grunt.loadTasks('./grunt');
+
     grunt.registerTask('default', 'dev');
 
     grunt.registerTask('dev', function () {
@@ -124,7 +127,8 @@ module.exports = function (grunt) {
             'eslint',
             'jscs',
             'clean',
-            'build'
+            'build',
+            'karma:ci'
         ]);
     });
 

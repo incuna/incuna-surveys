@@ -12,3 +12,9 @@ All frontend is located under `web/`:
 * `grunt` will start a dev server running under `localhost:9000`.
 
 This project uses `babel` and `browserify`. Source files are located in `web/app/scripts/src`. Compiled files are put into `web/dist`, which is symlinked to `web/app/scripts/js-build` for easy testing in the browser.
+
+### Tests
+
+The are two `grunt karma` targets:
+* `grunt karma:dev` once run will continue to watch the compiled `.js` files directory and the test files.
+* `grunt karma:ci` target only runs once. This target is also used in Travis
