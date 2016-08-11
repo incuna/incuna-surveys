@@ -9,6 +9,7 @@
   "homepage": "https://github.com/incuna/incuna-surveys",
   "dependencies": {
     "angular": "1.5.x",
-    "angular-mocks": "1.5.x"
+    "angular-mocks": "1.5.x",
+    "angular-formly": "^8.3.0"
   }
 }
