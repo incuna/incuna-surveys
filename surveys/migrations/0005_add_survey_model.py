@@ -41,6 +41,12 @@ class Migration(migrations.Migration):
             name='name',
             field=models.CharField(max_length=255, unique=True),
         ),
+        migrations.AddField(
+            model_name='userresponse',
+            name='survey',
+            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, to='surveys.Survey'),
+            preserve_default=False,
+        ),
         migrations.AlterUniqueTogether(
             name='userresponse',
             unique_together=set([('fieldset', 'survey', 'user_id')]),
@@ -59,12 +65,6 @@ class Migration(migrations.Migration):
             model_name='survey',
             name='fieldsets',
             field=models.ManyToManyField(related_name='surveys', through='surveys.SurveyFieldsetOrdering', to='surveys.SurveyFieldset'),
-        ),
-        migrations.AddField(
-            model_name='userresponse',
-            name='survey',
-            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, to='surveys.Survey'),
-            preserve_default=False,
         ),
         migrations.AlterUniqueTogether(
             name='surveyfieldsetordering',

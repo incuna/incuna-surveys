@@ -59,6 +59,7 @@ class SurveyFieldsetOrderingFactory(factory.DjangoModelFactory):
 
 
 class UserResponseFactory(factory.DjangoModelFactory):
+    survey = factory.SubFactory(SurveyFactory)
     fieldset = factory.SubFactory(SurveyFieldsetFactory)
     user_id = factory.Sequence('Session ID {}'.format)
     answers = [0]
