@@ -1,6 +1,20 @@
+<!doctype html>
 <html>
     <head>
         <title>incuna-surveys test page</title>
+        <script src="lib/angular/angular.js"></script>
+        <script src="lib/api-check/dist/api-check.js"></script>
+        <script src="lib/angular-formly/dist/formly.js"></script>
         <script src="scripts/js-build/incuna-forms.js"></script>
     </head>
+    <body ng-app="test-app">
+        <h1>Welcome! This page is intended for development testing only</h1>
+        <h2>Happy coding!</h2>
+
+        <section ng-controller="FormCtrl as form">
+            <formly-form model="form.model" fields="form.fields"></formly-form>
+
+            {{ form.model }}
+        </section>
+    </body>
 </html>
