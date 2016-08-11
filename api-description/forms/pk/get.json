@@ -5,7 +5,7 @@
         "status": 200,
         "response_data": {
             "name": "How have you been using the site?",
-            "url": "http://localhost:8000/forms/1",
+            "description": "Some additional text expanding on the above",
             "fieldsets": [
                 {
                     "name": "Free text field",
@@ -15,7 +15,8 @@
                             "id": 1,
                             "name": "How did you discover the site?",
                             "help_text": "Search engine, friend...",
-                            "field_type": "free_text"
+                            "field_type": "free_text",
+                            "answers": []
                         }
                     ]
                 },
@@ -27,13 +28,15 @@
                             "id": 2,
                             "name": "What is answer to the ultimate question of life, the universe, and everything?",
                             "help_text": null,
-                            "field_type": "number"
+                            "field_type": "number",
+                            "answers": []
                         },
                         {
                             "id": 3,
                             "name": "How much percentage does it take?",
                             "help_text": null,
-                            "field_type": "percentage"
+                            "field_type": "percentage",
+                            "answers": []
                         }
                     ]
                 },
@@ -46,14 +49,14 @@
                             "name": "How many time do you visit the site per day?",
                             "help_text": "Choose a valid answer.",
                             "field_type": "radio",
-                            "choices": ["One time", "Two times", "Three times or more"]
+                            "answers": ["One time", "Two times", "Three times or more"]
                         },
                         {
                             "id": 5,
                             "name": "Choose more than one answer.",
                             "help_text": null,
                             "field_type": "checkbox",
-                            "choices": ["One time", "Two times", "Three times or more"]
+                            "answers": ["One time", "Two times", "Three times or more"]
                         }
                     ]
                 }
