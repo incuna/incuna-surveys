@@ -27,9 +27,5 @@
     "karma-jasmine": "1.0.2",
     "karma-fixture": "0.2.6",
     "karma-json-fixtures-preprocessor": "0.0.6"
-  },
-  "dependencies": {
-    "angular": "1.5.8",
-    "angular-mocks": "1.5.8"
   }
 }
