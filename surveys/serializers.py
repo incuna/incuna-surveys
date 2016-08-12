@@ -7,7 +7,7 @@ class SurveyFieldSerializer(serializers.ModelSerializer):
     """For a single field.  Nested into SurveyFieldsetSerializer."""
     class Meta:
         model = models.SurveyField
-        fields = ['pk', 'name', 'help_text', 'field_type', 'answers', 'required']
+        fields = ['id', 'name', 'help_text', 'field_type', 'answers', 'required']
 
 
 class SurveyFieldsetSerializer(serializers.ModelSerializer):
@@ -16,7 +16,7 @@ class SurveyFieldsetSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.SurveyFieldset
-        fields = ['pk', 'name', 'description', 'fields']
+        fields = ['id', 'name', 'description', 'fields']
 
 
 class SurveySerializer(serializers.ModelSerializer):
