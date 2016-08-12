@@ -2,7 +2,6 @@
     "description": "Endpoint to answer a form",
     "url": "http://localhost:8000/forms/1",
     "fields": {
-        "survey": 1,
         "user_responses": [
             {
                 "fieldset": 1,
