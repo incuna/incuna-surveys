@@ -5,13 +5,13 @@
         "status": 200,
         "response_data": {
             "name": "How have you been using the site?",
-            "description": "Some additional text expanding on the above",
+            "description": "Form description",
             "url": "http://localhost:8000/forms/1",
             "fieldsets": [
                 {
                     "id": 1,
                     "name": "Free text field",
-                    "description": "Some additional text expanding on the above",
+                    "description": "Field group description",
                     "fields": [
                         {
                             "id": 1,
