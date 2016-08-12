@@ -30,6 +30,7 @@ class TestSerializers(TestCase):
 
         field_data = OrderedDict(
             [
+                ('pk', self.field.pk),
                 ('name', self.field.name),
                 ('help_text', self.field.help_text),
                 ('field_type', self.field.field_type),
@@ -41,6 +42,7 @@ class TestSerializers(TestCase):
 
         fieldset_data = OrderedDict(
             [
+                ('pk', self.fieldset.pk),
                 ('name', self.fieldset.name),
                 ('description', self.fieldset.description),
                 ('fields', [field_data])
