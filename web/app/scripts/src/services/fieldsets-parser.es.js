@@ -5,7 +5,7 @@
  */
 export const FieldsetParserService = function (Templates) {
     return {
-        parseFieldsets: function (form) {
+        parseFields: function (form) {
             let fields = [];
 
             fields[0] = {
@@ -51,10 +51,19 @@ export const FieldsetParserService = function (Templates) {
                 });
             });
 
+            return fields;
 
-            return {
-                fields
-            };
+        },
+        parseModel: function (form) {
+            let model = [];
+
+            form.fieldsets.forEach((fieldset, index) => {
+                model.push({
+                    fieldset: index + 1,
+                    answers: {}
+                });
+            });
+            return model;
         }
     }
 };

@@ -104,22 +104,23 @@ export const module = function () {
                     template: '<label>{{ to.label }}</label><input type="text" ng-model="model[to.fieldSetIndex].answers[options.key]">'
                 });
 
-                this.model = [
-                    {
-                        fieldset: 1,
-                        answers: {}
-                    },
-                    {
-                        fieldset: 2,
-                        answers: {}
-                    },
-                    {
-                        fieldset: 3,
-                        answers: {}
-                    }
-                ];
+//                this.model = [
+//                    {
+//                        fieldset: 1,
+//                        answers: {}
+//                    },
+//                    {
+//                        fieldset: 2,
+//                        answers: {}
+//                    },
+//                    {
+//                        fieldset: 3,
+//                        answers: {}
+//                    }
+//                ];
 
-                this.fields = FieldsetParserService.parseFieldsets(apiDesc);
+                this.fields = FieldsetParserService.parseFields(apiDesc);
+                this.model = FieldsetParserService.parseModel(apiDesc);
 
                 /*this.fields = [
                     {

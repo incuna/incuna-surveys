@@ -76,7 +76,7 @@ Object.defineProperty(exports, "__esModule", {
  */
 var FieldsetParserService = exports.FieldsetParserService = function FieldsetParserService(Templates) {
     return {
-        parseFieldsets: function parseFieldsets(form) {
+        parseFields: function parseFields(form) {
             var fields = [];
 
             fields[0] = {
@@ -115,9 +115,18 @@ var FieldsetParserService = exports.FieldsetParserService = function FieldsetPar
                 });
             });
 
-            return {
-                fields: fields
-            };
+            return fields;
+        },
+        parseModel: function parseModel(form) {
+            var model = [];
+
+            form.fieldsets.forEach(function (fieldset, index) {
+                model.push({
+                    fieldset: index + 1,
+                    answers: {}
+                });
+            });
+            return model;
         }
     };
 };
@@ -220,18 +229,23 @@ var _module = function _module() {
             template: '<label>{{ to.label }}</label><input type="text" ng-model="model[to.fieldSetIndex].answers[options.key]">'
         });
 
-        this.model = [{
-            fieldset: 1,
-            answers: {}
-        }, {
-            fieldset: 2,
-            answers: {}
-        }, {
-            fieldset: 3,
-            answers: {}
-        }];
+        //                this.model = [
+        //                    {
+        //                        fieldset: 1,
+        //                        answers: {}
+        //                    },
+        //                    {
+        //                        fieldset: 2,
+        //                        answers: {}
+        //                    },
+        //                    {
+        //                        fieldset: 3,
+        //                        answers: {}
+        //                    }
+        //                ];
 
-        this.fields = FieldsetParserService.parseFieldsets(apiDesc);
+        this.fields = FieldsetParserService.parseFields(apiDesc);
+        this.model = FieldsetParserService.parseModel(apiDesc);
 
         /*this.fields = [
             {

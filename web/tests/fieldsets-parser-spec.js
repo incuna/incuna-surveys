@@ -12,8 +12,8 @@ describe('FieldsetParserService', function () {
         this.Parser = require('compiled-es5/services/fieldsets-parser').FieldsetParserService(
             this.mockTemplates
         );
-        this.result = this.Parser.parseFieldsets(this.fieldset).fields;
-        this.model = this.Parser.parseFieldsets(this.fieldset).model;
+        this.result = this.Parser.parseFields(this.fieldset);
+        this.model = this.Parser.parseModel(this.fieldset);
     });
 
     describe('parseFieldsets method return array', function () {
@@ -76,10 +76,33 @@ describe('FieldsetParserService', function () {
 
     describe('model object', function () {
 
-        it('should exist', function () {
-            expect(this.model).toEqual(jasmine.any(Object));
-            console.log(this.model);
+        it('should be an Array', function () {
+            expect(this.model).toEqual(jasmine.any(Array));
         });
+
+        it('should create as many elements as there are fieldsets', function () {
+            expect(this.model.length).toBe(3);
+        });
+
+        describe('each fieldset', function () {
+            
+            it('should have a proper 1-based number', function () {
+                expect(this.model[0].fieldset).toBe(1);
+                expect(this.model[1].fieldset).toBe(2);
+                expect(this.model[2].fieldset).toBe(3);
+            });
+
+            it('should have an empty answers object', function () {
+                expect(this.model[0].answers).toEqual({});
+                expect(this.model[1].answers).toEqual({});
+                expect(this.model[2].answers).toEqual({});
+            });
+            
+            
+            
+        });
+        
+        
         
     });
     
