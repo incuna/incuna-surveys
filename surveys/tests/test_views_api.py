@@ -20,5 +20,7 @@ class TestSurveyView(RequestTestCase):
         # that it's the same data here and hasn't been tampered with.  That way, if the
         # serializer is broken, only that test should fail, and this test will be
         # unconcerned by changes to the serializer format.
-        expected_data = SurveySerializer(instance=self.survey).data
+        expected_data = SurveySerializer(
+            instance=self.survey, context={'request': request}
+        ).data
         self.assertEqual(response.data, expected_data)
