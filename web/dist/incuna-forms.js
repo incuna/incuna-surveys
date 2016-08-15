@@ -9,21 +9,37 @@ var angular = exports.angular = window.angular;
 },{}],2:[function(require,module,exports){
 'use strict';
 
-var _test = require('./test.js');
-
 var _libraries = require('./libraries.js');
 
-},{"./libraries.js":1,"./test.js":3}],3:[function(require,module,exports){
-"use strict";
+},{"./libraries.js":1}],3:[function(require,module,exports){
+'use strict';
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-// TODO: remove this file, it is only proof of concept
+var api = exports.api = function api($http, PROJECT_SETTINGS) {
+    return {
+        getBaseUrl: function getBaseUrl() {
+            var endpoint = 'forms';
+            return PROJECT_SETTINGS.API_ROOT + '/' + endpoint;
+        },
+        getList: function getList() {
+            var url = this.getBaseUrl();
 
-var myObj = exports.myObj = {
-    one: 1,
-    two: 2
+            return $http.get(url).then(function (response) {
+                return response.data;
+            });
+        },
+        getForm: function getForm(url) {
+            return $http.get(url).then(function (response) {
+                return response.data;
+            });
+        }
+    };
 };
+
+var service = exports.service = ['$http', 'PROJECT_SETTINGS', api];
+
+exports.default = module;
 
 },{}]},{},[1,2,3]);

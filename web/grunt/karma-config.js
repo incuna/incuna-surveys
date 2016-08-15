@@ -25,6 +25,7 @@ module.exports = function (grunt) {
                 options: {
                     files: [
                         '<%= config.libDir %>/angular/angular.js',
+                        '<%= config.libDir %>/angular-mocks/angular-mocks.js',
                         '<%= config.jsonFixtures %>/**/*.json',
 
                         '<%= config.compiledScriptsDir %>/**/*.js',

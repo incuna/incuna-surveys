@@ -10,7 +10,7 @@
             },
             {
                 "name": "Another form",
-                "url": "http::localhost:8000/forms/2"
+                "url": "http://localhost:8000/forms/2"
             }
         ]
     }
