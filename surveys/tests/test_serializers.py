@@ -2,7 +2,7 @@ from collections import OrderedDict
 
 from django.test import TestCase
 
-from . import factories
+from .utils import create_survey_data
 from .. import serializers
 from ..models import UserResponse
 
@@ -10,18 +10,7 @@ from ..models import UserResponse
 class TestSerializers(TestCase):
     @classmethod
     def setUpTestData(cls):
-        cls.field = factories.SurveyFieldFactory.create(field_type='number')
-        cls.fieldset = factories.SurveyFieldsetFactory.create()
-        cls.survey = factories.SurveyFactory.create()
-
-        factories.SurveyFieldOrderingFactory.create(
-            field=cls.field,
-            fieldset=cls.fieldset,
-        )
-        factories.SurveyFieldsetOrderingFactory.create(
-            survey=cls.survey,
-            fieldset=cls.fieldset,
-        )
+        create_survey_data(cls)
 
     def test_get(self):
         """Test the heavily nested SurveySerializer serializes data correctly."""
@@ -58,7 +47,7 @@ class TestSerializers(TestCase):
 
         self.assertEqual(expected_data, data)
 
-    def test_path(self):
+    def test_post(self):
         data = {
             'survey': self.survey.pk,
             'user_responses': [
