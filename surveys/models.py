@@ -3,7 +3,7 @@ from django.contrib.postgres.fields import ArrayField, JSONField
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from orderable.models import Orderable
-
+from rest_framework.reverse import reverse as drf_reverse
 
 survey_config = apps.get_app_config('surveys')
 
@@ -80,6 +80,9 @@ class Survey(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_api_url(self):
+        return drf_reverse('survey-form', kwargs={'pk': self.pk})
 
 
 class SurveyFieldOrdering(Orderable):
