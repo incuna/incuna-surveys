@@ -1,7 +1,9 @@
-/* global console */
-// TODO: remove the following two lines
 import { angular } from 'libraries';
+
 import FieldsetParserService from 'services/fieldsets-parser';
+import Api from 'services/api';
+import ProjectConfig from 'providers/project-config';
+
 import Test from 'test';
 
 angular.module('incuna-surveys', [])
@@ -11,6 +13,8 @@ angular.module('incuna-surveys', [])
             header: '<h1></h1>',
             fieldHeader: '<h2></h2>'
         };
-    });
+    })
+    .provider('ProjectConfig', ProjectConfig)
+    .service('Api', Api);
+
 Test();
-/* eslint no-console: 0 */

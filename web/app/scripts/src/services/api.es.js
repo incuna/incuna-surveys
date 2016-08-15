@@ -1,8 +1,9 @@
-export const api = function ($http, PROJECT_SETTINGS) {
+export const api = function ($http, ProjectConfig) {
     return {
         getBaseUrl: function () {
             const endpoint = 'forms';
-            return `${PROJECT_SETTINGS.API_ROOT}/${endpoint}`;
+            const apiRoot = ProjectConfig.getApiRoot();
+            return `${apiRoot}/${endpoint}`;
         },
         getList: function () {
             const url = this.getBaseUrl();
@@ -19,8 +20,8 @@ export const api = function ($http, PROJECT_SETTINGS) {
 
 export const service = [
     '$http',
-    'PROJECT_SETTINGS',
+    'ProjectConfig',
     api
 ];
 
-export default module;
+export default service;

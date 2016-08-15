@@ -15,6 +15,14 @@ var _fieldsetsParser = require('./services/fieldsets-parser.js');
 
 var _fieldsetsParser2 = _interopRequireDefault(_fieldsetsParser);
 
+var _api = require('./services/api.js');
+
+var _api2 = _interopRequireDefault(_api);
+
+var _projectConfig = require('./providers/project-config.js');
+
+var _projectConfig2 = _interopRequireDefault(_projectConfig);
+
 var _test = require('./test.js');
 
 var _test2 = _interopRequireDefault(_test);
@@ -26,23 +34,51 @@ _libraries.angular.module('incuna-surveys', []).service('FieldsetParserService',
         header: '<h1></h1>',
         fieldHeader: '<h2></h2>'
     };
-}); /* global console */
-// TODO: remove the following two lines
+}).provider('ProjectConfig', _projectConfig2.default).service('Api', _api2.default);
 
 (0, _test2.default)();
-/* eslint no-console: 0 */
 
-},{"./libraries.js":1,"./services/fieldsets-parser.js":4,"./test.js":5}],3:[function(require,module,exports){
+},{"./libraries.js":1,"./providers/project-config.js":3,"./services/api.js":4,"./services/fieldsets-parser.js":5,"./test.js":6}],3:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-var api = exports.api = function api($http, PROJECT_SETTINGS) {
+var ProjectConfig = function ProjectConfig() {
+    var settings = {
+        apiRoot: 'localhost:8000'
+    };
+
+    return {
+        $get: function $get() {
+            return {
+                getApiRoot: function getApiRoot() {
+                    return settings.apiRoot;
+                }
+            };
+        },
+        setApiRoot: function setApiRoot(value) {
+            settings.apiRoot = value;
+        }
+    };
+};
+
+var provider = exports.provider = [ProjectConfig];
+
+exports.default = provider;
+
+},{}],4:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+var api = exports.api = function api($http, ProjectConfig) {
     return {
         getBaseUrl: function getBaseUrl() {
             var endpoint = 'forms';
-            return PROJECT_SETTINGS.API_ROOT + '/' + endpoint;
+            var apiRoot = ProjectConfig.getApiRoot();
+            return apiRoot + '/' + endpoint;
         },
         getList: function getList() {
             var url = this.getBaseUrl();
@@ -59,11 +95,11 @@ var api = exports.api = function api($http, PROJECT_SETTINGS) {
     };
 };
 
-var service = exports.service = ['$http', 'PROJECT_SETTINGS', api];
+var service = exports.service = ['$http', 'ProjectConfig', api];
 
-exports.default = module;
+exports.default = service;
 
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -136,7 +172,7 @@ var _module = ['Templates', FieldsetParserService];
 exports.module = _module;
 exports.default = _module;
 
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -281,4 +317,4 @@ var _module = function _module() {
 exports.module = _module;
 exports.default = _module;
 
-},{}]},{},[1,2,3,4,5]);
+},{}]},{},[1,2,3,4,5,6]);
