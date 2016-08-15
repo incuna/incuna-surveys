@@ -1,5 +1,6 @@
 from django.forms import IntegerField as FormIntegerField
 from django.test import TestCase
+from rest_framework.reverse import reverse as drf_reverse
 from rest_framework.serializers import IntegerField as SerializerIntegerField
 
 from . import factories
@@ -45,6 +46,11 @@ class TestSurvey(TestCase):
     def test_str(self):
         survey = self.factory.create()
         self.assertEqual(str(survey), survey.name)
+
+    def test_get_api_url(self):
+        survey = self.factory.create()
+        expected_url = drf_reverse('survey-form', kwargs={'pk': survey.pk})
+        self.assertEqual(survey.get_api_url(), expected_url)
 
 
 class TestUserResponse(TestCase):

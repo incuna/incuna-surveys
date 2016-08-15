@@ -27,11 +27,6 @@ describe('api service', function () {
         
     });
 
-//    afterEach(function() {
-//        this.$httpBackend.verifyNoOutstandingExpectation();
-//        this.$httpBackend.verifyNoOutstandingRequest();
-//    });
-
     describe('getList method', function () {
         
         it('should return a promise with the data of available forms', function (done) {
@@ -63,9 +58,5 @@ describe('api service', function () {
         });
         
     });
-    
-    
-    
-
     
 });
