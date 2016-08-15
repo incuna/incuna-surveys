@@ -81,7 +81,7 @@ export const module = function () {
 
                 formlyConfig.setType({
                     name: 'free_text',
-                    template: '<label>{{ to.fieldOptions.label }}</label><input type="text" ng-model="model[to.fieldSetIndex].answers[options.key]">'
+                    templateUrl: 'templates/incuna-surveys/fields/free-text.html'
                 });
 
                 formlyConfig.setType({

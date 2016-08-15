@@ -6,7 +6,7 @@ import ProjectConfig from 'providers/project-config';
 
 import Test from 'test';
 
-angular.module('incuna-surveys', [])
+angular.module('incuna-surveys', ['incuna-surveys-fields.templates'])
     .service('FieldsetParserService', FieldsetParserService)
     .service('Templates', function () {
         return {

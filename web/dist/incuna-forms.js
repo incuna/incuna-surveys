@@ -1,4 +1,19 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+angular.module('incuna-surveys-fields.templates', []).run(['$templateCache', function($templateCache) {
+  'use strict';
+
+  $templateCache.put('templates/incuna-surveys/fields/free-text.html',
+    "<label>{{ to.fieldOptions.label }}</label><input type=text ng-model=model[to.fieldSetIndex].answers[options.key]>"
+  );
+
+
+  $templateCache.put('templates/incuna-surveys/fields/test.html',
+    "<h1>WORKS</h1>"
+  );
+
+}]);
+
+},{}],2:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -6,7 +21,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 var angular = exports.angular = window.angular;
 
-},{}],2:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
 'use strict';
 
 var _libraries = require('./libraries.js');
@@ -29,7 +44,7 @@ var _test2 = _interopRequireDefault(_test);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-_libraries.angular.module('incuna-surveys', []).service('FieldsetParserService', _fieldsetsParser2.default).service('Templates', function () {
+_libraries.angular.module('incuna-surveys', ['incuna-surveys-fields.templates']).service('FieldsetParserService', _fieldsetsParser2.default).service('Templates', function () {
     return {
         header: '<h1></h1>',
         fieldHeader: '<h2></h2>'
@@ -38,7 +53,7 @@ _libraries.angular.module('incuna-surveys', []).service('FieldsetParserService',
 
 (0, _test2.default)();
 
-},{"./libraries.js":1,"./providers/project-config.js":3,"./services/api.js":4,"./services/fieldsets-parser.js":5,"./test.js":6}],3:[function(require,module,exports){
+},{"./libraries.js":2,"./providers/project-config.js":4,"./services/api.js":5,"./services/fieldsets-parser.js":6,"./test.js":8}],4:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -67,7 +82,7 @@ var provider = exports.provider = [ProjectConfig];
 
 exports.default = provider;
 
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -99,7 +114,7 @@ var service = exports.service = ['$http', 'ProjectConfig', api];
 
 exports.default = service;
 
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -177,7 +192,9 @@ var _module = ['Templates', FieldsetParserService];
 exports.module = _module;
 exports.default = _module;
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
+
+},{}],8:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -247,7 +264,7 @@ var _module = function _module() {
 
         formlyConfig.setType({
             name: 'free_text',
-            template: '<label>{{ to.fieldOptions.label }}</label><input type="text" ng-model="model[to.fieldSetIndex].answers[options.key]">'
+            templateUrl: 'templates/incuna-surveys/fields/free-text.html'
         });
 
         formlyConfig.setType({
@@ -278,4 +295,4 @@ var _module = function _module() {
 exports.module = _module;
 exports.default = _module;
 
-},{}]},{},[1,2,3,4,5,6]);
+},{}]},{},[1,2,3,4,5,6,7,8]);

@@ -9,8 +9,12 @@ module.exports = function (grunt) {
         require('load-grunt-tasks')(grunt);
     } else {
         // Use jit-grunt to only load necessary tasks for each invocation of grunt.
-        require('jit-grunt')(grunt);
+        require('jit-grunt')(grunt, {
+            ngtemplates: 'grunt-angular-templates'
+        });
     }
+
+    const ngTemplatesPaths = require('./node_modules/grunt-incuna-plugins/helper-functions/ng-templates-paths')();
 
     grunt.initConfig({
 
@@ -31,6 +35,7 @@ module.exports = function (grunt) {
                 es: ['<%= config.srcScriptsDir %>']
             }
         }
+
     });
 
     grunt.config.merge({
@@ -42,6 +47,10 @@ module.exports = function (grunt) {
                 tasks: [
                     'compilejs'
                 ]
+            },
+            ngtemplates: {
+                files: ['app/templates/**/*.html'],
+                tasks: ['ngtemplates', 'compilejs']
             }
         },
         browserify: {
@@ -100,7 +109,8 @@ module.exports = function (grunt) {
                     '<%= config.distDir %>/incuna-forms.min.js': '<%= config.distDir %>/incuna-forms.js'
                 }
             }
-        }
+        },
+        ngtemplates: ngTemplatesPaths.generate('incuna-surveys', 'app', '<%= config.compiledScriptsDir %>')
     });
 
     // - - - T A S K S - - -
