@@ -23,6 +23,7 @@ INSTALLED_APPS = (
     'surveys.tests',
 
     'orderable',
+    'rest_framework',
 
     # Work around 'relation does not exist' errors by ordering the installed apps:
     #   contenttypes -> auth -> everything else.
