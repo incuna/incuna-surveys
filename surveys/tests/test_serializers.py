@@ -1,52 +1,133 @@
-from collections import OrderedDict
-
 from django.test import TestCase
+from incuna_test_utils.testcases.api_examples import APIExampleMixin
 
-from .utils import create_survey_data
-from .. import serializers
-from ..models import UserResponse
+from . import factories
+from .utils import APIRequestTestCase, create_survey_data
+from .. import models, serializers
 
 
-class TestSerializers(TestCase):
-    @classmethod
-    def setUpTestData(cls):
-        create_survey_data(cls)
+class TestGetSerializer(APIExampleMixin, APIRequestTestCase):
+    EXAMPLES_DIR = 'api-description'
+
+    def setUp(self):
+        """Create a ton of survey objects to mirror the API example JSON."""
+        self.survey = factories.SurveyFactory.create(
+            pk=1,
+            name='How have you been using the site?',
+            description='Some additional text expanding on the above',
+        )
+
+        # Three fieldsets.
+        self.fieldset_one = factories.SurveyFieldsetFactory.create(
+            pk=1,
+            name='Free text field',
+            description='Some additional text expanding on the above',
+        )
+        self.fieldset_two = factories.SurveyFieldsetFactory.create(
+            pk=2,
+            name='Numeric fields',
+            description='Some additional text expanding on the above',
+        )
+        self.fieldset_three = factories.SurveyFieldsetFactory.create(
+            pk=3,
+            name='Choice fields',
+            description='Some additional text expanding on the above',
+        )
+
+        # Five fields, one for each type.
+        self.field_one = factories.SurveyFieldFactory.create(
+            pk=1,
+            name='How did you discover the site?',
+            help_text='Search engine, friend...',
+            field_type='free_text',
+            required=True,
+            answers=[],
+        )
+        self.field_two = factories.SurveyFieldFactory.create(
+            pk=2,
+            name='What is the answer to the ultimate question?',
+            help_text='',
+            field_type='number',
+            required=False,
+            answers=[],
+        )
+        self.field_three = factories.SurveyFieldFactory.create(
+            pk=3,
+            name='How much percentage does it take?',
+            help_text='',
+            field_type='percentage',
+            required=True,
+            answers=[],
+        )
+        self.field_four = factories.SurveyFieldFactory.create(
+            pk=4,
+            name='How many time do you visit the site per day?',
+            help_text='Choose a valid answer.',
+            field_type='radio',
+            required=True,
+            answers=['One time', 'Two times', 'Three times or more'],
+        )
+        self.field_five = factories.SurveyFieldFactory.create(
+            pk=5,
+            name='Choose more than one answer.',
+            help_text='',
+            field_type='checkbox',
+            required=False,
+            answers=['One time', 'Two times', 'Three times or more'],
+        )
+
+        # Attach each fieldset to the survey.
+        factories.SurveyFieldsetOrderingFactory.create(
+            survey=self.survey,
+            fieldset=self.fieldset_one,
+        )
+        factories.SurveyFieldsetOrderingFactory.create(
+            survey=self.survey,
+            fieldset=self.fieldset_two,
+        )
+        factories.SurveyFieldsetOrderingFactory.create(
+            survey=self.survey,
+            fieldset=self.fieldset_three,
+        )
+
+        # Attach each field to a fieldset.
+        factories.SurveyFieldOrderingFactory.create(
+            field=self.field_one,
+            fieldset=self.fieldset_one,
+        )
+        factories.SurveyFieldOrderingFactory.create(
+            field=self.field_two,
+            fieldset=self.fieldset_two,
+        )
+        factories.SurveyFieldOrderingFactory.create(
+            field=self.field_three,
+            fieldset=self.fieldset_two,
+        )
+        factories.SurveyFieldOrderingFactory.create(
+            field=self.field_four,
+            fieldset=self.fieldset_three,
+        )
+        factories.SurveyFieldOrderingFactory.create(
+            field=self.field_five,
+            fieldset=self.fieldset_three,
+        )
 
     def test_get(self):
         """Test the heavily nested SurveySerializer serializes data correctly."""
-        serializer = serializers.SurveySerializer(instance=self.survey)
+        serializer = serializers.SurveySerializer(
+            instance=self.survey,
+            context={'request': self.create_request(SERVER_NAME='localhost:8000')},
+        )
         data = serializer.data
-
-        field_data = OrderedDict(
-            [
-                ('id', self.field.id),
-                ('name', self.field.name),
-                ('help_text', self.field.help_text),
-                ('field_type', self.field.field_type),
-                ('answers', self.field.answers),
-                ('required', self.field.required)
-            ]
-        )
-        self.assertEqual(data['fieldsets'][0]['fields'][0], field_data)
-
-        fieldset_data = OrderedDict(
-            [
-                ('id', self.fieldset.id),
-                ('name', self.fieldset.name),
-                ('description', self.fieldset.description),
-                ('fields', [field_data])
-            ]
-        )
-        self.assertEqual(data['fieldsets'][0], fieldset_data)
-
-        expected_data = {
-            'name': self.survey.name,
-            'description': self.survey.description,
-            'url': self.survey.get_api_url(),
-            'fieldsets': [fieldset_data]
-        }
+        expected_data = self.api_example_data('/forms/pk', 'get')['OK']['response_data']
 
         self.assertEqual(expected_data, data)
+
+
+class TestPostSerializer(APIExampleMixin, TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        create_survey_data(cls)
 
     def test_post(self):
         data = {
@@ -64,7 +145,7 @@ class TestSerializers(TestCase):
         self.assertTrue(serializer.is_valid(), serializer.errors)
 
         serializer.create(serializer.validated_data)
-        response = UserResponse.objects.first()
+        response = models.UserResponse.objects.first()
         self.assertEqual(response.survey, self.survey)
         self.assertEqual(response.fieldset, self.fieldset)
         self.assertEqual(response.user_id, data['user_responses'][0]['user_id'])
