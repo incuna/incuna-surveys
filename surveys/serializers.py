@@ -22,10 +22,11 @@ class SurveyFieldsetSerializer(serializers.ModelSerializer):
 class SurveySerializer(serializers.ModelSerializer):
     """Serializer for a full survey."""
     fieldsets = SurveyFieldsetSerializer(many=True)
+    url = serializers.CharField(source='get_api_url')
 
     class Meta:
         model = models.Survey
-        fields = ['name', 'description', 'fieldsets']
+        fields = ['name', 'description', 'url', 'fieldsets']
 
 
 class UserResponseSerializer(serializers.ModelSerializer):

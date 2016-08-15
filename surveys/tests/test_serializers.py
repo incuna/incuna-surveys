@@ -42,6 +42,7 @@ class TestSerializers(TestCase):
         expected_data = {
             'name': self.survey.name,
             'description': self.survey.description,
+            'url': self.survey.get_api_url(),
             'fieldsets': [fieldset_data]
         }
 
