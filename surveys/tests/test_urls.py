@@ -9,7 +9,7 @@ class TestAPIUrls(URLTestCase):
     def test_survey_form(self):
         self.assert_url_matches_view(
             view=views_api.SurveyView,
-            expected_url='/forms/{}/'.format(self.pk),
+            expected_url='/forms/{}'.format(self.pk),
             url_name='survey-form',
             url_kwargs={'pk': self.pk},
         )
