@@ -11,17 +11,59 @@ var angular = exports.angular = window.angular;
 
 var _libraries = require('./libraries.js');
 
-},{"./libraries.js":1}],3:[function(require,module,exports){
+var _api = require('./services/api.js');
+
+var _api2 = _interopRequireDefault(_api);
+
+var _projectConfig = require('./providers/project-config.js');
+
+var _projectConfig2 = _interopRequireDefault(_projectConfig);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+_libraries.angular.module('incuna-surveys', []).provider('ProjectConfig', _projectConfig2.default).service('Api', _api2.default);
+
+},{"./libraries.js":1,"./providers/project-config.js":3,"./services/api.js":4}],3:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-var api = exports.api = function api($http, PROJECT_SETTINGS) {
+var ProjectConfig = function ProjectConfig() {
+    var settings = {
+        apiRoot: 'localhost:8000'
+    };
+
+    return {
+        $get: function $get() {
+            return {
+                getApiRoot: function getApiRoot() {
+                    return settings.apiRoot;
+                }
+            };
+        },
+        setApiRoot: function setApiRoot(value) {
+            settings.apiRoot = value;
+        }
+    };
+};
+
+var provider = exports.provider = [ProjectConfig];
+
+exports.default = provider;
+
+},{}],4:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+var api = exports.api = function api($http, ProjectConfig) {
     return {
         getBaseUrl: function getBaseUrl() {
             var endpoint = 'forms';
-            return PROJECT_SETTINGS.API_ROOT + '/' + endpoint;
+            var apiRoot = ProjectConfig.getApiRoot();
+            return apiRoot + '/' + endpoint;
         },
         getList: function getList() {
             var url = this.getBaseUrl();
@@ -38,8 +80,8 @@ var api = exports.api = function api($http, PROJECT_SETTINGS) {
     };
 };
 
-var service = exports.service = ['$http', 'PROJECT_SETTINGS', api];
+var service = exports.service = ['$http', 'ProjectConfig', api];
 
-exports.default = module;
+exports.default = service;
 
-},{}]},{},[1,2,3]);
+},{}]},{},[1,2,3,4]);

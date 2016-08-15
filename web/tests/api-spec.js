@@ -4,13 +4,13 @@ describe('api service', function () {
         fixture.setBase('tests/api-description');
 
         inject(function ($http) {
-            const MOCK_PROJECT_SETTINGS = {
-                API_ROOT: 'localhost:8000'
+            const mockProjectConfig = {
+                getApiRoot: () => 'localhost:8000'
             };
 
             this.api = require('compiled-es5/services/api').api(
                 $http,
-                MOCK_PROJECT_SETTINGS
+                mockProjectConfig
             );
         });
 
