@@ -42,17 +42,4 @@ var service = exports.service = ['$http', 'PROJECT_SETTINGS', api];
 
 exports.default = module;
 
-},{}],4:[function(require,module,exports){
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-// TODO: remove this file, it is only proof of concept
-
-var myObj = exports.myObj = {
-    one: 1,
-    two: 2
-};
-
-},{}]},{},[1,2,3,4]);
+},{}]},{},[1,2,3]);
