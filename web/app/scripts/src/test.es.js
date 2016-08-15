@@ -81,75 +81,31 @@ export const module = function () {
 
                 formlyConfig.setType({
                     name: 'free_text',
-                    template: '<label>{{ to.label }}</label><input type="text" ng-model="model[to.fieldSetIndex].answers[options.key]">'
+                    template: '<label>{{ to.fieldOptions.label }}</label><input type="text" ng-model="model[to.fieldSetIndex].answers[options.key]">'
                 });
 
                 formlyConfig.setType({
                     name: 'number',
-                    template: '<label>{{ to.label }}</label><input type="text" ng-model="model[to.fieldSetIndex].answers[options.key]">'
+                    template: '<label>{{ to.fieldOptions.label }}</label><input type="text" ng-model="model[to.fieldSetIndex].answers[options.key]">'
                 });
 
                 formlyConfig.setType({
                     name: 'percentage',
-                    template: '<label>{{ to.label }}</label><input type="text" ng-model="model[to.fieldSetIndex].answers[options.key]">'
+                    template: '<label>{{ to.fieldOptions.label }}</label><input type="text" ng-model="model[to.fieldSetIndex].answers[options.key]">'
                 });
 
                 formlyConfig.setType({
                     name: 'checkbox',
-                    template: '<label>{{ to.label }}</label><label ng-repeat="choice in to.choices">{{ choice }}<input type="checkbox" checklist-model="model[to.fieldSetIndex].answers[options.key]" checklist-value="choice"></label ng-repeat>'
+                    template: '<label>{{ to.fieldOptions.label }}</label><label ng-repeat="choice in to.choices">{{ choice }}<input type="checkbox" checklist-model="model[to.fieldSetIndex].answers[options.key]" checklist-value="choice"></label ng-repeat>'
                 });
 
                 formlyConfig.setType({
                     name: 'radio',
-                    template: '<label>{{ to.label }}</label><input type="text" ng-model="model[to.fieldSetIndex].answers[options.key]">'
+                    template: '<label>{{ to.fieldOptions.label }}</label><input type="text" ng-model="model[to.fieldSetIndex].answers[options.key]">'
                 });
-
-//                this.model = [
-//                    {
-//                        fieldset: 1,
-//                        answers: {}
-//                    },
-//                    {
-//                        fieldset: 2,
-//                        answers: {}
-//                    },
-//                    {
-//                        fieldset: 3,
-//                        answers: {}
-//                    }
-//                ];
 
                 this.fields = FieldsetParserService.parseFields(apiDesc);
                 this.model = FieldsetParserService.parseModel(apiDesc);
-
-                /*this.fields = [
-                    {
-                        template: '<h1>{{ to.formTitle }}</h1><h2>{{ to.formDescription }}</h2>',
-                        templateOptions: {
-                            formTitle: apiDesc.name,
-                            formDescription: apiDesc.description
-                        }
-                    },
-                    {
-                        fieldGroup: [
-                            {
-                                template: '<h3>{{ to.fieldGroupTitle }}</h3><h4>{{ to.fieldGroupDesc }}</h4>',
-                                templateOptions: {
-                                    fieldGroupTitle: apiDesc.fieldsets[0].name,
-                                    fieldGroupDesc: apiDesc.fieldsets[0].description
-                                },
-                            },
-                            {
-                                key: apiDesc.fieldsets[0].fields[0].id,
-                                type: apiDesc.fieldsets[0].fields[0].field_type,
-                                templateOptions: {
-                                    label: 'Blabla',
-                                    index: apiDesc.fieldsets[0].id - 1
-                                },
-                            }
-                        ]
-                    },
-                ];*/
             }]);
         
 

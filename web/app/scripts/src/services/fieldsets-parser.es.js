@@ -27,18 +27,19 @@ export const FieldsetParserService = function (Templates) {
                     }
                 ];
 
+
                 fieldset.fields.forEach((field) => {
                     let fieldObject = {
                         key: field.id,
                         type: field.field_type,
                         templateOptions: {
-                            label: field.name,
                             fieldSetIndex: fieldset.id - 1,
-                            choices: [
-                                'One',
-                                'Two',
-                                'Three'
-                            ]
+                            choices: field.answers,
+                            fieldOptions: {
+                                help_text: field.help_text,
+                                required: field.required,
+                                label: field.name
+                            }
                         }
                     };
 
@@ -63,6 +64,7 @@ export const FieldsetParserService = function (Templates) {
                     answers: {}
                 });
             });
+
             return model;
         }
     }
