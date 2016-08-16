@@ -1,8 +1,12 @@
-export const api = function ($http, ProjectConfig) {
+import { angular } from '../libraries';
+
+import ProjectConfig from '../providers/project-config';
+
+export const API = function ($http, ProjectConfig) {
     return {
         getBaseUrl: function () {
             const endpoint = 'forms';
-            const apiRoot = ProjectConfig.getApiRoot();
+            const apiRoot = ProjectConfig.getSettings().apiRoot;
             return `${apiRoot}/${endpoint}`;
         },
         getList: function () {
@@ -18,10 +22,16 @@ export const api = function ($http, ProjectConfig) {
     }
 };
 
-export const service = [
-    '$http',
-    'ProjectConfig',
-    api
-];
+export const module = {
+    moduleName: 'incuna.surveys-api',
+    componentName: 'API'
+};
 
-export default service;
+angular.module(module.moduleName, [ProjectConfig.moduleName])
+    .service([
+        '$http',
+        ProjectConfig.componentName,
+        API
+    ]);
+
+export default module;

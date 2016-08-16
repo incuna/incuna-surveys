@@ -5,10 +5,12 @@ describe('api service', function () {
 
         inject(function ($http) {
             const mockProjectConfig = {
-                getApiRoot: () => 'localhost:8000'
+                getSettings:() => ({
+                    apiRoot: 'localhost:8000'
+                })
             };
 
-            this.api = require('compiled-es5/services/api').api(
+            this.api = require('compiled-es5/services/api').API(
                 $http,
                 mockProjectConfig
             );

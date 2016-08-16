@@ -1,8 +1,7 @@
 import { angular } from 'libraries';
 
-import Api from 'services/api';
-import ProjectConfig from 'providers/project-config';
+import API from 'services/api';
 
-angular.module('incuna-surveys', [])
-    .provider('ProjectConfig', ProjectConfig)
-    .service('Api', Api);
+const module = angular.module('incuna-surveys', [
+    API.moduleName
+]);
