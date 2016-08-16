@@ -19,13 +19,16 @@ class SurveyFieldsetSerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'description', 'fields']
 
 
-class SurveySerializer(serializers.ModelSerializer):
+class SurveySerializer(serializers.HyperlinkedModelSerializer):
     """Serializer for a full survey."""
     fieldsets = SurveyFieldsetSerializer(many=True)
 
     class Meta:
         model = models.Survey
-        fields = ['name', 'description', 'fieldsets']
+        fields = ['name', 'description', 'url', 'fieldsets']
+        extra_kwargs = {
+            'url': {'view_name': 'survey-form'},
+        }
 
 
 class UserResponseSerializer(serializers.ModelSerializer):
