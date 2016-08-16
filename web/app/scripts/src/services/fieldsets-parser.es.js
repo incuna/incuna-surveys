@@ -3,13 +3,14 @@
  * This module parses a form API into an angular-formly array
  *
  */
-export const FieldsetParserService = function (Templates) {
+export const FieldsetParserService = function () {
     return {
         parseFields: function (form) {
             let fields = [];
+            const templatesBase = 'templates/incuna-surveys/fields';
 
             fields[0] = {
-                template: Templates.header,
+                templateUrl: `${templatesBase}/header.html`,
                 templateOptions: {
                     formName: form.name,
                     formDescription: form.description
@@ -19,7 +20,7 @@ export const FieldsetParserService = function (Templates) {
             form.fieldsets.forEach((fieldset) => {
                 let fieldGroup = [
                     {
-                        template: Templates.fieldHeader,
+                        templateUrl: `${templatesBase}/fieldset-header.html`,
                         templateOptions: {
                             fieldGroupName: fieldset.name,
                             fieldGroupDesc: fieldset.description
@@ -71,9 +72,7 @@ export const FieldsetParserService = function (Templates) {
 };
 
 export const module = [
-    'Templates',
     FieldsetParserService
 ];
 
 export default module;
-

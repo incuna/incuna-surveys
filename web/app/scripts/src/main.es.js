@@ -6,14 +6,12 @@ import ProjectConfig from 'providers/project-config';
 
 import Test from 'test';
 
-angular.module('incuna-surveys', ['incuna-surveys-fields.templates'])
+angular.module('incuna-surveys', [
+    'incuna-surveys-fields.templates',
+    'drf-form-field',
+    'aif-slider-input'
+])
     .service('FieldsetParserService', FieldsetParserService)
-    .service('Templates', function () {
-        return {
-            header: '<h1></h1>',
-            fieldHeader: '<h2></h2>'
-        };
-    })
     .provider('ProjectConfig', ProjectConfig)
     .service('Api', Api);
 

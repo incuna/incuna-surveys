@@ -86,22 +86,22 @@ export const module = function () {
 
                 formlyConfig.setType({
                     name: 'number',
-                    template: '<label>{{ to.fieldOptions.label }}</label><input type="text" ng-model="model[to.fieldSetIndex].answers[options.key]">'
+                    templateUrl: 'templates/incuna-surveys/fields/number.html'
                 });
 
                 formlyConfig.setType({
                     name: 'percentage',
-                    template: '<label>{{ to.fieldOptions.label }}</label><input type="text" ng-model="model[to.fieldSetIndex].answers[options.key]">'
+                    templateUrl: 'templates/incuna-surveys/fields/percentage.html'
                 });
 
                 formlyConfig.setType({
                     name: 'checkbox',
-                    template: '<label>{{ to.fieldOptions.label }}</label><label ng-repeat="choice in to.choices">{{ choice }}<input type="checkbox" checklist-model="model[to.fieldSetIndex].answers[options.key]" checklist-value="choice"></label ng-repeat>'
+                    templateUrl: 'templates/incuna-surveys/fields/checkbox.html'
                 });
 
                 formlyConfig.setType({
                     name: 'radio',
-                    template: '<label>{{ to.fieldOptions.label }}</label><input type="text" ng-model="model[to.fieldSetIndex].answers[options.key]">'
+                    templateUrl: 'templates/incuna-surveys/fields/radio.html'
                 });
 
                 this.fields = FieldsetParserService.parseFields(apiDesc);

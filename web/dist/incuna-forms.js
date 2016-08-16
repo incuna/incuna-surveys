@@ -2,8 +2,38 @@
 angular.module('incuna-surveys-fields.templates', []).run(['$templateCache', function($templateCache) {
   'use strict';
 
+  $templateCache.put('templates/incuna-surveys/fields/checkbox.html',
+    "<span>{{ to.fieldOptions.label }}</span><label ng-repeat=\"choice in to.choices\">{{ choice }}<input type=checkbox checklist-model=model[to.fieldSetIndex].answers[options.key] checklist-value=choice></label>'"
+  );
+
+
+  $templateCache.put('templates/incuna-surveys/fields/fieldset-header.html',
+    "<h3>{{ to.fieldGroupName }}</h3><h4>{{ to.fieldGroupDesc }}</h4>"
+  );
+
+
   $templateCache.put('templates/incuna-surveys/fields/free-text.html',
-    "<label>{{ to.fieldOptions.label }}</label><input type=text ng-model=model[to.fieldSetIndex].answers[options.key]>"
+    "<div drf-form-field=to.fieldOptions id=options.key><input type=text ng-model=model[to.fieldSetIndex].answers[options.key]></div>"
+  );
+
+
+  $templateCache.put('templates/incuna-surveys/fields/header.html',
+    "<h1>{{ to.formName }}</h1><h2>{{ to.formDescription }}</h2>"
+  );
+
+
+  $templateCache.put('templates/incuna-surveys/fields/number.html',
+    "<div drf-form-field=to.fieldOptions id=options.key><input type=text ng-model=model[to.fieldSetIndex].answers[options.key]></div>"
+  );
+
+
+  $templateCache.put('templates/incuna-surveys/fields/percentage.html',
+    "<div drf-form-field=to.fieldOptions id=options.key><div style=position:relative aif-slider-input model=model[to.fieldSetIndex].answers[options.key] ceiling=100></div></div>"
+  );
+
+
+  $templateCache.put('templates/incuna-surveys/fields/radio.html',
+    "<label>{{ to.fieldOptions.label }}<input type=text ng-model=model[to.fieldSetIndex].answers[options.key]></label>"
   );
 
 
@@ -44,16 +74,11 @@ var _test2 = _interopRequireDefault(_test);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-_libraries.angular.module('incuna-surveys', ['incuna-surveys-fields.templates']).service('FieldsetParserService', _fieldsetsParser2.default).service('Templates', function () {
-    return {
-        header: '<h1></h1>',
-        fieldHeader: '<h2></h2>'
-    };
-}).provider('ProjectConfig', _projectConfig2.default).service('Api', _api2.default);
+_libraries.angular.module('incuna-surveys', ['incuna-surveys-fields.templates', 'drf-form-field', 'aif-slider-input']).service('FieldsetParserService', _fieldsetsParser2.default).provider('ProjectConfig', _projectConfig2.default).service('Api', _api2.default);
 
 (0, _test2.default)();
 
-},{"./libraries.js":2,"./providers/project-config.js":4,"./services/api.js":5,"./services/fieldsets-parser.js":6,"./test.js":8}],4:[function(require,module,exports){
+},{"./libraries.js":2,"./providers/project-config.js":4,"./services/api.js":5,"./services/fieldsets-parser.js":6,"./test.js":7}],4:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -125,13 +150,14 @@ Object.defineProperty(exports, "__esModule", {
  * This module parses a form API into an angular-formly array
  *
  */
-var FieldsetParserService = exports.FieldsetParserService = function FieldsetParserService(Templates) {
+var FieldsetParserService = exports.FieldsetParserService = function FieldsetParserService() {
     return {
         parseFields: function parseFields(form) {
             var fields = [];
+            var templatesBase = 'templates/incuna-surveys/fields';
 
             fields[0] = {
-                template: Templates.header,
+                templateUrl: templatesBase + '/header.html',
                 templateOptions: {
                     formName: form.name,
                     formDescription: form.description
@@ -140,7 +166,7 @@ var FieldsetParserService = exports.FieldsetParserService = function FieldsetPar
 
             form.fieldsets.forEach(function (fieldset) {
                 var fieldGroup = [{
-                    template: Templates.fieldHeader,
+                    templateUrl: templatesBase + '/fieldset-header.html',
                     templateOptions: {
                         fieldGroupName: fieldset.name,
                         fieldGroupDesc: fieldset.description
@@ -187,14 +213,12 @@ var FieldsetParserService = exports.FieldsetParserService = function FieldsetPar
     };
 };
 
-var _module = ['Templates', FieldsetParserService];
+var _module = [FieldsetParserService];
 
 exports.module = _module;
 exports.default = _module;
 
 },{}],7:[function(require,module,exports){
-
-},{}],8:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -269,22 +293,22 @@ var _module = function _module() {
 
         formlyConfig.setType({
             name: 'number',
-            template: '<label>{{ to.fieldOptions.label }}</label><input type="text" ng-model="model[to.fieldSetIndex].answers[options.key]">'
+            templateUrl: 'templates/incuna-surveys/fields/number.html'
         });
 
         formlyConfig.setType({
             name: 'percentage',
-            template: '<label>{{ to.fieldOptions.label }}</label><input type="text" ng-model="model[to.fieldSetIndex].answers[options.key]">'
+            templateUrl: 'templates/incuna-surveys/fields/percentage.html'
         });
 
         formlyConfig.setType({
             name: 'checkbox',
-            template: '<label>{{ to.fieldOptions.label }}</label><label ng-repeat="choice in to.choices">{{ choice }}<input type="checkbox" checklist-model="model[to.fieldSetIndex].answers[options.key]" checklist-value="choice"></label ng-repeat>'
+            templateUrl: 'templates/incuna-surveys/fields/checkbox.html'
         });
 
         formlyConfig.setType({
             name: 'radio',
-            template: '<label>{{ to.fieldOptions.label }}</label><input type="text" ng-model="model[to.fieldSetIndex].answers[options.key]">'
+            templateUrl: 'templates/incuna-surveys/fields/radio.html'
         });
 
         this.fields = FieldsetParserService.parseFields(apiDesc);
@@ -295,4 +319,4 @@ var _module = function _module() {
 exports.module = _module;
 exports.default = _module;
 
-},{}]},{},[1,2,3,4,5,6,7,8]);
+},{}]},{},[1,2,3,4,5,6,7]);
