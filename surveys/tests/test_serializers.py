@@ -125,21 +125,15 @@ class TestGetSerializer(APIExampleMixin, APIRequestTestCase):
 
 
 class TestPostSerializer(APIExampleMixin, TestCase):
+    EXAMPLES_DIR = 'api-description'
+
     @classmethod
     def setUpTestData(cls):
         create_survey_data(cls)
 
     def test_post(self):
-        data = {
-            'survey': self.survey.pk,
-            'user_responses': [
-                {
-                    'user_id': 'LeeroyJenkins',
-                    'fieldset': self.fieldset.pk,
-                    'answers': {str(self.field.pk): 1}
-                }
-            ]
-        }
+        data = self.api_example_data('/forms/pk', 'post')['fields']
+        data['survey'] = self.survey.pk
 
         serializer = serializers.SurveyResponseSerializer(data=data)
         self.assertTrue(serializer.is_valid(), serializer.errors)

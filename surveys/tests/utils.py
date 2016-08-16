@@ -18,9 +18,9 @@ def create_survey_data(cls):
 
     The survey has one fieldset, which has one field.
     """
-    cls.field = factories.SurveyFieldFactory.create(field_type='number')
-    cls.fieldset = factories.SurveyFieldsetFactory.create()
-    cls.survey = factories.SurveyFactory.create()
+    cls.field = factories.SurveyFieldFactory.create(pk=1, field_type='number')
+    cls.fieldset = factories.SurveyFieldsetFactory.create(pk=1)
+    cls.survey = factories.SurveyFactory.create(pk=1)
 
     factories.SurveyFieldOrderingFactory.create(
         field=cls.field,
