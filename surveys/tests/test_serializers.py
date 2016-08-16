@@ -141,3 +141,17 @@ class TestSerializers(APIExampleMixin, APIRequestTestCase):
         self.assertEqual(response.survey, self.survey)
         self.assertEqual(response.fieldset, self.fieldset_one)
         self.assertEqual(response.answers, {'1': 'Friends'})
+
+    def test_post_fail_validation(self):
+        data = self.api_example_data('/forms/pk', 'post')['fields']
+        data['survey'] = self.survey.pk
+
+        # Change the submitted response to the third question so as to make it fail
+        # validation.
+        data['user_responses'][1]['answers']['3'] = 'Not a number'
+
+        serializer = serializers.SurveyResponseSerializer(data=data)
+        self.assertFalse(serializer.is_valid())
+
+        field_errors = serializer.errors['user_responses'][1]['3']
+        self.assertIn('A valid integer is required.', field_errors)
