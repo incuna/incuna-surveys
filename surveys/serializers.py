@@ -31,24 +31,54 @@ class SurveySerializer(serializers.HyperlinkedModelSerializer):
         }
 
 
+class FieldValidationSerializer(serializers.Serializer):
+    """
+    Gets initialised with some dynamic fields based on a given fieldset.
+
+    Doesn't actually create anything or relate directly to an endpoint, but is used
+    to verify validation for submitted answers.
+    """
+    def __init__(self, fieldset, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        fields = fieldset.fields.all()
+        for field in fields:
+            self.fields[str(field.pk)] = field.get_serializer_field()
+
+
 class UserResponseSerializer(serializers.ModelSerializer):
     """
     Serializer for a user's response to one fieldset, but without a survey required.
 
     Intended only for use as nested into SurveyResponseSerializer.
     """
+    user_id = serializers.CharField(required=False)
+
     class Meta:
         model = models.UserResponse
         fields = ['fieldset', 'user_id', 'answers']
+
+    def validate(self, attrs):
+        attrs = super().validate(attrs)
+
+        fieldset = attrs['fieldset']
+        validator = FieldValidationSerializer(
+            fieldset=fieldset,
+            data=attrs['answers'],
+        )
+
+        validator.is_valid(raise_exception=True)
+        return attrs
 
 
 class SurveyResponseSerializer(serializers.Serializer):
     """Serializer for a user's answers to a whole survey."""
     user_responses = UserResponseSerializer(many=True)
     survey = serializers.PrimaryKeyRelatedField(queryset=models.Survey.objects.all())
+    user_id = serializers.CharField()
 
     class Meta:
-        fields = ['survey', 'user_responses']
+        fields = ['survey', 'user_id', 'user_responses']
 
     def create(self, validated_data):
         """
@@ -66,6 +96,7 @@ class SurveyResponseSerializer(serializers.Serializer):
 
         for response in response_data:
             response['survey'] = validated_data['survey']
+            response['user_id'] = validated_data['user_id']
             responses.append(UserResponseSerializer(data=response).create(response))
 
         return responses

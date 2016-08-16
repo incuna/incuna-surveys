@@ -1,41 +1,41 @@
-from django.test import TestCase
 from incuna_test_utils.testcases.api_examples import APIExampleMixin
 
 from . import factories
-from .utils import APIRequestTestCase, create_survey_data
+from .utils import APIRequestTestCase
 from .. import models, serializers
 
 
-class TestGetSerializer(APIExampleMixin, APIRequestTestCase):
+class TestSerializers(APIExampleMixin, APIRequestTestCase):
     EXAMPLES_DIR = 'api-description'
 
-    def setUp(self):
+    @classmethod
+    def setUpTestData(cls):
         """Create a ton of survey objects to mirror the API example JSON."""
-        self.survey = factories.SurveyFactory.create(
+        cls.survey = factories.SurveyFactory.create(
             pk=1,
             name='How have you been using the site?',
             description='Some additional text expanding on the above',
         )
 
         # Three fieldsets.
-        self.fieldset_one = factories.SurveyFieldsetFactory.create(
+        cls.fieldset_one = factories.SurveyFieldsetFactory.create(
             pk=1,
             name='Free text field',
             description='Some additional text expanding on the above',
         )
-        self.fieldset_two = factories.SurveyFieldsetFactory.create(
+        fieldset_two = factories.SurveyFieldsetFactory.create(
             pk=2,
             name='Numeric fields',
             description='Some additional text expanding on the above',
         )
-        self.fieldset_three = factories.SurveyFieldsetFactory.create(
+        fieldset_three = factories.SurveyFieldsetFactory.create(
             pk=3,
             name='Choice fields',
             description='Some additional text expanding on the above',
         )
 
         # Five fields, one for each type.
-        self.field_one = factories.SurveyFieldFactory.create(
+        field_one = factories.SurveyFieldFactory.create(
             pk=1,
             name='How did you discover the site?',
             help_text='Search engine, friend...',
@@ -43,7 +43,7 @@ class TestGetSerializer(APIExampleMixin, APIRequestTestCase):
             required=True,
             answers=[],
         )
-        self.field_two = factories.SurveyFieldFactory.create(
+        field_two = factories.SurveyFieldFactory.create(
             pk=2,
             name='What is the answer to the ultimate question?',
             help_text='',
@@ -51,7 +51,7 @@ class TestGetSerializer(APIExampleMixin, APIRequestTestCase):
             required=False,
             answers=[],
         )
-        self.field_three = factories.SurveyFieldFactory.create(
+        field_three = factories.SurveyFieldFactory.create(
             pk=3,
             name='How much percentage does it take?',
             help_text='',
@@ -59,7 +59,7 @@ class TestGetSerializer(APIExampleMixin, APIRequestTestCase):
             required=True,
             answers=[],
         )
-        self.field_four = factories.SurveyFieldFactory.create(
+        field_four = factories.SurveyFieldFactory.create(
             pk=4,
             name='How many time do you visit the site per day?',
             help_text='Choose a valid answer.',
@@ -67,7 +67,7 @@ class TestGetSerializer(APIExampleMixin, APIRequestTestCase):
             required=True,
             answers=['One time', 'Two times', 'Three times or more'],
         )
-        self.field_five = factories.SurveyFieldFactory.create(
+        field_five = factories.SurveyFieldFactory.create(
             pk=5,
             name='Choose more than one answer.',
             help_text='',
@@ -78,38 +78,38 @@ class TestGetSerializer(APIExampleMixin, APIRequestTestCase):
 
         # Attach each fieldset to the survey.
         factories.SurveyFieldsetOrderingFactory.create(
-            survey=self.survey,
-            fieldset=self.fieldset_one,
+            survey=cls.survey,
+            fieldset=cls.fieldset_one,
         )
         factories.SurveyFieldsetOrderingFactory.create(
-            survey=self.survey,
-            fieldset=self.fieldset_two,
+            survey=cls.survey,
+            fieldset=fieldset_two,
         )
         factories.SurveyFieldsetOrderingFactory.create(
-            survey=self.survey,
-            fieldset=self.fieldset_three,
+            survey=cls.survey,
+            fieldset=fieldset_three,
         )
 
         # Attach each field to a fieldset.
         factories.SurveyFieldOrderingFactory.create(
-            field=self.field_one,
-            fieldset=self.fieldset_one,
+            field=field_one,
+            fieldset=cls.fieldset_one,
         )
         factories.SurveyFieldOrderingFactory.create(
-            field=self.field_two,
-            fieldset=self.fieldset_two,
+            field=field_two,
+            fieldset=fieldset_two,
         )
         factories.SurveyFieldOrderingFactory.create(
-            field=self.field_three,
-            fieldset=self.fieldset_two,
+            field=field_three,
+            fieldset=fieldset_two,
         )
         factories.SurveyFieldOrderingFactory.create(
-            field=self.field_four,
-            fieldset=self.fieldset_three,
+            field=field_four,
+            fieldset=fieldset_three,
         )
         factories.SurveyFieldOrderingFactory.create(
-            field=self.field_five,
-            fieldset=self.fieldset_three,
+            field=field_five,
+            fieldset=fieldset_three,
         )
 
     def test_get(self):
@@ -123,24 +123,21 @@ class TestGetSerializer(APIExampleMixin, APIRequestTestCase):
 
         self.assertEqual(expected_data, data)
 
-
-class TestPostSerializer(APIExampleMixin, TestCase):
-    EXAMPLES_DIR = 'api-description'
-
-    @classmethod
-    def setUpTestData(cls):
-        create_survey_data(cls)
-
     def test_post(self):
         data = self.api_example_data('/forms/pk', 'post')['fields']
         data['survey'] = self.survey.pk
 
+        # Assert that we pass validation.
         serializer = serializers.SurveyResponseSerializer(data=data)
         self.assertTrue(serializer.is_valid(), serializer.errors)
 
+        # Assert that one response per fieldset is created.
         serializer.create(serializer.validated_data)
+        self.assertEqual(models.UserResponse.objects.count(), 3)
+
+        # Assert enough detail about one of the responses to verify the data has been
+        # passed through.
         response = models.UserResponse.objects.first()
         self.assertEqual(response.survey, self.survey)
-        self.assertEqual(response.fieldset, self.fieldset)
-        self.assertEqual(response.user_id, data['user_responses'][0]['user_id'])
-        self.assertEqual(response.answers, data['user_responses'][0]['answers'])
+        self.assertEqual(response.fieldset, self.fieldset_one)
+        self.assertEqual(response.answers, {'1': 'Friends'})
