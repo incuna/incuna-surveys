@@ -21,7 +21,7 @@ module.service(moduleProperties.componentName, [
         return {
             getBaseUrl: function () {
                 const endpoint = 'forms';
-                const apiRoot = ProjectConfig.getSettings().apiRoot;
+                const apiRoot = ProjectConfig.apiRoot;
                 return `${apiRoot}/${endpoint}`;
             },
             getList: function () {

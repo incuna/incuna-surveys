@@ -43,11 +43,7 @@ _module.provider(moduleProperties.componentName, [function () {
 
     return {
         $get: function $get() {
-            return {
-                getSettings: function getSettings() {
-                    return settings;
-                }
-            };
+            return settings;
         },
         setApiRoot: function setApiRoot(value) {
             settings.apiRoot = value;
@@ -84,7 +80,7 @@ _module.service(moduleProperties.componentName, ['$http', _projectConfig2.defaul
     return {
         getBaseUrl: function getBaseUrl() {
             var endpoint = 'forms';
-            var apiRoot = ProjectConfig.getSettings().apiRoot;
+            var apiRoot = ProjectConfig.apiRoot;
             return apiRoot + '/' + endpoint;
         },
         getList: function getList() {

@@ -14,11 +14,7 @@ module.provider(moduleProperties.componentName, [
         };
 
         return {
-            $get: function () {
-                return {
-                    getSettings: () => settings
-                }
-            },
+            $get: () => settings,
             setApiRoot: (value) => {
                 settings.apiRoot = value;
             }
