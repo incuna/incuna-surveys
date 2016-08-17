@@ -1,6 +1,12 @@
 # incuna-surveys
 Allows the creation of custom questionnaires and surveys via the admin.
 
+# Usage
+
+## Frontend
+
+To set the `apiRoot` use `ProjectConfigProvider.setApiRoot()`
+
 # Development
 
 ## Frontend

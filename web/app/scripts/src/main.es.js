@@ -1,4 +1,7 @@
-/* global console */
-// TODO: remove the following two lines
 import { angular } from 'libraries';
-/* eslint no-console: 0 */
+
+import API from 'services/api';
+
+angular.module('incuna-surveys', [
+    API.moduleName
+]);
