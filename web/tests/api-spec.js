@@ -3,7 +3,7 @@ describe('api service', function () {
     beforeEach(function () {
         fixture.setBase('tests/api-description');
 
-        angular.mock.module('incuna.surveys-api');
+        angular.mock.module('incuna.surveys.api');
 
         inject(function ($httpBackend, $rootScope, API) {
             this.$httpBackend = $httpBackend;
