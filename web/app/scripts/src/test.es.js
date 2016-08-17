@@ -79,31 +79,6 @@ export const module = function () {
                 FieldsetParserService
             ) {
 
-                formlyConfig.setType({
-                    name: 'free_text',
-                    templateUrl: 'templates/incuna-surveys/fields/free-text.html'
-                });
-
-                formlyConfig.setType({
-                    name: 'number',
-                    templateUrl: 'templates/incuna-surveys/fields/number.html'
-                });
-
-                formlyConfig.setType({
-                    name: 'percentage',
-                    templateUrl: 'templates/incuna-surveys/fields/percentage.html'
-                });
-
-                formlyConfig.setType({
-                    name: 'checkbox',
-                    templateUrl: 'templates/incuna-surveys/fields/checkbox.html'
-                });
-
-                formlyConfig.setType({
-                    name: 'radio',
-                    templateUrl: 'templates/incuna-surveys/fields/radio.html'
-                });
-
                 this.fields = FieldsetParserService.parseFields(apiDesc);
                 this.model = FieldsetParserService.parseModel(apiDesc);
             }]);

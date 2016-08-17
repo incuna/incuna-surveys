@@ -1,3 +1,5 @@
-<label>
-    {{ to.fieldOptions.label }}<input type="text" ng-model="model[to.fieldSetIndex].answers[options.key]">
-</label>
+<div drf-form field="to.fieldOptions" id="options.key">
+    <label ng-repeat="choice in to.choices">
+        {{ choice }}<input type="radio" ng-value="choice" ng-model="model[to.fieldSetIndex].answers[options.key]">
+    </label>
+</div>

@@ -33,12 +33,7 @@ angular.module('incuna-surveys-fields.templates', []).run(['$templateCache', fun
 
 
   $templateCache.put('templates/incuna-surveys/fields/radio.html',
-    "<label>{{ to.fieldOptions.label }}<input type=text ng-model=model[to.fieldSetIndex].answers[options.key]></label>"
-  );
-
-
-  $templateCache.put('templates/incuna-surveys/fields/test.html',
-    "<h1>WORKS</h1>"
+    "<div drf-form field=to.fieldOptions id=options.key><label ng-repeat=\"choice in to.choices\">{{ choice }}<input type=radio ng-value=choice ng-model=model[to.fieldSetIndex].answers[options.key]></label></div>"
   );
 
 }]);
@@ -78,7 +73,7 @@ _libraries.angular.module('incuna-surveys', ['incuna-surveys-fields.templates', 
 
 (0, _test2.default)();
 
-},{"./libraries.js":2,"./providers/project-config.js":4,"./services/api.js":5,"./services/fieldsets-parser.js":6,"./test.js":7}],4:[function(require,module,exports){
+},{"./libraries.js":2,"./providers/project-config.js":4,"./services/api.js":5,"./services/fieldsets-parser.js":7,"./test.js":8}],4:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -140,6 +135,44 @@ var service = exports.service = ['$http', 'ProjectConfig', api];
 exports.default = service;
 
 },{}],6:[function(require,module,exports){
+'use strict';
+
+var FieldsConfig = function FieldsConfig(formly) {
+    return {
+        templatesBase: 'templates/incuna-surveys/fields'
+    };
+};
+
+module.run(function (formlyConfig, FieldsConfig) {
+    var templatesBase = FieldsConfig.templatesBase;
+
+    formlyConfig.setType({
+        name: 'free_text',
+        templateUrl: templatesBase + '/free-text.html'
+    });
+
+    formlyConfig.setType({
+        name: 'number',
+        templateUrl: templatesBase + '/number.html'
+    });
+
+    formlyConfig.setType({
+        name: 'percentage',
+        templateUrl: templatesBase + '/percentage.html'
+    });
+
+    formlyConfig.setType({
+        name: 'checkbox',
+        templateUrl: templatesBase + '/checkbox.html'
+    });
+
+    formlyConfig.setType({
+        name: 'radio',
+        templateUrl: templatesBase + '/radio.html'
+    });
+});
+
+},{}],7:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -218,7 +251,7 @@ var _module = [FieldsetParserService];
 exports.module = _module;
 exports.default = _module;
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -286,31 +319,6 @@ var apiDesc = {
 var _module = function _module() {
     angular.module('test-app', ['formly', 'incuna-surveys', 'checklist-model']).controller('FormCtrl', ['formlyConfig', 'FieldsetParserService', function (formlyConfig, FieldsetParserService) {
 
-        formlyConfig.setType({
-            name: 'free_text',
-            templateUrl: 'templates/incuna-surveys/fields/free-text.html'
-        });
-
-        formlyConfig.setType({
-            name: 'number',
-            templateUrl: 'templates/incuna-surveys/fields/number.html'
-        });
-
-        formlyConfig.setType({
-            name: 'percentage',
-            templateUrl: 'templates/incuna-surveys/fields/percentage.html'
-        });
-
-        formlyConfig.setType({
-            name: 'checkbox',
-            templateUrl: 'templates/incuna-surveys/fields/checkbox.html'
-        });
-
-        formlyConfig.setType({
-            name: 'radio',
-            templateUrl: 'templates/incuna-surveys/fields/radio.html'
-        });
-
         this.fields = FieldsetParserService.parseFields(apiDesc);
         this.model = FieldsetParserService.parseModel(apiDesc);
     }]);
@@ -319,4 +327,4 @@ var _module = function _module() {
 exports.module = _module;
 exports.default = _module;
 
-},{}]},{},[1,2,3,4,5,6,7]);
+},{}]},{},[1,2,3,4,5,6,7,8]);
