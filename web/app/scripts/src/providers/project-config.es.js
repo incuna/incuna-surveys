@@ -1,7 +1,7 @@
 import { angular } from '../libraries';
 
 export const moduleProperties = {
-    moduleName: 'incuna.surveys.config',
+    moduleName: 'incuna-surveys.config',
     componentName: 'ProjectConfig'
 };
 

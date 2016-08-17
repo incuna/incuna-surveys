@@ -30,7 +30,7 @@ exports.moduleProperties = undefined;
 var _libraries = require('./../libraries.js');
 
 var moduleProperties = exports.moduleProperties = {
-    moduleName: 'incuna.surveys.config',
+    moduleName: 'incuna-surveys.config',
     componentName: 'ProjectConfig'
 };
 
@@ -70,7 +70,7 @@ var _projectConfig2 = _interopRequireDefault(_projectConfig);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var moduleProperties = exports.moduleProperties = {
-    moduleName: 'incuna.surveys.api',
+    moduleName: 'incuna-surveys.api',
     componentName: 'API'
 };
 

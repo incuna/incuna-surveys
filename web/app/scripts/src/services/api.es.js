@@ -3,7 +3,7 @@ import { angular } from '../libraries';
 import ProjectConfigModule from '../providers/project-config';
 
 export const moduleProperties = {
-    moduleName: 'incuna.surveys.api',
+    moduleName: 'incuna-surveys.api',
     componentName: 'API'
 };
 
