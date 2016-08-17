@@ -31,7 +31,7 @@ class ChoiceFieldGenerator(BaseFieldGenerator):
 
     def get_field_kwargs(self, instance):
         kwargs = super().get_field_kwargs(instance)
-        kwargs['choices'] = list(enumerate(instance.answers))
+        kwargs['choices'] = list(zip(instance.answers, instance.answers))
         return kwargs
 
 
