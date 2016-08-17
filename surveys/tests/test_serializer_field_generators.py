@@ -13,7 +13,7 @@ class TestSerializerFieldGenerators(TestCase):
     def setUpTestData(cls):
         cls.survey_field = SurveyFieldFactory.create()
         cls.survey_field.answers = [str(n) for n in range(1, 6)]
-        cls.choices = OrderedDict(enumerate(cls.survey_field.answers))
+        cls.choices = OrderedDict(zip(cls.survey_field.answers, cls.survey_field.answers))
 
     def test_char_field_generator(self):
         generator = serializer_field_generators.CharFieldGenerator()

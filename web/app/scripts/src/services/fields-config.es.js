@@ -1,35 +1,53 @@
-const FieldsConfig = function (formly) {
-    return {
-        templatesBase: 'templates/incuna-surveys/fields'
-    };
+import { angular } from '../libraries';
+
+export const moduleProperties = {
+    moduleName: 'incuna-surveys.formly-config',
+    componentName: 'FieldsConfig'
 };
 
-module.run(function (formlyConfig, FieldsConfig) {
-    const templatesBase = FieldsConfig.templatesBase;
+const module = angular.module('incuna-surveys.formly-config', [
+    'formly'
+]);
 
-    formlyConfig.setType({
-        name: 'free_text',
-        templateUrl: `${templatesBase}/free-text.html`
-    });
+module.service('FieldsConfig', [
+    function () {
+        return {
+            templatesBase: 'templates/incuna-surveys/fields'
+        };
+    }
+]);
 
-    formlyConfig.setType({
-        name: 'number',
-        templateUrl: `${templatesBase}/number.html`
-    });
+module.run([
+    'formlyConfig',
+    moduleProperties.componentName,
+    function (formlyConfig, FieldsConfig) {
+        const templatesBase = FieldsConfig.templatesBase;
 
-    formlyConfig.setType({
-        name: 'percentage',
-        templateUrl: `${templatesBase}/percentage.html`
-    });
+        formlyConfig.setType({
+            name: 'free_text',
+            templateUrl: `${templatesBase}/free-text.html`
+        });
 
-    formlyConfig.setType({
-        name: 'checkbox',
-        templateUrl: `${templatesBase}/checkbox.html`
-    });
+        formlyConfig.setType({
+            name: 'number',
+            templateUrl: `${templatesBase}/number.html`
+        });
 
-    formlyConfig.setType({
-        name: 'radio',
-        templateUrl: `${templatesBase}/radio.html`
-    });
+        formlyConfig.setType({
+            name: 'percentage',
+            templateUrl: `${templatesBase}/percentage.html`
+        });
 
-});
+        formlyConfig.setType({
+            name: 'checkbox',
+            templateUrl: `${templatesBase}/checkbox.html`
+        });
+
+        formlyConfig.setType({
+            name: 'radio',
+            templateUrl: `${templatesBase}/radio.html`
+        });
+    }
+]);
+
+export default moduleProperties;

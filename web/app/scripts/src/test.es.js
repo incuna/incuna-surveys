@@ -1,5 +1,3 @@
-// TODO: remove this file, it is only proof of concept
-
 const apiDesc = {
             "name": "How have you been using the site?",
             "description": "Form description",
@@ -69,21 +67,15 @@ const apiDesc = {
             ]
         };
 
-export const module = function () {
-    angular.module('test-app', ['formly', 'incuna-surveys', 'checklist-model'])
-        .controller('FormCtrl', [
-            'formlyConfig',
-            'FieldsetParserService',
-            function (
-                formlyConfig,
-                FieldsetParserService
-            ) {
+angular.module('test-app', ['incuna-surveys'])
+    .controller('FormCtrl', [
+        'formlyConfig',
+        'FieldsParser',
+        function (
+            formlyConfig,
+            FieldsetParserService
+        ) {
 
-                this.fields = FieldsetParserService.parseFields(apiDesc);
-                this.model = FieldsetParserService.parseModel(apiDesc);
-            }]);
-        
-
-};
-
-export default module;
+            this.fields = FieldsetParserService.parseFields(apiDesc);
+            this.model = FieldsetParserService.parseModel(apiDesc);
+        }]);

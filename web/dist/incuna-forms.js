@@ -1,44 +1,4 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-angular.module('incuna-surveys-fields.templates', []).run(['$templateCache', function($templateCache) {
-  'use strict';
-
-  $templateCache.put('templates/incuna-surveys/fields/checkbox.html',
-    "<span>{{ to.fieldOptions.label }}</span><label ng-repeat=\"choice in to.choices\">{{ choice }}<input type=checkbox checklist-model=model[to.fieldSetIndex].answers[options.key] checklist-value=choice></label>'"
-  );
-
-
-  $templateCache.put('templates/incuna-surveys/fields/fieldset-header.html',
-    "<h3>{{ to.fieldGroupName }}</h3><h4>{{ to.fieldGroupDesc }}</h4>"
-  );
-
-
-  $templateCache.put('templates/incuna-surveys/fields/free-text.html',
-    "<div drf-form-field=to.fieldOptions id=options.key><input type=text ng-model=model[to.fieldSetIndex].answers[options.key]></div>"
-  );
-
-
-  $templateCache.put('templates/incuna-surveys/fields/header.html',
-    "<h1>{{ to.formName }}</h1><h2>{{ to.formDescription }}</h2>"
-  );
-
-
-  $templateCache.put('templates/incuna-surveys/fields/number.html',
-    "<div drf-form-field=to.fieldOptions id=options.key><input type=text ng-model=model[to.fieldSetIndex].answers[options.key]></div>"
-  );
-
-
-  $templateCache.put('templates/incuna-surveys/fields/percentage.html',
-    "<div drf-form-field=to.fieldOptions id=options.key><div style=position:relative aif-slider-input model=model[to.fieldSetIndex].answers[options.key] ceiling=100></div></div>"
-  );
-
-
-  $templateCache.put('templates/incuna-surveys/fields/radio.html',
-    "<div drf-form field=to.fieldOptions id=options.key><label ng-repeat=\"choice in to.choices\">{{ choice }}<input type=radio ng-value=choice ng-model=model[to.fieldSetIndex].answers[options.key]></label></div>"
-  );
-
-}]);
-
-},{}],2:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -46,7 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 var angular = exports.angular = window.angular;
 
-},{}],3:[function(require,module,exports){
+},{}],2:[function(require,module,exports){
 'use strict';
 
 var _libraries = require('./libraries.js');
@@ -59,60 +19,76 @@ var _api = require('./services/api.js');
 
 var _api2 = _interopRequireDefault(_api);
 
-var _projectConfig = require('./providers/project-config.js');
+var _fieldsConfig = require('./services/fields-config.js');
 
-var _projectConfig2 = _interopRequireDefault(_projectConfig);
-
-var _test = require('./test.js');
-
-var _test2 = _interopRequireDefault(_test);
+var _fieldsConfig2 = _interopRequireDefault(_fieldsConfig);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-_libraries.angular.module('incuna-surveys', ['incuna-surveys-fields.templates', 'drf-form-field', 'aif-slider-input']).service('FieldsetParserService', _fieldsetsParser2.default).provider('ProjectConfig', _projectConfig2.default).service('Api', _api2.default);
+_libraries.angular.module('incuna-surveys', ['drf-form-field', 'aif-slider-input', 'checklist-model', _fieldsConfig2.default.moduleName, _fieldsetsParser2.default.moduleName, _api2.default.moduleName]);
 
-(0, _test2.default)();
-
-},{"./libraries.js":2,"./providers/project-config.js":4,"./services/api.js":5,"./services/fieldsets-parser.js":7,"./test.js":8}],4:[function(require,module,exports){
+},{"./libraries.js":1,"./services/api.js":4,"./services/fields-config.js":5,"./services/fieldsets-parser.js":6}],3:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-var ProjectConfig = function ProjectConfig() {
+exports.moduleProperties = undefined;
+
+var _libraries = require('./../libraries.js');
+
+var moduleProperties = exports.moduleProperties = {
+    moduleName: 'incuna-surveys.config',
+    componentName: 'ProjectConfig'
+};
+
+var _module = _libraries.angular.module(moduleProperties.moduleName, []);
+
+_module.provider(moduleProperties.componentName, [function () {
     var settings = {
         apiRoot: 'localhost:8000'
     };
 
     return {
         $get: function $get() {
-            return {
-                getApiRoot: function getApiRoot() {
-                    return settings.apiRoot;
-                }
-            };
+            return settings;
         },
         setApiRoot: function setApiRoot(value) {
             settings.apiRoot = value;
         }
     };
-};
+}]);
 
-var provider = exports.provider = [ProjectConfig];
+exports.default = moduleProperties;
 
-exports.default = provider;
-
-},{}],5:[function(require,module,exports){
+},{"./../libraries.js":1}],4:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-var api = exports.api = function api($http, ProjectConfig) {
+exports.moduleProperties = undefined;
+
+var _libraries = require('./../libraries.js');
+
+var _projectConfig = require('./../providers/project-config.js');
+
+var _projectConfig2 = _interopRequireDefault(_projectConfig);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var moduleProperties = exports.moduleProperties = {
+    moduleName: 'incuna-surveys.api',
+    componentName: 'API'
+};
+
+var _module = _libraries.angular.module(moduleProperties.moduleName, [_projectConfig2.default.moduleName]);
+
+_module.service(moduleProperties.componentName, ['$http', _projectConfig2.default.componentName, function ($http, ProjectConfig) {
     return {
         getBaseUrl: function getBaseUrl() {
             var endpoint = 'forms';
-            var apiRoot = ProjectConfig.getApiRoot();
+            var apiRoot = ProjectConfig.apiRoot;
             return apiRoot + '/' + endpoint;
         },
         getList: function getList() {
@@ -128,22 +104,34 @@ var api = exports.api = function api($http, ProjectConfig) {
             });
         }
     };
-};
+}]);
 
-var service = exports.service = ['$http', 'ProjectConfig', api];
+exports.default = moduleProperties;
 
-exports.default = service;
-
-},{}],6:[function(require,module,exports){
+},{"./../libraries.js":1,"./../providers/project-config.js":3}],5:[function(require,module,exports){
 'use strict';
 
-var FieldsConfig = function FieldsConfig(formly) {
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.moduleProperties = undefined;
+
+var _libraries = require('./../libraries.js');
+
+var moduleProperties = exports.moduleProperties = {
+    moduleName: 'incuna-surveys.formly-config',
+    componentName: 'FieldsConfig'
+};
+
+var _module = _libraries.angular.module('incuna-surveys.formly-config', ['formly']);
+
+_module.service('FieldsConfig', [function () {
     return {
         templatesBase: 'templates/incuna-surveys/fields'
     };
-};
+}]);
 
-module.run(function (formlyConfig, FieldsConfig) {
+_module.run(['formlyConfig', moduleProperties.componentName, function (formlyConfig, FieldsConfig) {
     var templatesBase = FieldsConfig.templatesBase;
 
     formlyConfig.setType({
@@ -170,20 +158,32 @@ module.run(function (formlyConfig, FieldsConfig) {
         name: 'radio',
         templateUrl: templatesBase + '/radio.html'
     });
-});
+}]);
 
-},{}],7:[function(require,module,exports){
+exports.default = moduleProperties;
+
+},{"./../libraries.js":1}],6:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-/*
- *
- * This module parses a form API into an angular-formly array
- *
- */
-var FieldsetParserService = exports.FieldsetParserService = function FieldsetParserService() {
+exports.moduleProperties = undefined;
+
+var _libraries = require('./../libraries.js');
+
+var moduleProperties = exports.moduleProperties = {
+    moduleName: 'incuna-surveys.field-parser',
+    componentName: 'FieldsParser'
+}; /*
+    *
+    * This module parses a form API into an angular-formly array
+    *
+    */
+
+var _module = _libraries.angular.module(moduleProperties.moduleName, []);
+
+_module.service(moduleProperties.componentName, [function () {
     return {
         parseFields: function parseFields(form) {
             var fields = [];
@@ -244,20 +244,12 @@ var FieldsetParserService = exports.FieldsetParserService = function FieldsetPar
             return model;
         }
     };
-};
+}]);
 
-var _module = [FieldsetParserService];
+exports.default = moduleProperties;
 
-exports.module = _module;
-exports.default = _module;
-
-},{}],8:[function(require,module,exports){
+},{"./../libraries.js":1}],7:[function(require,module,exports){
 "use strict";
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-// TODO: remove this file, it is only proof of concept
 
 var apiDesc = {
     "name": "How have you been using the site?",
@@ -316,15 +308,10 @@ var apiDesc = {
     }]
 };
 
-var _module = function _module() {
-    angular.module('test-app', ['formly', 'incuna-surveys', 'checklist-model']).controller('FormCtrl', ['formlyConfig', 'FieldsetParserService', function (formlyConfig, FieldsetParserService) {
+angular.module('test-app', ['incuna-surveys']).controller('FormCtrl', ['formlyConfig', 'FieldsParser', function (formlyConfig, FieldsetParserService) {
 
-        this.fields = FieldsetParserService.parseFields(apiDesc);
-        this.model = FieldsetParserService.parseModel(apiDesc);
-    }]);
-};
+    this.fields = FieldsetParserService.parseFields(apiDesc);
+    this.model = FieldsetParserService.parseModel(apiDesc);
+}]);
 
-exports.module = _module;
-exports.default = _module;
-
-},{}]},{},[1,2,3,4,5,6,7,8]);
+},{}]},{},[1,2,3,4,5,6,7]);

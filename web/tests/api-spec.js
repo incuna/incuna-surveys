@@ -3,20 +3,12 @@ describe('api service', function () {
     beforeEach(function () {
         fixture.setBase('tests/api-description');
 
-        inject(function ($http) {
-            const mockProjectConfig = {
-                getApiRoot: () => 'localhost:8000'
-            };
+        angular.mock.module('incuna-surveys.api');
 
-            this.api = require('compiled-es5/services/api').api(
-                $http,
-                mockProjectConfig
-            );
-        });
-
-        inject(function ($httpBackend, $rootScope) {
+        inject(function ($httpBackend, $rootScope, API) {
             this.$httpBackend = $httpBackend;
             this.$rootScope = $rootScope;
+            this.api = API;
         });
 
         this.$httpBackend.when('GET', 'localhost:8000/forms')
@@ -27,34 +19,37 @@ describe('api service', function () {
         
     });
 
+    afterEach(function() {
+        this.$httpBackend.verifyNoOutstandingExpectation();
+        this.$httpBackend.verifyNoOutstandingRequest();
+    });
+
     describe('getList method', function () {
         
-        it('should return a promise with the data of available forms', function (done) {
+        it('should return a promise with the data of available forms', function () {
             this.api.getList().then((data) => {
                 expect(data[0].name).toBe('How have you been using the site?');
                 expect(data[0].url).toBe('http://localhost:8000/forms/1');
-                done();
             });
             
-            this.$httpBackend.flush();
             this.$rootScope.$digest();
+            this.$httpBackend.flush();
         });
         
     });
 
     describe('getForm', function () {
 
-        it('should return a promise with the data of a form', function (done) {
+        it('should return a promise with the data of a form', function () {
             const url = 'http://localhost:8000/forms/1';
-            this.api.getForm(url).then((data) => {
 
+            this.api.getForm(url).then((data) => {
                 expect(data.name).toBe('How have you been using the site?');
                 expect(data.fieldsets[0].name).toBe('Free text field');
-            
-                done();
             });
-            this.$httpBackend.flush();
+
             this.$rootScope.$digest();
+            this.$httpBackend.flush();
         });
         
     });

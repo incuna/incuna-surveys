@@ -1,22 +1,25 @@
-const ProjectConfig = function () {
-    let settings = {
-        apiRoot: 'localhost:8000'
-    };
+import { angular } from '../libraries';
 
-    return {
-        $get: function () {
-            return {
-                getApiRoot: () => settings.apiRoot
+export const moduleProperties = {
+    moduleName: 'incuna-surveys.config',
+    componentName: 'ProjectConfig'
+};
+
+const module = angular.module(moduleProperties.moduleName, []);
+
+module.provider(moduleProperties.componentName, [
+    function () {
+        let settings = {
+            apiRoot: 'localhost:8000'
+        };
+
+        return {
+            $get: () => settings,
+            setApiRoot: (value) => {
+                settings.apiRoot = value;
             }
-        },
-        setApiRoot: (value) => {
-            settings.apiRoot = value;
-        }
-    };
-}
+        };
+    }
+]);
 
-export const provider = [
-    ProjectConfig
-];
-
-export default provider;
+export default moduleProperties;
