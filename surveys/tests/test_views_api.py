@@ -1,9 +1,12 @@
-from .utils import create_survey_data, RequestTestCase
+from django.http import Http404
+
+from .utils import APIRequestTestCase, create_survey_data
 from .. import views_api
+from ..models import UserResponse
 from ..serializers import SurveySerializer
 
 
-class TestSurveyView(RequestTestCase):
+class TestSurveyViews(APIRequestTestCase):
     @classmethod
     def setUpTestData(cls):
         create_survey_data(cls)
@@ -25,3 +28,52 @@ class TestSurveyView(RequestTestCase):
             context={'request': request},
         ).data
         self.assertEqual(response.data, expected_data)
+
+    def get_post_data(self):
+        """Helper method.  Produces suitable POST data."""
+        return {
+            'user_id': 'User#20#',
+            'user_responses': [
+                {
+                    'fieldset': 1,
+                    'answers': {'1': 42}
+                }
+            ],
+        }
+
+    def call_post_view(self, data):
+        """Helper method.  Calls the post view with the specified data."""
+        view = views_api.SurveyPostView.as_view()
+        request = self.create_request(method='post', data=data)
+        return view(request, pk=self.survey.pk)
+
+    def test_post_response(self):
+        """Test that the view can retrieve a survey and return correct JSON."""
+        data = self.get_post_data()
+        response = self.call_post_view(data)
+        self.assertEqual(response.status_code, 201, response.data)
+
+        # Assert the UserResponse object was created correctly.
+        user_response = UserResponse.objects.first()
+        self.assertEqual(user_response.user_id, data['user_id'])
+        self.assertEqual(user_response.answers, data['user_responses'][0]['answers'])
+
+    def test_post_object_created(self):
+        """Test that the view creates UserResponses correctly."""
+        data = self.get_post_data()
+        response = self.call_post_view(data)
+        self.assertEqual(response.status_code, 201, response.data)
+
+        # Assert the UserResponse object was created correctly.
+        user_response = UserResponse.objects.first()
+        self.assertEqual(user_response.user_id, data['user_id'])
+        self.assertEqual(user_response.answers, data['user_responses'][0]['answers'])
+
+    def test_post_404(self):
+        wrong_pk = self.survey.pk + 42
+
+        view = views_api.SurveyPostView.as_view()
+        request = self.create_request(method='post', data={})
+
+        with self.assertRaises(Http404):
+            view(request, pk=wrong_pk)
