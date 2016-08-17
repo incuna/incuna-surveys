@@ -25,11 +25,18 @@ _libraries.angular.module('incuna-surveys', [_api2.default.moduleName]);
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.module = undefined;
+exports.moduleProperties = undefined;
 
 var _libraries = require('./../libraries.js');
 
-var ProjectConfig = function ProjectConfig() {
+var moduleProperties = exports.moduleProperties = {
+    moduleName: 'incuna.surveys-config',
+    componentName: 'ProjectConfig'
+};
+
+var _module = _libraries.angular.module(moduleProperties.moduleName, []);
+
+_module.provider(moduleProperties.componentName, [function () {
     var settings = {
         apiRoot: 'localhost:8000'
     };
@@ -46,17 +53,9 @@ var ProjectConfig = function ProjectConfig() {
             settings.apiRoot = value;
         }
     };
-};
+}]);
 
-var _module = {
-    moduleName: 'incuna.surveys-config',
-    componentName: 'ProjectConfig'
-};
-
-exports.module = _module;
-_libraries.angular.module(_module.moduleName, []).provider(_module.componentName, [ProjectConfig]);
-
-exports.default = _module;
+exports.default = moduleProperties;
 
 },{"./../libraries.js":1}],4:[function(require,module,exports){
 'use strict';
@@ -64,7 +63,7 @@ exports.default = _module;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.module = exports.API = undefined;
+exports.moduleProperties = undefined;
 
 var _libraries = require('./../libraries.js');
 
@@ -74,7 +73,14 @@ var _projectConfig2 = _interopRequireDefault(_projectConfig);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var API = exports.API = function API($http, ProjectConfig) {
+var moduleProperties = exports.moduleProperties = {
+    moduleName: 'incuna.surveys-api',
+    componentName: 'API'
+};
+
+var _module = _libraries.angular.module(moduleProperties.moduleName, [_projectConfig2.default.moduleName]);
+
+_module.service(moduleProperties.componentName, ['$http', _projectConfig2.default.componentName, function ($http, ProjectConfig) {
     return {
         getBaseUrl: function getBaseUrl() {
             var endpoint = 'forms';
@@ -94,16 +100,8 @@ var API = exports.API = function API($http, ProjectConfig) {
             });
         }
     };
-};
+}]);
 
-var _module = {
-    moduleName: 'incuna.surveys-api',
-    componentName: 'API'
-};
-
-exports.module = _module;
-_libraries.angular.module(_module.moduleName, [_projectConfig2.default.moduleName]).service(['$http', _projectConfig2.default.componentName, API]);
-
-exports.default = _module;
+exports.default = moduleProperties;
 
 },{"./../libraries.js":1,"./../providers/project-config.js":3}]},{},[1,2,3,4]);
