@@ -22,5 +22,4 @@ class SurveyPostView(generics.CreateAPIView):
     def get_serializer(self, *args, **kwargs):
         kwargs['data']['survey'] = self.survey.pk
         serializer = super().get_serializer(*args, **kwargs)
-        # serializer.survey = self.survey.pk
         return serializer

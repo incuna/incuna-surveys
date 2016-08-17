@@ -1,3 +1,5 @@
+from django.http import Http404
+
 from .utils import APIRequestTestCase, create_survey_data
 from .. import views_api
 from ..models import UserResponse
@@ -55,3 +57,12 @@ class TestSurveyViews(APIRequestTestCase):
         user_response = UserResponse.objects.first()
         self.assertEqual(user_response.user_id, data['user_id'])
         self.assertEqual(user_response.answers, data['user_responses'][0]['answers'])
+
+    def test_post_404(self):
+        wrong_pk = self.survey.pk + 42
+
+        view = views_api.SurveyPostView.as_view()
+        request = self.create_request(method='post', data={})
+
+        with self.assertRaises(Http404):
+            view(request, pk=wrong_pk)
