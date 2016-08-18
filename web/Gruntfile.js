@@ -45,7 +45,7 @@ module.exports = function (grunt) {
                     '<%= config.srcScriptsDir %>/**/*.es.js'
                 ],
                 tasks: [
-                    'compilejs'
+                    'build'
                 ]
             },
             ngtemplates: {

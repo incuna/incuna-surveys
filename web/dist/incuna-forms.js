@@ -165,7 +165,7 @@ var moduleProperties = exports.moduleProperties = {
 
 var _module = _libraries.angular.module(moduleProperties.moduleName, ['formly']);
 
-_module.service('FieldsConfig', [function () {
+_module.service(moduleProperties.componentName, [function () {
     var templatesBase = 'templates/incuna-surveys/fields';
 
     return {
@@ -175,7 +175,7 @@ _module.service('FieldsConfig', [function () {
     };
 }]);
 
-_module.run(['formlyConfig', 'FieldsConfig', function (formlyConfig, FieldsConfig) {
+_module.run(['formlyConfig', moduleProperties.componentName, function (formlyConfig, FieldsConfig) {
     var templatesBase = FieldsConfig.templatesBase;
 
     formlyConfig.setType({

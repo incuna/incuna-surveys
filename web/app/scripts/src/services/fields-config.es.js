@@ -9,7 +9,7 @@ const module = angular.module(moduleProperties.moduleName, [
     'formly'
 ]);
 
-module.service('FieldsConfig', [
+module.service(moduleProperties.componentName, [
     function () {
         const templatesBase = 'templates/incuna-surveys/fields';
 
@@ -23,7 +23,7 @@ module.service('FieldsConfig', [
 
 module.run([
     'formlyConfig',
-    'FieldsConfig',
+    moduleProperties.componentName,
     function (
         formlyConfig,
         FieldsConfig
