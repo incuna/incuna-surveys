@@ -1,3 +1,5 @@
+from collections import defaultdict
+
 from django.apps import apps
 from django.contrib.postgres.fields import ArrayField, JSONField
 from django.db import models
@@ -114,6 +116,37 @@ class UserResponseQuerySet(models.QuerySet):
     def num_users(self):
         """Returns the number of distinct users who reported this set of answers."""
         return self.order_by().values('user_id').distinct().count()
+
+    def latest_per_user(self, survey):
+        """
+        Returns the latest UserResponse per user per fieldset in this survey.
+
+        The results are delivered as a dictionary:
+          {<user_id>: {<fieldset>: <answers>}}
+
+        Works by:
+        - Filter the queryset by the given survey and sort it by date_created ascending.
+        - Retrieve only the relevant data using `values()` to trim down memory footprint.
+        - Loop through the list.  Build a nested dictionary that relates a fieldset and
+          a user_id to the user's answers.  Overwrite any previous setting.
+        - Because we're traversing the list in order from least to most recent, the
+          most recently accessed answers for each user are the 'correct' latest ones.
+        - Return the built dictionary.
+        """
+        qs = self.filter(survey=survey).order_by('date_created')
+        raw_data = qs.values('fieldset__pk', 'user_id', 'answers')
+
+        # Build a dictionary of dictionaries:
+        #  {<user_id>: {<fieldset>: <answers>}}
+        # Use defaultdict so we don't have to check if <user_id> is already in the
+        # results before assigning values to the <fieldset> entry.
+        results = defaultdict(dict)
+        for entry in raw_data:
+            user_id = entry['user_id']
+            fieldset = entry['fieldset__pk']
+            results[user_id][fieldset] = entry['answers']
+
+        return results
 
 
 class UserResponse(models.Model):
