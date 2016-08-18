@@ -1,2 +1,6 @@
-<span>{{ to.fieldOptions.label }}</span>
-<label ng-repeat="choice in to.choices">{{ choice }}<input type="checkbox" checklist-model="model[to.fieldSetIndex].answers[options.key]" checklist-value="choice"></label ng-repeat>'
+<div drf-form-field="to.fieldOptions" field-id="options.key" class="checkbox">
+    <div ng-repeat="choice in to.choices" class="checkable checkbox">
+        <input class="checkbox-input" id="{{ options.key + '-' + $index }}" type="checkbox" checklist-model="model[to.fieldSetIndex].answers[options.key]" checklist-value="choice">
+        <label class="checkbox-label" for="{{ options.key + '-' + $index }}">{{ choice }}</label>
+    </div>
+</div>
