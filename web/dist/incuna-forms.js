@@ -3,7 +3,7 @@ angular.module('incuna-surveys-fields.templates', []).run(['$templateCache', fun
   'use strict';
 
   $templateCache.put('templates/incuna-surveys/fields/checkbox.html',
-    "<div drf-form-field=to.fieldOptions field-id=options.key class=checkbox><div ng-repeat=\"choice in to.choices\" class=\"checkable checkbox\"><input class=checkbox-input id=\"{{ options.key + '-' + $index }}\" type=checkbox checklist-model=model[to.fieldSetIndex].answers[options.key] checklist-value=choice><label class=checkbox-label for=\"{{ options.key + '-' + $index }}\">{{ choice }}</label></div></div>"
+    "<div drf-form-field=to.fieldOptions field-id=options.key class=checkbox><div ng-repeat=\"choice in to.choices\" class=\"checkable checkbox\"><input class=checkbox-input id=\"{{ options.key + '-' + $index }}\" type=checkbox checklist-model=model[to.fieldSetIndex].answers[options.key] checklist-value=$index><label class=checkbox-label for=\"{{ options.key + '-' + $index }}\">{{ choice }}</label></div></div>"
   );
 
 
@@ -33,7 +33,7 @@ angular.module('incuna-surveys-fields.templates', []).run(['$templateCache', fun
 
 
   $templateCache.put('templates/incuna-surveys/fields/radio.html',
-    "<div drf-form field=to.fieldOptions class=radio><div ng-repeat=\"choice in to.choices\" class=\"checkable radio\"><input type=radio id=\"{{ options.key + '-' + $index }}\" ng-value=choice ng-model=model[to.fieldSetIndex].answers[options.key]><label for=\"{{ options.key  + '-' + $index }}\">{{ choice }}</label></div></div>"
+    "<div drf-form field=to.fieldOptions class=radio><div ng-repeat=\"choice in to.choices\" class=\"checkable radio\"><input type=radio id=\"{{ options.key + '-' + $index }}\" ng-value=$index ng-model=model[to.fieldSetIndex].answers[options.key]><label for=\"{{ options.key  + '-' + $index }}\">{{ choice }}</label></div></div>"
   );
 
 }]);

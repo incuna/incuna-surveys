@@ -4,14 +4,12 @@ describe('FieldsetParserService', function () {
         fixture.setBase('tests/api-description');
         this.fieldset = fixture.load('forms/pk/get.json').OK.response_data;
 
-        this.mockTemplates = {
-            header: '<h1></h1>',
-            fieldHeader: '<h2></h2>'
-        };
+        angular.mock.module('incuna-surveys.field-parser');
 
-        this.Parser = require('compiled-es5/services/fieldsets-parser').FieldsetParserService(
-            this.mockTemplates
-        );
+        inject(function (FieldsParser) {
+            this.Parser = FieldsParser;
+        });
+
         this.result = this.Parser.parseFields(this.fieldset);
         this.model = this.Parser.parseModel(this.fieldset);
     });
@@ -25,7 +23,7 @@ describe('FieldsetParserService', function () {
         describe('first element', function () {
             
             it('should contain a header template', function () {
-                expect(this.result[0].template).toBe(this.mockTemplates.header);
+                expect(this.result[0].templateUrl).toContain('/header.html');
             });
 
             it('should have appropriate templateOptions', function () {
@@ -46,7 +44,7 @@ describe('FieldsetParserService', function () {
                 it('should have a header as first element', function () {
                     let fieldGroup = this.result[1].fieldGroup[0];
 
-                    expect(fieldGroup.template).toBe(this.mockTemplates.fieldHeader); 
+                    expect(fieldGroup.templateUrl).toContain('fieldset-header.html');
                     expect(fieldGroup.templateOptions.fieldGroupName).toBe('Free text field');
                     expect(fieldGroup.templateOptions.fieldGroupDesc).toBe('Field group description');
                 });
