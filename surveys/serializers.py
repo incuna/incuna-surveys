@@ -99,4 +99,4 @@ class SurveyResponseSerializer(serializers.Serializer):
             response['user_id'] = validated_data['user_id']
             responses.append(UserResponseSerializer(data=response).create(response))
 
-        return responses
+        return validated_data

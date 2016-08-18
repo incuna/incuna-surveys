@@ -70,3 +70,23 @@ class TestUserResponse(TestCase):
         self.factory.create_batch(2, user_id='first_user')
         self.factory.create(user_id='second_user')
         self.assertEqual(self.model.objects.num_users(), 2)
+
+    def test_latest_per_user(self):
+        survey = factories.SurveyFactory.create()
+        one, two = self.factory.create_batch(2, survey=survey)
+        newer = self.factory.create(
+            survey=survey,
+            fieldset=one.fieldset,
+            user_id=one.user_id,
+        )
+        self.factory.create()  # unrelated item since it has the wrong survey
+
+        expected = {
+            newer.user_id: {
+                newer.fieldset.pk: newer.answers,
+            },
+            two.user_id: {
+                two.fieldset.pk: two.answers,
+            }
+        }
+        self.assertEqual(self.model.objects.latest_per_user(survey), expected)
