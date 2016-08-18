@@ -12,7 +12,7 @@ To set the `apiRoot` use `ProjectConfigProvider.setApiRoot()`
 ## Frontend
 
 All frontend is located under `web/`:
- 
+
 * `npm install` to install requirements
 * `grunt test` to test if everything is working properly
 * `grunt` will start a dev server running under `localhost:9000`.
@@ -24,3 +24,14 @@ This project uses `babel` and `browserify`. Source files are located in `web/app
 The are two `grunt karma` targets:
 * `grunt karma:dev` once run will continue to watch the compiled `.js` files directory and the test files.
 * `grunt karma:ci` target only runs once. This target is also used in Travis
+
+## Releasing a new version
+
+1. Commit your changes.
+1. Follow the guidelines at http://semver.org/ to determine your new version number.
+1. Update `CHANGELOG.md` with your new version number and a description of changes.
+1. Update the `version` property in `package.json`
+1. Commit those changes with the commit message "Bump to [version number]". [version number] should be in the format x.y.z.
+1. `git tag [version number]`
+1. `git push`
+1. `git push --tags` - must be done separately.
