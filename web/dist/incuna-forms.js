@@ -163,15 +163,19 @@ var moduleProperties = exports.moduleProperties = {
     componentName: 'FieldsConfig'
 };
 
-var _module = _libraries.angular.module('incuna-surveys.formly-config', ['formly']);
+var _module = _libraries.angular.module(moduleProperties.moduleName, ['formly']);
 
 _module.service('FieldsConfig', [function () {
+    var templatesBase = 'templates/incuna-surveys/fields';
+
     return {
-        templatesBase: 'templates/incuna-surveys/fields'
+        templatesBase: templatesBase,
+        headerTemplateUrl: templatesBase + '/header.html',
+        fieldsetHeaderTemplateUrl: templatesBase + '/fieldset-header.html'
     };
 }]);
 
-_module.run(['formlyConfig', moduleProperties.componentName, function (formlyConfig, FieldsConfig) {
+_module.run(['formlyConfig', 'FieldsConfig', function (formlyConfig, FieldsConfig) {
     var templatesBase = FieldsConfig.templatesBase;
 
     formlyConfig.setType({
@@ -212,25 +216,32 @@ exports.moduleProperties = undefined;
 
 var _libraries = require('./../libraries.js');
 
+var _fieldsConfig = require('./fields-config.js');
+
+var _fieldsConfig2 = _interopRequireDefault(_fieldsConfig);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/*
+ *
+ * This module parses a form API into an angular-formly array
+ *
+ */
+
 var moduleProperties = exports.moduleProperties = {
     moduleName: 'incuna-surveys.field-parser',
     componentName: 'FieldsParser'
-}; /*
-    *
-    * This module parses a form API into an angular-formly array
-    *
-    */
+};
 
-var _module = _libraries.angular.module(moduleProperties.moduleName, []);
+var _module = _libraries.angular.module(moduleProperties.moduleName, [_fieldsConfig2.default.moduleName]);
 
-_module.service(moduleProperties.componentName, [function () {
+_module.service(moduleProperties.componentName, [_fieldsConfig2.default.componentName, function (FieldsConfig) {
     return {
         parseFields: function parseFields(form) {
             var fields = [];
-            var templatesBase = 'templates/incuna-surveys/fields';
 
             fields[0] = {
-                templateUrl: templatesBase + '/header.html',
+                templateUrl: FieldsConfig.headerTemplateUrl,
                 templateOptions: {
                     formName: form.name,
                     formDescription: form.description
@@ -239,7 +250,7 @@ _module.service(moduleProperties.componentName, [function () {
 
             form.fieldsets.forEach(function (fieldset) {
                 var fieldGroup = [{
-                    templateUrl: templatesBase + '/fieldset-header.html',
+                    templateUrl: FieldsConfig.fieldsetHeaderTemplateUrl,
                     templateOptions: {
                         fieldGroupName: fieldset.name,
                         fieldGroupDesc: fieldset.description
@@ -288,7 +299,7 @@ _module.service(moduleProperties.componentName, [function () {
 
 exports.default = moduleProperties;
 
-},{"./../libraries.js":2}],8:[function(require,module,exports){
+},{"./../libraries.js":2,"./fields-config.js":6}],8:[function(require,module,exports){
 "use strict";
 
 var apiDesc = {

@@ -6,22 +6,26 @@
 
 import { angular } from '../libraries';
 
+import FieldsConfigModule from 'fields-config';
+
 export const moduleProperties = {
     moduleName: 'incuna-surveys.field-parser',
     componentName: 'FieldsParser'
 };
 
-const module = angular.module(moduleProperties.moduleName, []);
+const module = angular.module(moduleProperties.moduleName, [
+    FieldsConfigModule.moduleName
+]);
 
 module.service(moduleProperties.componentName, [
-    function () {
+    FieldsConfigModule.componentName,
+    function (FieldsConfig) {
         return {
             parseFields: function (form) {
                 let fields = [];
-                const templatesBase = 'templates/incuna-surveys/fields';
 
                 fields[0] = {
-                    templateUrl: `${templatesBase}/header.html`,
+                    templateUrl: FieldsConfig.headerTemplateUrl,
                     templateOptions: {
                         formName: form.name,
                         formDescription: form.description
@@ -31,7 +35,7 @@ module.service(moduleProperties.componentName, [
                 form.fieldsets.forEach((fieldset) => {
                     let fieldGroup = [
                         {
-                            templateUrl: `${templatesBase}/fieldset-header.html`,
+                            templateUrl: FieldsConfig.fieldsetHeaderTemplateUrl,
                             templateOptions: {
                                 fieldGroupName: fieldset.name,
                                 fieldGroupDesc: fieldset.description

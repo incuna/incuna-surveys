@@ -4,6 +4,12 @@ describe('FieldsetParserService', function () {
         fixture.setBase('tests/api-description');
         this.fieldset = fixture.load('forms/pk/get.json').OK.response_data;
 
+        angular.module('formly', []);
+        angular.mock.module({
+            formlyConfig: {
+                setType: angular.noop
+            }
+        });
         angular.mock.module('incuna-surveys.field-parser');
 
         inject(function (FieldsParser) {

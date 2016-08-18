@@ -5,22 +5,29 @@ export const moduleProperties = {
     componentName: 'FieldsConfig'
 };
 
-const module = angular.module('incuna-surveys.formly-config', [
+const module = angular.module(moduleProperties.moduleName, [
     'formly'
 ]);
 
 module.service('FieldsConfig', [
     function () {
+        const templatesBase = 'templates/incuna-surveys/fields';
+
         return {
-            templatesBase: 'templates/incuna-surveys/fields'
+            templatesBase,
+            headerTemplateUrl: `${templatesBase}/header.html`,
+            fieldsetHeaderTemplateUrl: `${templatesBase}/fieldset-header.html`
         };
     }
 ]);
 
 module.run([
     'formlyConfig',
-    moduleProperties.componentName,
-    function (formlyConfig, FieldsConfig) {
+    'FieldsConfig',
+    function (
+        formlyConfig,
+        FieldsConfig
+    ) {
         const templatesBase = FieldsConfig.templatesBase;
 
         formlyConfig.setType({
