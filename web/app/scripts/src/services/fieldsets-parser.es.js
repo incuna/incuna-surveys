@@ -19,7 +19,9 @@ const module = angular.module(moduleProperties.moduleName, [
 
 module.service(moduleProperties.componentName, [
     FieldsConfigModule.componentName,
-    function (FieldsConfig) {
+    function (
+        FieldsConfig
+    ) {
         return {
             parseFields: function (form) {
                 let fields = [];
@@ -43,7 +45,6 @@ module.service(moduleProperties.componentName, [
                         }
                     ];
 
-
                     fieldset.fields.forEach((field) => {
                         let fieldObject = {
                             key: field.id,
@@ -52,16 +53,17 @@ module.service(moduleProperties.componentName, [
                                 fieldSetIndex: fieldset.id - 1,
                                 choices: field.answers,
                                 fieldOptions: {
-                                    help_text: field.help_text,
+                                    // jscs:disable disallowQuotedKeysInObjects
+                                    'help_text': field.help_text,
                                     required: field.required,
                                     label: field.name
+                                    // jscs:enable disallowQuotedKeysInObjects
                                 }
                             }
                         };
 
                         fieldGroup.push(fieldObject);
                     });
-
 
                     fields.push({
                         fieldGroup
