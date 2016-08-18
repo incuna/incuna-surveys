@@ -13,6 +13,6 @@
     "angular-formly": "8.x",
     "checklist-model": "0.10.x",
     "djangular-rest-framework": "6.x",
-    "angular-input-fields": "8.1.4"
+    "angular-input-fields": "8.x"
   }
 }
