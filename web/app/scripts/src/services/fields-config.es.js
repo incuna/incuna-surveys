@@ -11,13 +11,9 @@ const module = angular.module(moduleProperties.moduleName, [
 
 module.service(moduleProperties.componentName, [
     function () {
-        const templatesBase = 'templates/incuna-surveys/fields';
-
-        return {
-            templatesBase,
-            headerTemplateUrl: `${templatesBase}/header.html`,
-            fieldsetHeaderTemplateUrl: `${templatesBase}/fieldset-header.html`
-        };
+        this.templatesBase = 'templates/incuna-surveys/fields';
+        this.headerTemplateUrl = `${this.templatesBase}/header.html`;
+        this.fieldsetHeaderTemplateUrl = `${this.templatesBase}/fieldset-header.html`;
     }
 ]);
 

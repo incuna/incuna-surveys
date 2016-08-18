@@ -166,13 +166,9 @@ var moduleProperties = exports.moduleProperties = {
 var _module = _libraries.angular.module(moduleProperties.moduleName, ['formly']);
 
 _module.service(moduleProperties.componentName, [function () {
-    var templatesBase = 'templates/incuna-surveys/fields';
-
-    return {
-        templatesBase: templatesBase,
-        headerTemplateUrl: templatesBase + '/header.html',
-        fieldsetHeaderTemplateUrl: templatesBase + '/fieldset-header.html'
-    };
+    this.templatesBase = 'templates/incuna-surveys/fields';
+    this.headerTemplateUrl = this.templatesBase + '/header.html';
+    this.fieldsetHeaderTemplateUrl = this.templatesBase + '/fieldset-header.html';
 }]);
 
 _module.run(['formlyConfig', moduleProperties.componentName, function (formlyConfig, FieldsConfig) {
@@ -236,66 +232,65 @@ var moduleProperties = exports.moduleProperties = {
 var _module = _libraries.angular.module(moduleProperties.moduleName, [_fieldsConfig2.default.moduleName]);
 
 _module.service(moduleProperties.componentName, [_fieldsConfig2.default.componentName, function (FieldsConfig) {
-    return {
-        parseFields: function parseFields(form) {
-            var fields = [];
+    this.parseFields = function (form) {
+        var fields = [];
 
-            fields[0] = {
-                templateUrl: FieldsConfig.headerTemplateUrl,
+        fields[0] = {
+            templateUrl: FieldsConfig.headerTemplateUrl,
+            templateOptions: {
+                formName: form.name,
+                formDescription: form.description
+            }
+        };
+
+        form.fieldsets.forEach(function (fieldset) {
+            var fieldGroup = [{
+                templateUrl: FieldsConfig.fieldsetHeaderTemplateUrl,
                 templateOptions: {
-                    formName: form.name,
-                    formDescription: form.description
+                    fieldGroupName: fieldset.name,
+                    fieldGroupDesc: fieldset.description
                 }
-            };
+            }];
 
-            form.fieldsets.forEach(function (fieldset) {
-                var fieldGroup = [{
-                    templateUrl: FieldsConfig.fieldsetHeaderTemplateUrl,
+            fieldset.fields.forEach(function (field) {
+                var fieldObject = {
+                    key: field.id,
+                    type: field.field_type,
                     templateOptions: {
-                        fieldGroupName: fieldset.name,
-                        fieldGroupDesc: fieldset.description
-                    }
-                }];
-
-                fieldset.fields.forEach(function (field) {
-                    var fieldObject = {
-                        key: field.id,
-                        type: field.field_type,
-                        templateOptions: {
-                            fieldSetIndex: fieldset.id - 1,
-                            choices: field.answers,
-                            fieldOptions: {
-                                // jscs:disable disallowQuotedKeysInObjects
-                                'help_text': field.help_text,
-                                required: field.required,
-                                label: field.name
-                                // jscs:enable disallowQuotedKeysInObjects
-                            }
+                        fieldSetIndex: fieldset.id - 1,
+                        choices: field.answers,
+                        fieldOptions: {
+                            // jscs:disable disallowQuotedKeysInObjects
+                            'help_text': field.help_text,
+                            required: field.required,
+                            label: field.name
+                            // jscs:enable disallowQuotedKeysInObjects
                         }
-                    };
+                    }
+                };
 
-                    fieldGroup.push(fieldObject);
-                });
-
-                fields.push({
-                    fieldGroup: fieldGroup
-                });
+                fieldGroup.push(fieldObject);
             });
 
-            return fields;
-        },
-        parseModel: function parseModel(form) {
-            var model = [];
-
-            form.fieldsets.forEach(function (fieldset, index) {
-                model.push({
-                    fieldset: index + 1,
-                    answers: {}
-                });
+            fields.push({
+                fieldGroup: fieldGroup
             });
+        });
 
-            return model;
-        }
+        return fields;
+    };
+
+    this.parseModel = function (form) {
+        var model = [];
+
+        form.fieldsets.forEach(function (fieldset, index) {
+            model.push({
+                fieldset: index + 1,
+                answers: {}
+            });
+        });
+
+        return model;
     };
 }]);
 

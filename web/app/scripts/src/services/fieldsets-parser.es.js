@@ -22,69 +22,68 @@ module.service(moduleProperties.componentName, [
     function (
         FieldsConfig
     ) {
-        return {
-            parseFields: function (form) {
-                let fields = [];
+        this.parseFields = function (form) {
+            let fields = [];
 
-                fields[0] = {
-                    templateUrl: FieldsConfig.headerTemplateUrl,
-                    templateOptions: {
-                        formName: form.name,
-                        formDescription: form.description
+            fields[0] = {
+                templateUrl: FieldsConfig.headerTemplateUrl,
+                templateOptions: {
+                    formName: form.name,
+                    formDescription: form.description
+                }
+            };
+
+            form.fieldsets.forEach((fieldset) => {
+                let fieldGroup = [
+                    {
+                        templateUrl: FieldsConfig.fieldsetHeaderTemplateUrl,
+                        templateOptions: {
+                            fieldGroupName: fieldset.name,
+                            fieldGroupDesc: fieldset.description
+                        }
                     }
-                };
+                ];
 
-                form.fieldsets.forEach((fieldset) => {
-                    let fieldGroup = [
-                        {
-                            templateUrl: FieldsConfig.fieldsetHeaderTemplateUrl,
-                            templateOptions: {
-                                fieldGroupName: fieldset.name,
-                                fieldGroupDesc: fieldset.description
+                fieldset.fields.forEach((field) => {
+                    let fieldObject = {
+                        key: field.id,
+                        type: field.field_type,
+                        templateOptions: {
+                            fieldSetIndex: fieldset.id - 1,
+                            choices: field.answers,
+                            fieldOptions: {
+                                // jscs:disable disallowQuotedKeysInObjects
+                                'help_text': field.help_text,
+                                required: field.required,
+                                label: field.name
+                                // jscs:enable disallowQuotedKeysInObjects
                             }
                         }
-                    ];
+                    };
 
-                    fieldset.fields.forEach((field) => {
-                        let fieldObject = {
-                            key: field.id,
-                            type: field.field_type,
-                            templateOptions: {
-                                fieldSetIndex: fieldset.id - 1,
-                                choices: field.answers,
-                                fieldOptions: {
-                                    // jscs:disable disallowQuotedKeysInObjects
-                                    'help_text': field.help_text,
-                                    required: field.required,
-                                    label: field.name
-                                    // jscs:enable disallowQuotedKeysInObjects
-                                }
-                            }
-                        };
-
-                        fieldGroup.push(fieldObject);
-                    });
-
-                    fields.push({
-                        fieldGroup
-                    });
+                    fieldGroup.push(fieldObject);
                 });
 
-                return fields;
-
-            },
-            parseModel: function (form) {
-                let model = [];
-
-                form.fieldsets.forEach((fieldset, index) => {
-                    model.push({
-                        fieldset: index + 1,
-                        answers: {}
-                    });
+                fields.push({
+                    fieldGroup
                 });
+            });
 
-                return model;
-            }
+            return fields;
+
+        };
+
+        this.parseModel = function (form) {
+            let model = [];
+
+            form.fieldsets.forEach((fieldset, index) => {
+                model.push({
+                    fieldset: index + 1,
+                    answers: {}
+                });
+            });
+
+            return model;
         }
     }
 ]);
