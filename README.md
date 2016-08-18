@@ -35,3 +35,4 @@ The are two `grunt karma` targets:
 1. `git tag [version number]`
 1. `git push`
 1. `git push --tags` - must be done separately.
+1. Run `make release` to publish the release to pypi
