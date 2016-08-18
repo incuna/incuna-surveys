@@ -19,8 +19,8 @@
             {
                 "fieldset": 3,
                 "answers": {
-                    "4": "One time",
-                    "5": ["Two times", "Three times or more"]
+                    "4": 0,
+                    "5": [1, 2]
                 }
             }
         ]
@@ -46,8 +46,8 @@
                 {
                     "fieldset": 3,
                     "answers": {
-                        "4": "One time",
-                        "5": ["Two times", "Three times or more"]
+                        "4": 0,
+                        "5": [1, 2]
                     }
                 }
             ]
