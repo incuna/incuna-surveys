@@ -3,6 +3,7 @@ import os
 import dj_database_url
 
 
+SECRET_KEY = 'not-for-production'
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 DEBUG = True
@@ -10,7 +11,6 @@ ALLOWED_HOSTS = []
 ROOT_URLCONF = 'surveys.tests.urls'
 STATIC_URL = '/static/'
 
-SECRET_KEY = 'not-for-production'
 PASSWORD_HASHERS = ('django.contrib.auth.hashers.MD5PasswordHasher',)
 
 DATABASES = {

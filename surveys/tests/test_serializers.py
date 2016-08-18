@@ -14,14 +14,14 @@ class TestSerializers(APIExampleMixin, APIRequestTestCase):
         cls.survey = factories.SurveyFactory.create(
             pk=1,
             name='How have you been using the site?',
-            description='Some additional text expanding on the above',
+            description='Form description',
         )
 
         # Three fieldsets.
         cls.fieldset_one = factories.SurveyFieldsetFactory.create(
             pk=1,
             name='Free text field',
-            description='Some additional text expanding on the above',
+            description='Field group description',
         )
         fieldset_two = factories.SurveyFieldsetFactory.create(
             pk=2,
@@ -35,6 +35,7 @@ class TestSerializers(APIExampleMixin, APIRequestTestCase):
         )
 
         # Five fields, one for each type.
+
         field_one = factories.SurveyFieldFactory.create(
             pk=1,
             name='How did you discover the site?',
@@ -120,6 +121,7 @@ class TestSerializers(APIExampleMixin, APIRequestTestCase):
         )
         data = serializer.data
         expected_data = self.api_example_data('/forms/pk', 'get')['OK']['response_data']
+        print(expected_data)
 
         self.assertEqual(expected_data, data)
 
