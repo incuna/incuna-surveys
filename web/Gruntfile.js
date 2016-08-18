@@ -50,7 +50,7 @@ module.exports = function (grunt) {
             },
             ngtemplates: {
                 files: ['app/templates/**/*.html'],
-                tasks: ['ngtemplates', 'compilejs']
+                tasks: ['build']
             }
         },
         browserify: {
