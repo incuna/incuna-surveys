@@ -1,6 +1,7 @@
 from django.apps import apps
 from django.contrib.postgres.fields import ArrayField, JSONField
 from django.db import models
+from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from orderable.models import Orderable
 from rest_framework.reverse import reverse as drf_reverse
@@ -129,9 +130,7 @@ class UserResponse(models.Model):
     fieldset = models.ForeignKey(SurveyFieldset)
     survey = models.ForeignKey(Survey)
     user_id = models.CharField(max_length=255)
+    date_created = models.DateField(default=timezone.now)
     answers = JSONField()
 
     objects = UserResponseQuerySet.as_manager()
-
-    class Meta:
-        unique_together = ('fieldset', 'survey', 'user_id')
