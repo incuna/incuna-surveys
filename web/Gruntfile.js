@@ -123,7 +123,7 @@ module.exports = function (grunt) {
 
     grunt.registerTask('dev', function () {
         grunt.task.run([
-            'compilejs',
+            'build',
             'connect',
             'watch'
         ]);

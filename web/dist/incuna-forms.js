@@ -3,7 +3,7 @@ angular.module('incuna-surveys-fields.templates', []).run(['$templateCache', fun
   'use strict';
 
   $templateCache.put('templates/incuna-surveys/fields/checkbox.html',
-    "<div drf-form-field=to.fieldOptions field-id=options.key class=checkbox><div ng-repeat=\"choice in to.choices\" class=\"checkable checkbox\"><input class=checkbox-input id=\"{{ options.key + '-' + $index }}\" type=checkbox checklist-model=model[to.fieldSetIndex].answers[options.key] checklist-value=$index><label class=checkbox-label for=\"{{ options.key + '-' + $index }}\">{{ choice }}</label></div></div>"
+    "<div drf-form-field=to.fieldOptions field-id=options.key class=checkbox><div ng-repeat=\"choice in to.choices\" class=\"checkable checkbox\"><input class=checkbox-input id=\"{{ options.key }}-{{ $index }}\" type=checkbox checklist-model=model[to.fieldSetIndex].answers[options.key] checklist-value=$index><label class=checkbox-label for=\"{{ options.key }}-{{ $index }}\">{{ choice }}</label></div></div>"
   );
 
 
@@ -33,7 +33,7 @@ angular.module('incuna-surveys-fields.templates', []).run(['$templateCache', fun
 
 
   $templateCache.put('templates/incuna-surveys/fields/radio.html',
-    "<div drf-form field=to.fieldOptions class=radio><div ng-repeat=\"choice in to.choices\" class=\"checkable radio\"><input type=radio id=\"{{ options.key + '-' + $index }}\" ng-value=$index ng-model=model[to.fieldSetIndex].answers[options.key]><label for=\"{{ options.key  + '-' + $index }}\">{{ choice }}</label></div></div>"
+    "<div drf-form field=to.fieldOptions class=radio><div ng-repeat=\"choice in to.choices\" class=\"checkable radio\"><input type=radio id=\"{{ options.key }}-{{ $index }}\" ng-value=$index ng-model=model[to.fieldSetIndex].answers[options.key]><label for=\"{{ options.key }}-{{ $index }}\">{{ choice }}</label></div></div>"
   );
 
 }]);
@@ -296,26 +296,4 @@ _module.service(moduleProperties.componentName, [_fieldsConfig2.default.componen
 
 exports.default = moduleProperties;
 
-},{"./../libraries.js":2,"./fields-config.js":6}],8:[function(require,module,exports){
-'use strict';
-
-(function (angular) {
-
-    var module = angular.module('test-app', ['incuna-surveys']);
-
-    module.controller('FormCtrl', ['formlyConfig', 'FieldsParser', '$http', function (formlyConfig, FieldsetParserService, $http) {
-        var _this = this;
-
-        $http({
-            method: 'GET',
-            url: '/scripts/src/get.json'
-        }).then(function (res) {
-            var form = res.data.OK.response_data;
-
-            _this.fields = FieldsetParserService.parseFields(form);
-            _this.model = FieldsetParserService.parseModel(form);
-        });
-    }]);
-})(window.angular);
-
-},{}]},{},[1,2,3,4,5,6,7,8]);
+},{"./../libraries.js":2,"./fields-config.js":6}]},{},[1,2,3,4,5,6,7]);
