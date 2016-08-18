@@ -48,7 +48,7 @@ describe('FieldsetParserService', function () {
             describe('each element', function () {
                 
                 it('should have a header as first element', function () {
-                    let fieldGroup = this.result[1].fieldGroup[0];
+                    const fieldGroup = this.result[1].fieldGroup[0];
 
                     expect(fieldGroup.templateUrl).toContain('fieldset-header.html');
                     expect(fieldGroup.templateOptions.fieldGroupName).toBe('Free text field');
@@ -61,8 +61,8 @@ describe('FieldsetParserService', function () {
 
                 describe('each field', function () {
                     it('should have apropriate values', function () {
-                        let field = this.result[1].fieldGroup[1];
-                        let fieldOptions = field.templateOptions.fieldOptions;
+                        const field = this.result[1].fieldGroup[1];
+                        const fieldOptions = field.templateOptions.fieldOptions;
 
                         expect(field.key).toBe(1);
                         expect(field.type).toBe('free_text');
@@ -73,13 +73,13 @@ describe('FieldsetParserService', function () {
                     });
 
                     it('should have empty choices for non-choice fields', function () {
-                        let field = this.result[1].fieldGroup[1];
+                        const field = this.result[1].fieldGroup[1];
 
                         expect(field.templateOptions.choices).toEqual([]);
                     });
 
                     it('should have a list of choices for choice fields', function () {
-                        let field = this.result[3].fieldGroup[1];
+                        const field = this.result[3].fieldGroup[1];
 
                         expect(field.templateOptions.choices).toEqual(['One time', 'Two times', 'Three times or more']);
                     });
