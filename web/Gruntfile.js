@@ -42,15 +42,17 @@ module.exports = function (grunt) {
         watch: {
             es: {
                 files: [
-                    '<%= config.srcScriptsDir %>/**/*.es.js'
+                    '<%= config.srcScriptsDir %>/**/*.es.js',
+                    '<%= config.compiledScriptsDir %>/**/templates.js'
                 ],
                 tasks: [
-                    'build'
+                    'compilejs',
+                    'uglify'
                 ]
             },
             ngtemplates: {
                 files: ['app/templates/**/*.html'],
-                tasks: ['build']
+                tasks: ['ngtemplates']
             }
         },
         browserify: {
