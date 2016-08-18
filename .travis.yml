@@ -17,6 +17,7 @@ before_install:
   - nvm use 6.3.1
   - node --version
   - npm --version
+  - npm install -g grunt-cli bower
 install:
   - psql -c 'CREATE DATABASE surveys' -U postgres;
   - pip install -r requirements.txt --use-wheel
