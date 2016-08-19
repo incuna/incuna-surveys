@@ -4,6 +4,7 @@ This project uses Semantic Versioning (2.0).
 
 # Upcoming
 * Make sure npm package only installs web folder
+* Expose es5 files and make deafault entrypoint to them
 
 ### 0.0.1
 * Initial release to test dependency install
