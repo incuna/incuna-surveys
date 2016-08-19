@@ -14,7 +14,7 @@ module.exports = function (grunt) {
         });
     }
 
-    const ngTemplatesPaths = require('./node_modules/grunt-incuna-plugins/helper-functions/ng-templates-paths')();
+    const ngTemplatesPaths = require('grunt-incuna-plugins')['ng-templates-paths']();
 
     grunt.initConfig({
 
