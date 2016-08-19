@@ -9,6 +9,13 @@
   "homepage": "https://github.com/incuna/incuna-surveys",
   "dependencies": {
     "angular": "1.5.x",
-    "angular-mocks": "1.5.x"
+    "angular-mocks": "1.5.x",
+    "angular-formly": "8.x",
+    "checklist-model": "0.10.x",
+    "djangular-rest-framework": "6.x",
+    "angular-input-fields": "8.x"
+  },
+  "resolutions": {
+    "angular": "1.5.x"
   }
 }

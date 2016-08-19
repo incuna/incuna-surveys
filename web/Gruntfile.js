@@ -9,8 +9,12 @@ module.exports = function (grunt) {
         require('load-grunt-tasks')(grunt);
     } else {
         // Use jit-grunt to only load necessary tasks for each invocation of grunt.
-        require('jit-grunt')(grunt);
+        require('jit-grunt')(grunt, {
+            ngtemplates: 'grunt-angular-templates'
+        });
     }
+
+    const ngTemplatesPaths = require('grunt-incuna-plugins')['ng-templates-paths']();
 
     grunt.initConfig({
 
@@ -31,17 +35,24 @@ module.exports = function (grunt) {
                 es: ['<%= config.srcScriptsDir %>']
             }
         }
+
     });
 
     grunt.config.merge({
         watch: {
             es: {
                 files: [
-                    '<%= config.srcScriptsDir %>/**/*.es.js'
+                    '<%= config.srcScriptsDir %>/**/*.es.js',
+                    '<%= config.compiledScriptsDir %>/**/templates.js'
                 ],
                 tasks: [
-                    'compilejs'
+                    'compilejs',
+                    'uglify'
                 ]
+            },
+            ngtemplates: {
+                files: ['app/templates/**/*.html'],
+                tasks: ['ngtemplates']
             }
         },
         browserify: {
@@ -100,7 +111,8 @@ module.exports = function (grunt) {
                     '<%= config.distDir %>/incuna-forms.min.js': '<%= config.distDir %>/incuna-forms.js'
                 }
             }
-        }
+        },
+        ngtemplates: ngTemplatesPaths.generate('incuna-surveys', 'app', '<%= config.compiledScriptsDir %>')
     });
 
     // - - - T A S K S - - -
@@ -111,7 +123,7 @@ module.exports = function (grunt) {
 
     grunt.registerTask('dev', function () {
         grunt.task.run([
-            'compilejs',
+            'build',
             'connect',
             'watch'
         ]);
@@ -137,6 +149,7 @@ module.exports = function (grunt) {
     grunt.registerTask('build', function () {
         var tasks = [
             'clean',
+            'ngtemplates',
             'compilejs',
             'uglify'
         ];

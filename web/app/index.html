@@ -1,6 +1,46 @@
+<!doctype html>
 <html>
     <head>
         <title>incuna-surveys test page</title>
+        <script src="lib/angular/angular.js"></script>
+        <script src="lib/api-check/dist/api-check.js"></script>
+        <script src="lib/angular-formly/dist/formly.js"></script>
+        <script src="lib/checklist-model/checklist-model.js"></script>
+        <script src="lib/angular-touch/angular-touch.js"></script>
+        <script src="lib/angular-gettext/dist/angular-gettext.js"></script>
+        <script src="lib/venturocket-angular-slider/build/angular-slider.js"></script>
+
+        <script src="lib/angular-bind-html-compile/angular-bind-html-compile.js"></script>
+        <script src="lib/djangular-rest-framework/src/form-field/templates.js"></script>
+        <script src="lib/djangular-rest-framework/src/form-field/directives/drf-form-field.js"></script>
+        <script src="lib/angular-input-fields/src/scripts/slider-input/directives.js"></script>
+        <script src="lib/angular-input-fields/src/scripts/slider-input/templates.js"></script>
+
         <script src="scripts/js-build/incuna-forms.js"></script>
+        <script src="scripts/test-app/test.es.js"></script>
+
+        <style>
+
+            /* Make the slider not cover up following fields */
+            [aif-slider-input] {
+                position: relative;
+            }
+
+        </style>
+
+
     </head>
+    <body ng-app="test-app">
+        <h1>Welcome! This page is intended for development testing only</h1>
+        <h2>Happy coding!</h2>
+
+        <hr>
+        <section ng-controller="FormCtrl as form">
+            <formly-form model="form.model" fields="form.fields"></formly-form>
+
+            <hr>
+            <h5>Model:</h5>
+            {{ form.model }}
+        </section>
+    </body>
 </html>

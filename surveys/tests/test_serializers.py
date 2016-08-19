@@ -14,14 +14,14 @@ class TestSerializers(APIExampleMixin, APIRequestTestCase):
         cls.survey = factories.SurveyFactory.create(
             pk=1,
             name='How have you been using the site?',
-            description='Some additional text expanding on the above',
+            description='Form description',
         )
 
         # Three fieldsets.
         cls.fieldset_one = factories.SurveyFieldsetFactory.create(
             pk=1,
             name='Free text field',
-            description='Some additional text expanding on the above',
+            description='Field group description',
         )
         fieldset_two = factories.SurveyFieldsetFactory.create(
             pk=2,
