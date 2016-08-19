@@ -35,7 +35,6 @@ class TestSerializers(APIExampleMixin, APIRequestTestCase):
         )
 
         # Five fields, one for each type.
-
         field_one = factories.SurveyFieldFactory.create(
             pk=1,
             name='How did you discover the site?',
@@ -121,7 +120,6 @@ class TestSerializers(APIExampleMixin, APIRequestTestCase):
         )
         data = serializer.data
         expected_data = self.api_example_data('/forms/pk', 'get')['OK']['response_data']
-        print(expected_data)
 
         self.assertEqual(expected_data, data)
 
