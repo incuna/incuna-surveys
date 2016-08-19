@@ -20,8 +20,6 @@
 
                 this.fields = FieldsetParserService.parseFields(form);
                 this.model = FieldsetParserService.parseModel(form);
-                this.structure = form;
-                console.log(this.structure);
             });
 
         }
