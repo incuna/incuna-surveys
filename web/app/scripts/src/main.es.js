@@ -1,14 +1,14 @@
 import { angular } from 'libraries';
 
-import FieldsetParser from 'services/fieldsets-parser';
 import API from 'services/api';
 import FieldsConfig from 'services/fields-config';
+import SurveysFormDirective from 'directives/form';
 
 angular.module('incuna-surveys', [
     'drf-form-field',
     'aif-slider-input',
     'checklist-model',
     FieldsConfig.moduleName,
-    FieldsetParser.moduleName,
-    API.moduleName
+    API.moduleName,
+    SurveysFormDirective.moduleName
 ]);
