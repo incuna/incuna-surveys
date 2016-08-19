@@ -27,7 +27,6 @@ _module.directive('surveysForm', [_fieldsetsParser2.default.componentName, funct
             formStructure: '='
         },
         template: '<formly-form model="model" fields="fields"></formly-form>',
-        //template: '<h1>DUPA</h1>',
         link: function link($scope, $element, $attrs) {
             $scope.$watch('formStructure', function (form) {
                 if (form) {
