@@ -16,7 +16,7 @@
     "grunt-contrib-uglify": "2.0.0",
     "grunt-contrib-watch": "1.0.0",
     "grunt-eslint": "19.0.0",
-    "grunt-incuna-plugins": "git://github.com/incuna/grunt-incuna-plugins.git#b7be478dae569e13347347ecdf8be36c56ad7449",
+    "grunt-incuna-plugins": "git://github.com/incuna/grunt-incuna-plugins.git#1.2.0",
     "grunt-jscs": "3.0.1",
     "grunt-karma": "2.0.0",
     "jasmine": "2.4.1",
