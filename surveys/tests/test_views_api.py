@@ -123,3 +123,10 @@ class TestSurveyLatestView(APIExampleMixin, APIRequestTestCase):
         url = '/forms/pk/respond/user_id'
         expected_data = self.api_example_data(url, 'get')['OK']['response_data']
         self.assertEqual(data, expected_data)
+
+    def test_missing_user_id(self):
+        """Test that the view deals elegantly with an unrecognised user_id."""
+        view = views_api.SurveyLatestView.as_view()
+        request = self.create_request()
+        response = view(request, pk=self.survey.pk, user_id='nonsense')
+        self.assertEqual(response.data, {})
