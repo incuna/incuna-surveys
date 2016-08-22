@@ -1,4 +1,46 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.moduleProperties = undefined;
+
+var _libraries = require('./../libraries.js');
+
+var _fieldsetsParser = require('./../services/fieldsets-parser.js');
+
+var _fieldsetsParser2 = _interopRequireDefault(_fieldsetsParser);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var moduleProperties = exports.moduleProperties = {
+    moduleName: 'incuna-surveys.form-directive'
+};
+
+var _module = _libraries.angular.module(moduleProperties.moduleName, [_fieldsetsParser2.default.moduleName]);
+
+_module.directive('surveysForm', [_fieldsetsParser2.default.componentName, function (FieldsetParserService) {
+    return {
+        restrict: 'A',
+        scope: {
+            formStructure: '='
+        },
+        template: '<formly-form model="model" fields="fields"></formly-form>',
+        link: function link($scope, $element, $attrs) {
+            $scope.$watch('formStructure', function (form) {
+                if (form) {
+                    $scope.fields = FieldsetParserService.parseFields(form);
+                    $scope.model = FieldsetParserService.parseModel(form);
+                }
+            });
+        }
+    };
+}]);
+
+exports.default = moduleProperties;
+
+},{"./../libraries.js":3,"./../services/fieldsets-parser.js":8}],2:[function(require,module,exports){
 angular.module('incuna-surveys-fields.templates', []).run(['$templateCache', function($templateCache) {
   'use strict';
 
@@ -38,7 +80,7 @@ angular.module('incuna-surveys-fields.templates', []).run(['$templateCache', fun
 
 }]);
 
-},{}],2:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -46,14 +88,10 @@ Object.defineProperty(exports, "__esModule", {
 });
 var angular = exports.angular = window.angular;
 
-},{}],3:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 'use strict';
 
 var _libraries = require('./libraries.js');
-
-var _fieldsetsParser = require('./services/fieldsets-parser.js');
-
-var _fieldsetsParser2 = _interopRequireDefault(_fieldsetsParser);
 
 var _api = require('./services/api.js');
 
@@ -63,11 +101,15 @@ var _fieldsConfig = require('./services/fields-config.js');
 
 var _fieldsConfig2 = _interopRequireDefault(_fieldsConfig);
 
+var _form = require('./directives/form.js');
+
+var _form2 = _interopRequireDefault(_form);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-_libraries.angular.module('incuna-surveys', ['drf-form-field', 'aif-slider-input', 'checklist-model', _fieldsConfig2.default.moduleName, _fieldsetsParser2.default.moduleName, _api2.default.moduleName]);
+_libraries.angular.module('incuna-surveys', ['drf-form-field', 'aif-slider-input', 'checklist-model', _fieldsConfig2.default.moduleName, _api2.default.moduleName, _form2.default.moduleName]);
 
-},{"./libraries.js":2,"./services/api.js":5,"./services/fields-config.js":6,"./services/fieldsets-parser.js":7}],4:[function(require,module,exports){
+},{"./directives/form.js":1,"./libraries.js":3,"./services/api.js":6,"./services/fields-config.js":7}],5:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -101,7 +143,7 @@ _module.provider(moduleProperties.componentName, [function () {
 
 exports.default = moduleProperties;
 
-},{"./../libraries.js":2}],5:[function(require,module,exports){
+},{"./../libraries.js":3}],6:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -148,7 +190,7 @@ _module.service(moduleProperties.componentName, ['$http', _projectConfig2.defaul
 
 exports.default = moduleProperties;
 
-},{"./../libraries.js":2,"./../providers/project-config.js":4}],6:[function(require,module,exports){
+},{"./../libraries.js":3,"./../providers/project-config.js":5}],7:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -202,7 +244,7 @@ _module.run(['formlyConfig', moduleProperties.componentName, function (formlyCon
 
 exports.default = moduleProperties;
 
-},{"./../libraries.js":2}],7:[function(require,module,exports){
+},{"./../libraries.js":3}],8:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -296,4 +338,4 @@ _module.service(moduleProperties.componentName, [_fieldsConfig2.default.componen
 
 exports.default = moduleProperties;
 
-},{"./../libraries.js":2,"./fields-config.js":6}]},{},[1,2,3,4,5,6,7]);
+},{"./../libraries.js":3,"./fields-config.js":7}]},{},[1,2,3,4,5,6,7,8]);
