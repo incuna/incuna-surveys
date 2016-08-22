@@ -148,6 +148,9 @@ class UserResponseQuerySet(models.QuerySet):
 
         return results
 
+    def latest_for_user(self, survey, user_id):
+        return self.latest_per_user(survey)[user_id]
+
 
 class UserResponse(models.Model):
     """

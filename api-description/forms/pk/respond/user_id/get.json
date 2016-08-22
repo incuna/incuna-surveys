@@ -1,0 +1,20 @@
+{
+    "description": "Endpoint to retrieve a user's latest answers to a form",
+    "format": "{<fieldset_pk>: {<field_pk>: <answer>}}",
+    "url": "http://localhost:8000/forms/1/respond/User#20#",
+    "OK": {
+        "status": 200,
+        "response_data": {
+            "1": {
+                "1": "Friends"
+            },
+            "2": {
+                "3": 5
+            },
+            "3": {
+                "4": 0,
+                "5": [1, 2]
+            }
+        }
+    }
+}
