@@ -21,3 +21,13 @@ class TestAPIUrls(URLTestCase):
             url_name='survey-post',
             url_kwargs={'pk': self.pk},
         )
+
+    def test_survey_latest(self):
+        user_id = 'User#20@!_ Id'
+        quoted_user_id = 'User%2320@!_%20Id'
+        self.assert_url_matches_view(
+            view=views_api.SurveyLatestView,
+            expected_url='/forms/{}/respond/{}'.format(self.pk, quoted_user_id),
+            url_name='survey-latest',
+            url_kwargs={'pk': self.pk, 'user_id': user_id},
+        )

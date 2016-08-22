@@ -1,6 +1,10 @@
-from django.http import Http404
+import json
 
-from .utils import APIRequestTestCase, create_survey_data
+from django.http import Http404
+from incuna_test_utils.testcases.api_examples import APIExampleMixin
+
+from .factories import UserResponseFactory
+from .utils import APIRequestTestCase, create_api_example_data, create_survey_data
 from .. import views_api
 from ..models import UserResponse
 from ..serializers import SurveySerializer
@@ -77,3 +81,52 @@ class TestSurveyViews(APIRequestTestCase):
 
         with self.assertRaises(Http404):
             view(request, pk=wrong_pk)
+
+
+class TestSurveyLatestView(APIExampleMixin, APIRequestTestCase):
+    EXAMPLES_DIR = 'api-description'
+
+    @classmethod
+    def setUpTestData(cls):
+        create_api_example_data(cls)
+
+        cls.user_id = 'User#20#'
+        UserResponseFactory.create(
+            user_id=cls.user_id,
+            fieldset=cls.fieldset_one,
+            survey=cls.survey,
+            answers={'1': 'Friends'},
+        )
+        UserResponseFactory.create(
+            user_id=cls.user_id,
+            fieldset=cls.fieldset_two,
+            survey=cls.survey,
+            answers={'3': 5},
+        )
+        UserResponseFactory.create(
+            user_id=cls.user_id,
+            fieldset=cls.fieldset_three,
+            survey=cls.survey,
+            answers={'4': 0, '5': [1, 2]},
+        )
+
+    def test_get(self):
+        """Test that the view can retrieve a survey and return correct JSON."""
+        view = views_api.SurveyLatestView.as_view()
+        request = self.create_request()
+        response = view(request, pk=self.survey.pk, user_id=self.user_id)
+
+        self.assertEqual(response.status_code, 200)
+
+        # Take the data to and from JSON to turn integer indices into strings.
+        data = json.loads(json.dumps(response.data))
+        url = '/forms/pk/respond/user_id'
+        expected_data = self.api_example_data(url, 'get')['OK']['response_data']
+        self.assertEqual(data, expected_data)
+
+    def test_missing_user_id(self):
+        """Test that the view deals elegantly with an unrecognised user_id."""
+        view = views_api.SurveyLatestView.as_view()
+        request = self.create_request()
+        response = view(request, pk=self.survey.pk, user_id='nonsense')
+        self.assertEqual(response.data, {})
