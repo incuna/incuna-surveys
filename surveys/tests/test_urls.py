@@ -13,3 +13,11 @@ class TestAPIUrls(URLTestCase):
             url_name='survey-form',
             url_kwargs={'pk': self.pk},
         )
+
+    def test_survey_post(self):
+        self.assert_url_matches_view(
+            view=views_api.SurveyPostView,
+            expected_url='/forms/{}/respond'.format(self.pk),
+            url_name='survey-post',
+            url_kwargs={'pk': self.pk},
+        )
