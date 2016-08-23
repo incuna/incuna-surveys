@@ -31,6 +31,7 @@ The are two `grunt karma` targets:
 1. Follow the guidelines at http://semver.org/ to determine your new version number.
 1. Update `CHANGELOG.md` with your new version number and a description of changes.
 1. Update the `version` property in `package.json`
+1. Update the `version` property in `setup.py`
 1. Commit those changes with the commit message "Bump to [version number]". [version number] should be in the format x.y.z.
 1. `git tag [version number]`
 1. `git push`

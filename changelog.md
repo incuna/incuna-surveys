@@ -2,7 +2,7 @@
 
 This project uses Semantic Versioning (2.0).
 
-# Upcoming
+### 0.0.2
 * Make sure npm package only installs web folder
 * Expose es5 files and make deafault entrypoint to them
 * Make a wrapping directive for `formly-form`
