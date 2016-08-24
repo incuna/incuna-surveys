@@ -11,11 +11,16 @@ describe('api service', function () {
             this.api = API;
         });
 
+        this.post = fixture.load('forms/pk/respond/post.json')
+
         this.$httpBackend.when('GET', 'localhost:8000/forms')
             .respond(fixture.load('forms/get.json').OK.response_data);
 
         this.$httpBackend.when('GET', 'http://localhost:8000/forms/1')
             .respond(fixture.load('forms/pk/get.json').OK.response_data);
+
+        this.$httpBackend.when('POST', 'http://localhost:8000/forms/1/respond/')
+            .respond(this.post.OK.response_data);
         
     });
 
@@ -52,6 +57,21 @@ describe('api service', function () {
             this.$httpBackend.flush();
         });
         
+    });
+
+    describe('post', function () {
+        it('should return a promise with the data of a new response', function () {
+            const url = 'http://localhost:8000/forms/1/respond/';
+            const data = this.post.fields;
+
+            this.api.post(url, data).then((data) => {
+                console.log(data);
+                expect(data).toEqual(this.post.OK.response_data);
+            });
+
+            this.$rootScope.$digest();
+            this.$httpBackend.flush();
+        });
     });
     
 });

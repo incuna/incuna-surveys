@@ -33,6 +33,10 @@ module.service(moduleProperties.componentName, [
             getForm: function (url) {
                 return $http.get(url)
                     .then((response) => response.data);
+            },
+            post: function (url, data) {
+                return $http.post(url, data)
+                    .then((response) => response.data);
             }
         }
     }

@@ -184,6 +184,11 @@ _module.service(moduleProperties.componentName, ['$http', _projectConfig2.defaul
             return $http.get(url).then(function (response) {
                 return response.data;
             });
+        },
+        post: function post(url, data) {
+            return $http.post(url, data).then(function (response) {
+                return response.data;
+            });
         }
     };
 }]);

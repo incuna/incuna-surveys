@@ -2,6 +2,9 @@
 
 This project uses Semantic Versioning (2.0).
 
+## UPCOMING
+* Add web API.post service to post form data to a url.
+
 ### 0.0.2
 * Make sure npm package only installs web folder
 * Expose es5 files and make deafault entrypoint to them
