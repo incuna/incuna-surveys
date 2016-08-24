@@ -2,7 +2,7 @@
 
 This project uses Semantic Versioning (2.0).
 
-### Upcoming
+### 0.0.3
 * Refactor and expand UserResponseQuerySet.
 
 ### 0.0.2
