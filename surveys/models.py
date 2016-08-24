@@ -170,12 +170,9 @@ class UserResponseQuerySet(models.QuerySet):
         survey's dictionary entry is that filtering the queryset first means a smaller
         dataset to operate on in memory.
 
-        Return {} gracefully if the survey has no responses.
+        Returns {} gracefully if the survey has no responses thanks to defaultdict.
         """
-        try:
-            return self.filter(survey=survey).latest_responses()[survey.pk]
-        except KeyError:
-            return {}
+        return self.filter(survey=survey).latest_responses()[survey.pk]
 
     def latest_for_user(self, survey, user_id):
         """
@@ -187,12 +184,10 @@ class UserResponseQuerySet(models.QuerySet):
         This method exists for the same reason as latest_for_survey - filtering the
         queryset first reduces the amount of data pulled into memory.
 
-        Return {} gratefully if the user or survey have no responses.
+        Returns {} gratefully if the user or survey have no responses thanks to
+        defaultdict.
         """
-        try:
-            return self.filter(user_id=user_id).latest_for_survey(survey)[user_id]
-        except KeyError:
-            return {}
+        return self.filter(user_id=user_id).latest_for_survey(survey)[user_id]
 
 
 class UserResponse(models.Model):
