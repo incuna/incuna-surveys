@@ -20,6 +20,8 @@
 
                 this.fields = FieldsetParserService.parseFields(form);
                 this.model = FieldsetParserService.parseModel(form);
+
+                this.structure = res.data.OK.response_data;
             });
 
         }
