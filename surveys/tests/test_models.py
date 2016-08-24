@@ -71,22 +71,65 @@ class TestUserResponse(TestCase):
         self.factory.create(user_id='second_user')
         self.assertEqual(self.model.objects.num_users(), 2)
 
-    def test_latest_per_user(self):
-        survey = factories.SurveyFactory.create()
-        one, two = self.factory.create_batch(2, survey=survey)
-        newer = self.factory.create(
-            survey=survey,
-            fieldset=one.fieldset,
-            user_id=one.user_id,
-        )
-        self.factory.create()  # unrelated item since it has the wrong survey
 
-        expected = {
-            newer.user_id: {
-                newer.fieldset.pk: newer.answers,
+class TestUserResponseManager(TestCase):
+    manager = models.UserResponse.objects
+    factory = factories.UserResponseFactory
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.survey = factories.SurveyFactory.create()
+        cls.one, cls.two = cls.factory.create_batch(2, survey=cls.survey)
+        cls.newer = cls.factory.create(
+            survey=cls.survey,
+            fieldset=cls.one.fieldset,
+            user_id=cls.one.user_id,
+        )
+
+        cls.other = cls.factory.create()
+        cls.other_survey = cls.other.survey
+
+        # Won't show up since it has no responses
+        cls.unseen_survey = factories.SurveyFactory.create()
+
+        cls.expected_latest = {
+            cls.survey.pk: {
+                cls.newer.user_id: {
+                    cls.newer.fieldset.pk: cls.newer.answers,
+                },
+                cls.two.user_id: {
+                    cls.two.fieldset.pk: cls.two.answers,
+                }
             },
-            two.user_id: {
-                two.fieldset.pk: two.answers,
-            }
+            cls.other_survey.pk: {
+                cls.other.user_id: {
+                    cls.other.fieldset.pk: cls.other.answers,
+                }
+            },
         }
-        self.assertEqual(self.model.objects.latest_per_user(survey), expected)
+
+    def test_latest_responses(self):
+        latest = dict(self.manager.latest_responses())
+        self.assertEqual(latest, self.expected_latest)
+
+    def test_latest_for_survey(self):
+        latest = dict(self.manager.latest_for_survey(self.survey))
+        expected = self.expected_latest[self.survey.pk]
+        self.assertEqual(latest, expected)
+
+    def test_latest_for_survey_empty(self):
+        latest = dict(self.manager.latest_for_survey(self.unseen_survey))
+        self.assertEqual(latest, {})
+
+    def test_latest_for_user(self):
+        latest = dict(self.manager.latest_for_user(self.survey, self.one.user_id))
+        expected = self.expected_latest[self.survey.pk][self.one.user_id]
+        self.assertEqual(latest, expected)
+
+    def test_latest_for_user_empty_survey(self):
+        latest = dict(self.manager.latest_for_user(self.unseen_survey, self.one.user_id))
+        self.assertEqual(latest, {})
+
+    def test_latest_for_user_empty_user(self):
+        latest = dict(self.manager.latest_for_user(self.survey, 'nonexistent_id'))
+        self.assertEqual(latest, {})
