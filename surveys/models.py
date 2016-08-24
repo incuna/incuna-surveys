@@ -117,39 +117,82 @@ class UserResponseQuerySet(models.QuerySet):
         """Returns the number of distinct users who reported this set of answers."""
         return self.order_by().values('user_id').distinct().count()
 
-    def latest_per_user(self, survey):
+    def _build_latest_dict(self, data_values):
+        """
+        Turns a values() list into an organised dict suitable for finding the latest
+        entry each user_id submitted.
+
+        Builds and returns a dictionary of dictionaries:
+          {<survey>: {<user_id>: {<fieldset>: <answers>}}}
+
+        Expects the following values: survey__pk, fieldset__pk, user_id, answers.
+        It also expects the entries to be sorted by date_created.
+
+        Why it works:
+        - Loop through the list.  Build a nested dictionary that relates a fieldset and
+          a user_id to the user's answers.
+        - Use defaultdict so we don't have to check if <user_id> is already in the
+          results before assigning values to the <fieldset> entry.
+        - Because we're traversing the list in order from least to most recent, the
+          most recently accessed answers for each user are the 'correct' latest ones,
+          so just overwrite whatever's already in the slot.
+        - Return the built dictionary.
+        """
+        results = defaultdict(lambda: defaultdict(dict))
+        for entry in data_values:
+            user_id = entry['user_id']
+            fieldset = entry['fieldset__pk']
+            survey = entry['survey__pk']
+            results[survey][user_id][fieldset] = entry['answers']
+
+        return results
+
+    def latest_responses(self):
+        """
+        Returns the latest UserResponse per user per fieldset per survey.
+
+        The results are delivered as a dictionary:
+          {<survey>: {<user_id>: {<fieldset>: <answers>}}}
+        """
+        qs = self.order_by('date_created')
+        raw_data = qs.values('survey__pk', 'fieldset__pk', 'user_id', 'answers')
+        return self._build_latest_dict(raw_data)
+
+    def latest_for_survey(self, survey):
         """
         Returns the latest UserResponse per user per fieldset in this survey.
 
         The results are delivered as a dictionary:
           {<user_id>: {<fieldset>: <answers>}}
 
-        Works by:
-        - Filter the queryset by the given survey and sort it by date_created ascending.
-        - Retrieve only the relevant data using `values()` to trim down memory footprint.
-        - Loop through the list.  Build a nested dictionary that relates a fieldset and
-          a user_id to the user's answers.  Overwrite any previous setting.
-        - Because we're traversing the list in order from least to most recent, the
-          most recently accessed answers for each user are the 'correct' latest ones.
-        - Return the built dictionary.
+        Calls latest_per_user on a queryset filtered to a single survey.  The reason
+        for doing this over calling latest_per_user directly and retrieving that
+        survey's dictionary entry is that filtering the queryset first means a smaller
+        dataset to operate on in memory.
+
+        Return {} gracefully if the survey has no responses.
         """
-        qs = self.filter(survey=survey).order_by('date_created')
-        raw_data = qs.values('fieldset__pk', 'user_id', 'answers')
-
-        # Build a dictionary of dictionaries:
-        #  {<user_id>: {<fieldset>: <answers>}}
-        # Use defaultdict so we don't have to check if <user_id> is already in the
-        # results before assigning values to the <fieldset> entry.
-        results = defaultdict(dict)
-        for entry in raw_data:
-            user_id = entry['user_id']
-            fieldset = entry['fieldset__pk']
-            results[user_id][fieldset] = entry['answers']
-
-        return results
+        try:
+            return self.filter(survey=survey).latest_responses()[survey.pk]
+        except KeyError:
+            return {}
 
     def latest_for_user(self, survey, user_id):
-        return self.latest_per_user(survey)[user_id]
+        """
+        Returns the latest UserResponse per fieldset for this user and survey.
+
+        The results are delivered as a dictionary:
+          {<fieldset>: <answers>}
+
+        This method exists for the same reason as latest_for_survey - filtering the
+        queryset first reduces the amount of data pulled into memory.
+
+        Return {} gratefully if the user or survey have no responses.
+        """
+        try:
+            return self.filter(user_id=user_id).latest_for_survey(survey)[user_id]
+        except KeyError:
+            return {}
 
 
 class UserResponse(models.Model):
