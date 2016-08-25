@@ -1,12 +1,8 @@
-from incuna_test_utils.testcases.api_examples import APIExampleMixin
-
-from .utils import APIRequestTestCase, create_api_example_data
+from .utils import APIExampleMixin, APIRequestTestCase, create_api_example_data
 from .. import models, serializers
 
 
 class TestSerializers(APIExampleMixin, APIRequestTestCase):
-    EXAMPLES_DIR = 'api-description'
-
     @classmethod
     def setUpTestData(cls):
         create_api_example_data(cls)
