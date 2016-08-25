@@ -11,6 +11,8 @@ from ..serializers import SurveySerializer
 
 
 class TestSurveyViews(APIRequestTestCase):
+    user_id = 'User#20#'
+
     @classmethod
     def setUpTestData(cls):
         create_survey_data(cls)
@@ -36,7 +38,6 @@ class TestSurveyViews(APIRequestTestCase):
     def get_post_data(self):
         """Helper method.  Produces suitable POST data."""
         return {
-            'user_id': 'User#20#',
             'user_responses': [
                 {
                     'fieldset': 1,
@@ -49,7 +50,7 @@ class TestSurveyViews(APIRequestTestCase):
         """Helper method.  Calls the post view with the specified data."""
         view = views_api.SurveyPostView.as_view()
         request = self.create_request(method='post', data=data)
-        return view(request, pk=self.survey.pk)
+        return view(request, pk=self.survey.pk, user_id=self.user_id)
 
     def test_post_response(self):
         """Test that the view can retrieve a survey and return correct JSON."""
@@ -59,7 +60,7 @@ class TestSurveyViews(APIRequestTestCase):
 
         # Assert the UserResponse object was created correctly.
         user_response = UserResponse.objects.first()
-        self.assertEqual(user_response.user_id, data['user_id'])
+        self.assertEqual(user_response.user_id, self.user_id)
         self.assertEqual(user_response.answers, data['user_responses'][0]['answers'])
 
     def test_post_object_created(self):
@@ -70,7 +71,7 @@ class TestSurveyViews(APIRequestTestCase):
 
         # Assert the UserResponse object was created correctly.
         user_response = UserResponse.objects.first()
-        self.assertEqual(user_response.user_id, data['user_id'])
+        self.assertEqual(user_response.user_id, self.user_id)
         self.assertEqual(user_response.answers, data['user_responses'][0]['answers'])
 
     def test_post_404(self):
@@ -80,7 +81,7 @@ class TestSurveyViews(APIRequestTestCase):
         request = self.create_request(method='post', data={})
 
         with self.assertRaises(Http404):
-            view(request, pk=wrong_pk)
+            view(request, pk=wrong_pk, user_id=self.user_id)
 
 
 class TestSurveyLatestView(APIExampleMixin, APIRequestTestCase):

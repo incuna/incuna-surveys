@@ -25,6 +25,8 @@ INSTALLED_APPS = (
     'orderable',
     'rest_framework',
 
+    'corsheaders',
+
     # Work around 'relation does not exist' errors by ordering the installed apps:
     #   contenttypes -> auth -> everything else.
     # See: https://code.djangoproject.com/ticket/10827#comment:12
@@ -37,6 +39,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
 )
 MIDDLEWARE_CLASSES = (
+    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -62,3 +65,6 @@ TEMPLATES = [
 ]
 
 TEST_RUNNER = 'test_project.test_runner.Runner'
+
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = True

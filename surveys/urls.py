@@ -6,12 +6,12 @@ from . import views_api
 urlpatterns = [
     url(r'^forms/(?P<pk>\d+)/?$', views_api.SurveyView.as_view(), name='survey-form'),
     url(
-        r'^forms/(?P<pk>\d+)/respond/?$',
+        r'^forms/(?P<pk>\d+)/respond/(?P<user_id>[^/]+)/?$',
         views_api.SurveyPostView.as_view(),
         name='survey-post',
     ),
     url(
-        r'^forms/(?P<pk>\d+)/respond/(?P<user_id>.+)/?$',
+        r'^forms/(?P<pk>\d+)/respond/(?P<user_id>[^/]+)/latest/?$',
         views_api.SurveyLatestView.as_view(),
         name='survey-latest',
     ),

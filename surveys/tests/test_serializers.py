@@ -25,6 +25,7 @@ class TestSerializers(APIExampleMixin, APIRequestTestCase):
     def test_post(self):
         data = self.api_example_data('/forms/pk/respond', 'post')['fields']
         data['survey'] = self.survey.pk
+        data['user_id'] = 'User#20#'
 
         # Assert that we pass validation.
         serializer = serializers.SurveyResponseSerializer(data=data)

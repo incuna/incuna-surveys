@@ -1,8 +1,7 @@
 {
     "description": "Endpoint to answer a form",
-    "url": "http://localhost:8000/forms/1/respond/",
+    "url": "http://127.0.0.1:8000/forms/1/respond/test-user",
     "fields": {
-        "user_id": "User#20#",
         "user_responses": [
             {
                 "fieldset": 1,

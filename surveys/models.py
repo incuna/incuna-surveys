@@ -37,6 +37,7 @@ class SurveyField(models.Model):
         help_text=_(
             'For choice fields only. Enter one or more answers, separated by newlines.'
         ),
+        blank=True,
     )
     required = models.BooleanField(default=False)
 

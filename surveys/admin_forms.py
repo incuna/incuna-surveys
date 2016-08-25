@@ -12,6 +12,7 @@ class SurveyFieldForm(ModelForm):
             'field_type',
             'help_text',
             'answers',
+            'required',
         )
         widgets = {
             'answers': ArrayFieldTextarea(),
