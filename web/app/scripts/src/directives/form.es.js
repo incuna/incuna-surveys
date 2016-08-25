@@ -1,5 +1,6 @@
 import { angular } from '../libraries';
 
+import API from '../services/api';
 import FieldsetParser from '../services/fieldsets-parser';
 
 export const moduleProperties = {
@@ -7,25 +8,40 @@ export const moduleProperties = {
 };
 
 const module = angular.module(moduleProperties.moduleName, [
+    API.moduleName,
     FieldsetParser.moduleName
 ]);
 
 module.directive('surveysForm', [
+    API.componentName,
     FieldsetParser.componentName,
-    function (FieldsetParserService) {
+    function (API, FieldsetParser) {
         return {
             restrict: 'A',
             scope: {
-                formStructure: '='
+                getUrl: '=',
+                postUrl: '='
             },
-            template: '<formly-form model="model" fields="fields"></formly-form>',
-            link: function ($scope, $element, $attrs) {
-                $scope.$watch('formStructure', (form) => {
-                    if (form) {
-                        $scope.fields = FieldsetParserService.parseFields(form);
-                        $scope.model = FieldsetParserService.parseModel(form);
+            templateUrl: 'templates/incuna-surveys/survey-form.html',
+            link: function ($scope) {
+                $scope.form = {}
+                $scope.$watch('getUrl', (value) => {
+                    if (value) {
+                        API.getForm(value).then(function (structure) {
+                            $scope.fields = FieldsetParser.parseFields(structure);
+                            $scope.model = FieldsetParser.parseModel(structure);
+                        });
                     }
                 });
+
+                $scope.submit = () => {
+                    if ($scope.postUrl) {
+                        // TODO: Handle errors.
+                        API.post($scope.postUrl, $scope.model);
+                    }
+                }
+
+                $scope.submit();
             }
         };
     }

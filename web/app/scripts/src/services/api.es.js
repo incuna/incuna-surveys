@@ -34,10 +34,8 @@ module.service(moduleProperties.componentName, [
                 return $http.get(url)
                     .then((response) => response.data);
             },
-            post: function (baseUrl, data) {
-                const endpoint = 'respond';
-                const url = `${baseUrl}/${endpoint}`;
-                return $http.post(url, data)
+            post: function (url, data) {
+                return $http.post(url, {'user_responses': data})
                     .then((response) => response.data);
             }
         }

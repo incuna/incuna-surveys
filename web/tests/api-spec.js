@@ -19,7 +19,7 @@ describe('api service', function () {
         this.$httpBackend.when('GET', 'http://localhost:8000/forms/1')
             .respond(fixture.load('forms/pk/get.json').OK.response_data);
 
-        this.$httpBackend.when('POST', 'http://localhost:8000/forms/1/respond')
+        this.$httpBackend.when('POST', this.post.url)
             .respond(this.post.OK.response_data);
         
     });
@@ -61,10 +61,9 @@ describe('api service', function () {
 
     describe('post', function () {
         it('should return a promise with the data of a new response', function () {
-            const url = 'http://localhost:8000/forms/1';
             const data = this.post.fields;
 
-            this.api.post(url, data).then((data) => {
+            this.api.post(this.post.url, data).then((data) => {
                 expect(data).toEqual(this.post.OK.response_data);
             });
 

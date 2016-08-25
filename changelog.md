@@ -4,6 +4,8 @@ This project uses Semantic Versioning (2.0).
 
 ### UPCOMING
 * Add web API.post service to post form data to a url.
+* Update web survey-form to use ursl to get and pot the form data.
+* Move user_id from the api serializer to the url.
 
 ### 0.0.3
 * Refactor and expand UserResponseQuerySet.
