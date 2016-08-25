@@ -2,6 +2,9 @@
 
 This project uses Semantic Versioning (2.0).
 
+### 0.0.4
+* Add date_created to the output of latest_response() and its helpers.
+
 ### 0.0.3
 * Refactor and expand UserResponseQuerySet.
 
