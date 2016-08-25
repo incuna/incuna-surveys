@@ -14,6 +14,7 @@ To set the `apiRoot` use `ProjectConfigProvider.setApiRoot()`
 All frontend is located under `web/`:
 
 * `npm install` to install requirements
+* `bower install` to install dependencies
 * `grunt test` to test if everything is working properly
 * `grunt` will start a dev server running under `localhost:9000`.
 

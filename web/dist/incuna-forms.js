@@ -40,7 +40,63 @@ _module.directive('surveysForm', [_fieldsetsParser2.default.componentName, funct
 
 exports.default = moduleProperties;
 
-},{"./../libraries.js":3,"./../services/fieldsets-parser.js":8}],2:[function(require,module,exports){
+},{"./../libraries.js":4,"./../services/fieldsets-parser.js":9}],2:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.moduleProperties = undefined;
+
+var _libraries = require('./../libraries.js');
+
+var _api = require('./../services/api.js');
+
+var _api2 = _interopRequireDefault(_api);
+
+var _fieldsetsParser = require('./../services/fieldsets-parser.js');
+
+var _fieldsetsParser2 = _interopRequireDefault(_fieldsetsParser);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var moduleProperties = exports.moduleProperties = {
+    moduleName: 'incuna-surveys.survey-directive'
+};
+
+var _module = _libraries.angular.module(moduleProperties.moduleName, [_api2.default.moduleName, _fieldsetsParser2.default.moduleName]);
+
+_module.directive('surveysSurvey', [_api2.default.componentName, _fieldsetsParser2.default.componentName, function (API, FieldsetParser) {
+    return {
+        restrict: 'A',
+        scope: {
+            url: '='
+        },
+        template: '<from ng-submit="submit()"><formly-form model="model" fields="fields"></formly-form><input type="submit" id="submit" value="Submit" /></form>',
+        link: function link($scope, $element, $attrs) {
+            var url = null;
+            $scope.form = {};
+            $scope.$watch('getUrl', function (value) {
+                if (value) {
+                    url = value;
+                    var structure = API.getForm(url);
+                    $scope.fields = FieldsetParserService.parseFields(structure);
+                    $scope.model = FieldsetParserService.parseModel(structure);
+                }
+            });
+
+            $scope.submit = function () {
+                if (postUrl) {
+                    API.post(url, form.$scope.model);
+                }
+            };
+        }
+    };
+}]);
+
+exports.default = moduleProperties;
+
+},{"./../libraries.js":4,"./../services/api.js":7,"./../services/fieldsets-parser.js":9}],3:[function(require,module,exports){
 angular.module('incuna-surveys-fields.templates', []).run(['$templateCache', function($templateCache) {
   'use strict';
 
@@ -80,7 +136,7 @@ angular.module('incuna-surveys-fields.templates', []).run(['$templateCache', fun
 
 }]);
 
-},{}],3:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -88,7 +144,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 var angular = exports.angular = window.angular;
 
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 'use strict';
 
 var _libraries = require('./libraries.js');
@@ -109,7 +165,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 _libraries.angular.module('incuna-surveys', ['drf-form-field', 'aif-slider-input', 'checklist-model', _fieldsConfig2.default.moduleName, _api2.default.moduleName, _form2.default.moduleName]);
 
-},{"./directives/form.js":1,"./libraries.js":3,"./services/api.js":6,"./services/fields-config.js":7}],5:[function(require,module,exports){
+},{"./directives/form.js":1,"./libraries.js":4,"./services/api.js":7,"./services/fields-config.js":8}],6:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -143,7 +199,7 @@ _module.provider(moduleProperties.componentName, [function () {
 
 exports.default = moduleProperties;
 
-},{"./../libraries.js":3}],6:[function(require,module,exports){
+},{"./../libraries.js":4}],7:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -184,13 +240,20 @@ _module.service(moduleProperties.componentName, ['$http', _projectConfig2.defaul
             return $http.get(url).then(function (response) {
                 return response.data;
             });
+        },
+        post: function post(baseUrl, data) {
+            var endpoint = 'respond';
+            var url = baseUrl + '/' + endpoint;
+            return $http.post(url, data).then(function (response) {
+                return response.data;
+            });
         }
     };
 }]);
 
 exports.default = moduleProperties;
 
-},{"./../libraries.js":3,"./../providers/project-config.js":5}],7:[function(require,module,exports){
+},{"./../libraries.js":4,"./../providers/project-config.js":6}],8:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -244,7 +307,7 @@ _module.run(['formlyConfig', moduleProperties.componentName, function (formlyCon
 
 exports.default = moduleProperties;
 
-},{"./../libraries.js":3}],8:[function(require,module,exports){
+},{"./../libraries.js":4}],9:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -338,4 +401,4 @@ _module.service(moduleProperties.componentName, [_fieldsConfig2.default.componen
 
 exports.default = moduleProperties;
 
-},{"./../libraries.js":3,"./fields-config.js":7}]},{},[1,2,3,4,5,6,7,8]);
+},{"./../libraries.js":4,"./fields-config.js":8}]},{},[1,2,3,4,5,6,7,8,9]);
