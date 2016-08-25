@@ -2,8 +2,11 @@
 
 This project uses Semantic Versioning (2.0).
 
-## UPCOMING
+### UPCOMING
 * Add web API.post service to post form data to a url.
+
+### 0.0.3
+* Refactor and expand UserResponseQuerySet.
 
 ### 0.0.2
 * Make sure npm package only installs web folder
