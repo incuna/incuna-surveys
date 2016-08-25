@@ -4,6 +4,7 @@ import dj_database_url
 
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+API_DESCRIPTION_DIR = os.path.join(BASE_DIR, 'api-description')
 
 DEBUG = True
 ALLOWED_HOSTS = []

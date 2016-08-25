@@ -95,15 +95,24 @@ class TestUserResponseManager(TestCase):
         cls.expected_latest = {
             cls.survey.pk: {
                 cls.newer.user_id: {
-                    cls.newer.fieldset.pk: cls.newer.answers,
+                    cls.newer.fieldset.pk: {
+                        'answers': cls.newer.answers,
+                        'date_created': cls.newer.date_created,
+                    }
                 },
                 cls.two.user_id: {
-                    cls.two.fieldset.pk: cls.two.answers,
+                    cls.two.fieldset.pk: {
+                        'answers': cls.two.answers,
+                        'date_created': cls.two.date_created,
+                    }
                 }
             },
             cls.other_survey.pk: {
                 cls.other.user_id: {
-                    cls.other.fieldset.pk: cls.other.answers,
+                    cls.other.fieldset.pk: {
+                        'answers': cls.other.answers,
+                        'date_created': cls.other.date_created,
+                    }
                 }
             },
         }
