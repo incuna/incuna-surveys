@@ -1,6 +1,6 @@
 {
     "description": "Endpoint to answer a form",
-    "url": "http://127.0.0.1:8000/forms/1/respond/test-user",
+    "url": "http://localhost:8000/forms/1/respond/test-user",
     "fields": {
         "user_responses": [
             {

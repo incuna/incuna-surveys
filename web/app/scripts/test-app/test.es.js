@@ -18,7 +18,6 @@
             }).then((res) => {
                 const form = res.data.OK.response_data;
 
-
                 this.fields = FieldsetParserService.parseFields(form);
                 this.model = FieldsetParserService.parseModel(form);
 
