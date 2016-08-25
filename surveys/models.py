@@ -123,11 +123,13 @@ class UserResponseQuerySet(models.QuerySet):
         Turns a values() list into an organised dict suitable for finding the latest
         entry each user_id submitted.
 
-        Builds and returns a dictionary of dictionaries:
-          {<survey>: {<user_id>: {<fieldset>: <answers>}}}
+        Builds and returns a nested dictionary:
+          {<survey>: {<user_id>: {<fieldset>: {
+            answers: <answers>, date_created: <date_created>
+          }}}}
 
-        Expects the following values: survey__pk, fieldset__pk, user_id, answers.
-        It also expects the entries to be sorted by date_created.
+        Expects the following values: survey__pk, fieldset__pk, user_id, answers,
+        date_created.  It also expects the entries to be sorted by date_created.
 
         Why it works:
         - Loop through the list.  Build a nested dictionary that relates a fieldset and
@@ -144,7 +146,10 @@ class UserResponseQuerySet(models.QuerySet):
             user_id = entry['user_id']
             fieldset = entry['fieldset__pk']
             survey = entry['survey__pk']
-            results[survey][user_id][fieldset] = entry['answers']
+            results[survey][user_id][fieldset] = {
+                'answers': entry['answers'],
+                'date_created': entry['date_created'],
+            }
 
         return results
 
@@ -153,10 +158,18 @@ class UserResponseQuerySet(models.QuerySet):
         Returns the latest UserResponse per user per fieldset per survey.
 
         The results are delivered as a dictionary:
-          {<survey>: {<user_id>: {<fieldset>: <answers>}}}
+          {<survey>: {<user_id>: {<fieldset>: {
+            answers: <answers>, date_created: <date_created>
+          }}}}
         """
         qs = self.order_by('date_created')
-        raw_data = qs.values('survey__pk', 'fieldset__pk', 'user_id', 'answers')
+        raw_data = qs.values(
+            'survey__pk',
+            'fieldset__pk',
+            'user_id',
+            'answers',
+            'date_created',
+        )
         return self._build_latest_dict(raw_data)
 
     def latest_for_survey(self, survey):
@@ -164,7 +177,9 @@ class UserResponseQuerySet(models.QuerySet):
         Returns the latest UserResponse per user per fieldset in this survey.
 
         The results are delivered as a dictionary:
-          {<user_id>: {<fieldset>: <answers>}}
+          {<user_id>: {<fieldset>: {
+            answers: <answers>, date_created: <date_created>
+          }}}
 
         Calls latest_per_user on a queryset filtered to a single survey.  The reason
         for doing this over calling latest_per_user directly and retrieving that
@@ -180,7 +195,9 @@ class UserResponseQuerySet(models.QuerySet):
         Returns the latest UserResponse per fieldset for this user and survey.
 
         The results are delivered as a dictionary:
-          {<fieldset>: <answers>}
+          {<fieldset>: {
+            answers: <answers>, date_created: <date_created>
+          }}
 
         This method exists for the same reason as latest_for_survey - filtering the
         queryset first reduces the amount of data pulled into memory.
@@ -205,7 +222,7 @@ class UserResponse(models.Model):
     fieldset = models.ForeignKey(SurveyFieldset)
     survey = models.ForeignKey(Survey)
     user_id = models.CharField(max_length=255)
-    date_created = models.DateField(default=timezone.now)
+    date_created = models.DateTimeField(default=timezone.now)
     answers = JSONField()
 
     objects = UserResponseQuerySet.as_manager()

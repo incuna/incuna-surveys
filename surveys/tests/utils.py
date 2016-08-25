@@ -1,3 +1,7 @@
+from django.conf import settings
+from incuna_test_utils.testcases.api_examples import (
+    APIExampleMixin as BaseAPIExampleMixin,
+)
 from incuna_test_utils.testcases.api_request import BaseAPIRequestTestCase
 from incuna_test_utils.testcases.request import BaseRequestTestCase
 
@@ -10,6 +14,10 @@ class RequestTestCase(BaseRequestTestCase):
 
 class APIRequestTestCase(BaseAPIRequestTestCase):
     user_factory = factories.UserFactory
+
+
+class APIExampleMixin(BaseAPIExampleMixin):
+    EXAMPLES_DIR = settings.API_DESCRIPTION_DIR
 
 
 def create_survey_data(cls):

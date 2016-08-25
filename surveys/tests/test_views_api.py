@@ -1,10 +1,14 @@
 import json
 
 from django.http import Http404
-from incuna_test_utils.testcases.api_examples import APIExampleMixin
 
 from .factories import UserResponseFactory
-from .utils import APIRequestTestCase, create_api_example_data, create_survey_data
+from .utils import (
+    APIExampleMixin,
+    APIRequestTestCase,
+    create_api_example_data,
+    create_survey_data,
+)
 from .. import views_api
 from ..models import UserResponse
 from ..serializers import SurveySerializer
@@ -85,8 +89,6 @@ class TestSurveyViews(APIRequestTestCase):
 
 
 class TestSurveyLatestView(APIExampleMixin, APIRequestTestCase):
-    EXAMPLES_DIR = 'api-description'
-
     @classmethod
     def setUpTestData(cls):
         create_api_example_data(cls)

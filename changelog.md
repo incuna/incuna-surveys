@@ -7,6 +7,9 @@ This project uses Semantic Versioning (2.0).
 * Update web survey-form to use ursl to get and pot the form data.
 * Move user_id from the api serializer to the url.
 
+### 0.0.4
+* Add date_created to the output of latest_response() and its helpers.
+
 ### 0.0.3
 * Refactor and expand UserResponseQuerySet.
 

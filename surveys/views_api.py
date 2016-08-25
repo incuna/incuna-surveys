@@ -38,4 +38,7 @@ class SurveyLatestView(generics.ListAPIView):
 
     def list(self, request, *args, **kwargs):
         data = self.get_queryset().latest_for_user(self.survey, self.user_id)
+        # Trim down the dictionary returned so it's just {<fieldset_pk>: <answers>}
+        for fieldset_pk, entry in data.items():
+            data[fieldset_pk] = entry['answers']
         return Response(data)
