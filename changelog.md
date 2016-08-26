@@ -4,9 +4,9 @@ This project uses Semantic Versioning (2.0).
 
 ### UPCOMING
 * Add web API.post service to post form data to a url.
-* Update web survey-form to use ursl to get and pot the form data.
+* Update web survey-form to use urls to get the form and get and post response data.
 * Move user_id from the api serializer to the url.
-* Add create to the get latest endpoint.
+* Add create method to the get latest endpoint.
 
 ### 0.0.4
 * Add date_created to the output of latest_response() and its helpers.
