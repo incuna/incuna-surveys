@@ -65,8 +65,6 @@ describe('api service', function () {
 
     describe('get', function () {
         it('should return a promise with the data from the api', function () {
-            const url = 'http://localhost:8000/forms/1';
-
             this.api.getForm(this.get.url).then((data) => {
                 expect(data).toEqual(this.get.OK.response_data);
             });
@@ -78,9 +76,7 @@ describe('api service', function () {
 
     describe('post', function () {
         it('should return a promise with the data of a new response', function () {
-            const data = this.post.fields;
-
-            this.api.post(this.post.url, data).then((data) => {
+            this.api.post(this.post.url, this.post.fields).then((data) => {
                 expect(data).toEqual(this.post.OK.response_data);
             });
 

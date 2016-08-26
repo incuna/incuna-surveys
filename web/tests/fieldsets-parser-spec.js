@@ -124,7 +124,7 @@ describe('FieldsetParserService', function () {
 
     describe('parseData model object', function () {
         it('should be an Object', function () {
-            expect(this.dataModel).toEqual(jasmine.any(Object));
+            expect(this.dataModel).toEqual(jasmine.any(Array));
         });
 
         it('should create as many elements as there are keys', function () {
