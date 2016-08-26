@@ -22,25 +22,36 @@ module.directive('surveysForm', [
         return {
             restrict: 'A',
             scope: {
-                getUrl: '=',
-                postUrl: '='
+                formUrl: '=',
+                responseUrl: '='
             },
             templateUrl: 'templates/incuna-surveys/survey-form.html',
             link: function ($scope) {
-                $scope.form = {}
-                $scope.$watch('getUrl', (url) => {
+                $scope.$watch('formUrl', (url) => {
                     if (url) {
                         API.getForm(url).then(function (structure) {
                             $scope.fields = FieldsetParser.parseFields(structure);
-                            $scope.model = FieldsetParser.parseModel(structure);
+                            // Only set the empty model if the model has not
+                            // been set.
+                            if (Object.keys($scope.model).length === 0) {
+                                $scope.model = FieldsetParser.parseModel(structure);
+                            }
+                        });
+                    }
+                });
+
+                $scope.$watch('responseUrl', (url) => {
+                    if (url) {
+                        API.get(url).then(function (data) {
+                            $scope.model = FieldsetParser.parseData(data);
                         });
                     }
                 });
 
                 $scope.submit = () => {
-                    if ($scope.postUrl) {
+                    if ($scope.responseUrl) {
                         // TODO: Handle errors.
-                        API.post($scope.postUrl, $scope.model);
+                        API.post($scope.responseUrl, $scope.model);
                     }
                 }
 

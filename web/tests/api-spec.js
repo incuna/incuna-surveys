@@ -12,6 +12,7 @@ describe('api service', function () {
         });
 
         this.post = fixture.load('forms/pk/respond/post.json')
+        this.get = fixture.load('forms/pk/respond/user_id/get.json')
 
         this.$httpBackend.when('GET', 'localhost:8000/forms')
             .respond(fixture.load('forms/get.json').OK.response_data);
@@ -19,6 +20,9 @@ describe('api service', function () {
         this.$httpBackend.when('GET', 'http://localhost:8000/forms/1')
             .respond(fixture.load('forms/pk/get.json').OK.response_data);
 
+        this.$httpBackend.when('GET', this.get.url)
+            .respond(this.get.OK.response_data);
+        
         this.$httpBackend.when('POST', this.post.url)
             .respond(this.post.OK.response_data);
         
@@ -57,6 +61,19 @@ describe('api service', function () {
             this.$httpBackend.flush();
         });
         
+    });
+
+    describe('get', function () {
+        it('should return a promise with the data from the api', function () {
+            const url = 'http://localhost:8000/forms/1';
+
+            this.api.getForm(this.get.url).then((data) => {
+                expect(data).toEqual(this.get.OK.response_data);
+            });
+
+            this.$rootScope.$digest();
+            this.$httpBackend.flush();
+        });
     });
 
     describe('post', function () {

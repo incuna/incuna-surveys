@@ -3,6 +3,7 @@ describe('FieldsetParserService', function () {
     beforeEach(function () {
         fixture.setBase('tests/api-description');
         this.fieldset = fixture.load('forms/pk/get.json').OK.response_data;
+        this.data = fixture.load('forms/pk/respond/user_id/get.json').OK.response_data;
 
         angular.module('formly', []);
         angular.mock.module({
@@ -17,7 +18,8 @@ describe('FieldsetParserService', function () {
         });
 
         this.result = this.Parser.parseFields(this.fieldset);
-        this.model = this.Parser.parseModel(this.fieldset);
+        this.emptyModel = this.Parser.parseModel(this.fieldset);
+        this.dataModel = this.Parser.parseData(this.data);
     });
 
     describe('parseFieldsets method return array', function () {
@@ -92,32 +94,59 @@ describe('FieldsetParserService', function () {
 
     });
 
-    describe('model object', function () {
+    describe('parseModel model object', function () {
 
         it('should be an Array', function () {
-            expect(this.model).toEqual(jasmine.any(Array));
+            expect(this.emptyModel).toEqual(jasmine.any(Array));
         });
 
         it('should create as many elements as there are fieldsets', function () {
-            expect(this.model.length).toBe(3);
+            expect(this.emptyModel.length).toBe(3);
         });
 
         describe('each fieldset', function () {
             
             it('should have a proper 1-based number', function () {
-                expect(this.model[0].fieldset).toBe(1);
-                expect(this.model[1].fieldset).toBe(2);
-                expect(this.model[2].fieldset).toBe(3);
+                expect(this.emptyModel[0].fieldset).toBe(1);
+                expect(this.emptyModel[1].fieldset).toBe(2);
+                expect(this.emptyModel[2].fieldset).toBe(3);
             });
 
             it('should have an empty answers object', function () {
-                expect(this.model[0].answers).toEqual({});
-                expect(this.model[1].answers).toEqual({});
-                expect(this.model[2].answers).toEqual({});
+                expect(this.emptyModel[0].answers).toEqual({});
+                expect(this.emptyModel[1].answers).toEqual({});
+                expect(this.emptyModel[2].answers).toEqual({});
             });
             
         });
         
+    });
+
+    describe('parseData model object', function () {
+        it('should be an Object', function () {
+            expect(this.dataModel).toEqual(jasmine.any(Object));
+        });
+
+        it('should create as many elements as there are keys', function () {
+            expect(this.dataModel.length).toBe(3);
+        });
+
+        describe('each fieldset', function () {
+            
+            it('should have a proper 1-based number', function () {
+                expect(this.dataModel[0].fieldset).toBe('1');
+                expect(this.dataModel[1].fieldset).toBe('2');
+                expect(this.dataModel[2].fieldset).toBe('3');
+            });
+
+            it('should have answers object', function () {
+                expect(this.dataModel[0].answers).toEqual(this.data[1]);
+                expect(this.dataModel[1].answers).toEqual(this.data[2]);
+                expect(this.dataModel[2].answers).toEqual(this.data[3]);
+            });
+
+        });
+
     });
     
 });

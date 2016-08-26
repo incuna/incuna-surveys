@@ -28,25 +28,36 @@ _module.directive('surveysForm', [_api2.default.componentName, _fieldsetsParser2
     return {
         restrict: 'A',
         scope: {
-            getUrl: '=',
-            postUrl: '='
+            formUrl: '=',
+            responseUrl: '='
         },
         templateUrl: 'templates/incuna-surveys/survey-form.html',
         link: function link($scope) {
-            $scope.form = {};
-            $scope.$watch('getUrl', function (url) {
+            $scope.$watch('formUrl', function (url) {
                 if (url) {
                     API.getForm(url).then(function (structure) {
                         $scope.fields = FieldsetParser.parseFields(structure);
-                        $scope.model = FieldsetParser.parseModel(structure);
+                        // Only set the empty model if the model has not
+                        // been set.
+                        if (Object.keys($scope.model).length === 0) {
+                            $scope.model = FieldsetParser.parseModel(structure);
+                        }
+                    });
+                }
+            });
+
+            $scope.$watch('responseUrl', function (url) {
+                if (url) {
+                    API.get(url).then(function (data) {
+                        $scope.model = FieldsetParser.parseData(data);
                     });
                 }
             });
 
             $scope.submit = function () {
-                if ($scope.postUrl) {
+                if ($scope.responseUrl) {
                     // TODO: Handle errors.
-                    API.post($scope.postUrl, $scope.model);
+                    API.post($scope.responseUrl, $scope.model);
                 }
             };
 
@@ -198,6 +209,11 @@ _module.service(moduleProperties.componentName, ['$http', _projectConfig2.defaul
             });
         },
         getForm: function getForm(url) {
+            return $http.get(url).then(function (response) {
+                return response.data;
+            });
+        },
+        get: function get(url) {
             return $http.get(url).then(function (response) {
                 return response.data;
             });
@@ -354,8 +370,21 @@ _module.service(moduleProperties.componentName, [_fieldsConfig2.default.componen
 
         form.fieldsets.forEach(function (fieldset, index) {
             model.push({
-                fieldset: index + 1,
+                fieldset: fieldset.id,
                 answers: {}
+            });
+        });
+
+        return model;
+    };
+
+    this.parseData = function (data) {
+        var model = [];
+
+        Object.keys(data).forEach(function (id, index) {
+            model.push({
+                fieldset: id,
+                answers: data[id]
             });
         });
 

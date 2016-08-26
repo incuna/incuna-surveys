@@ -34,6 +34,10 @@ module.service(moduleProperties.componentName, [
                 return $http.get(url)
                     .then((response) => response.data);
             },
+            get: function (url) {
+                return $http.get(url)
+                    .then((response) => response.data);
+            },
             post: function (url, responses) {
                 const data = {
                     // jscs:disable disallowQuotedKeysInObjects
