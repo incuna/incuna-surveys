@@ -52,7 +52,7 @@ class TestSurveyViews(APIRequestTestCase):
 
     def call_post_view(self, data):
         """Helper method.  Calls the post view with the specified data."""
-        view = views_api.SurveyPostView.as_view()
+        view = views_api.SurveyCreateView.as_view()
         request = self.create_request(method='post', data=data)
         return view(request, pk=self.survey.pk, user_id=self.user_id)
 
@@ -81,14 +81,14 @@ class TestSurveyViews(APIRequestTestCase):
     def test_post_404(self):
         wrong_pk = self.survey.pk + 42
 
-        view = views_api.SurveyPostView.as_view()
+        view = views_api.SurveyCreateView.as_view()
         request = self.create_request(method='post', data={})
 
         with self.assertRaises(Http404):
             view(request, pk=wrong_pk, user_id=self.user_id)
 
 
-class TestSurveyLatestView(APIExampleMixin, APIRequestTestCase):
+class TestSurveyGetLatestCreateView(APIExampleMixin, APIRequestTestCase):
     @classmethod
     def setUpTestData(cls):
         create_api_example_data(cls)
@@ -115,7 +115,7 @@ class TestSurveyLatestView(APIExampleMixin, APIRequestTestCase):
 
     def test_get(self):
         """Test that the view can retrieve a survey and return correct JSON."""
-        view = views_api.SurveyLatestView.as_view()
+        view = views_api.SurveyGetLatestCreateView.as_view()
         request = self.create_request()
         response = view(request, pk=self.survey.pk, user_id=self.user_id)
 
@@ -129,7 +129,7 @@ class TestSurveyLatestView(APIExampleMixin, APIRequestTestCase):
 
     def test_missing_user_id(self):
         """Test that the view deals elegantly with an unrecognised user_id."""
-        view = views_api.SurveyLatestView.as_view()
+        view = views_api.SurveyGetLatestCreateView.as_view()
         request = self.create_request()
         response = view(request, pk=self.survey.pk, user_id='nonsense')
         self.assertEqual(response.data, {})

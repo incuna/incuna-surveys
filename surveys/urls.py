@@ -7,12 +7,12 @@ urlpatterns = [
     url(r'^forms/(?P<pk>\d+)/?$', views_api.SurveyView.as_view(), name='survey-form'),
     url(
         r'^forms/(?P<pk>\d+)/respond/(?P<user_id>[^/]+)/?$',
-        views_api.SurveyPostView.as_view(),
-        name='survey-post',
+        views_api.SurveyGetLatestCreateView.as_view(),
+        name='survey-latest',
     ),
     url(
-        r'^forms/(?P<pk>\d+)/respond/(?P<user_id>[^/]+)/latest/?$',
-        views_api.SurveyLatestView.as_view(),
-        name='survey-latest',
+        r'^forms/(?P<pk>\d+)/respond/(?P<user_id>[^/]+)/create/?$',
+        views_api.SurveyCreateView.as_view(),
+        name='survey-post',
     ),
 ]

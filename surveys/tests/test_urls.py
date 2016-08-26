@@ -18,8 +18,8 @@ class TestAPIUrls(URLTestCase):
         user_id = 'User#20@!_ Id'
         quoted_user_id = 'User%2320@!_%20Id'
         self.assert_url_matches_view(
-            view=views_api.SurveyPostView,
-            expected_url='/forms/{}/respond/{}'.format(self.pk, quoted_user_id),
+            view=views_api.SurveyCreateView,
+            expected_url='/forms/{}/respond/{}/create'.format(self.pk, quoted_user_id),
             url_name='survey-post',
             url_kwargs={'pk': self.pk, 'user_id': user_id},
         )
@@ -28,8 +28,8 @@ class TestAPIUrls(URLTestCase):
         user_id = 'User#20@!_ Id'
         quoted_user_id = 'User%2320@!_%20Id'
         self.assert_url_matches_view(
-            view=views_api.SurveyLatestView,
-            expected_url='/forms/{}/respond/{}/latest'.format(self.pk, quoted_user_id),
+            view=views_api.SurveyGetLatestCreateView,
+            expected_url='/forms/{}/respond/{}'.format(self.pk, quoted_user_id),
             url_name='survey-latest',
             url_kwargs={'pk': self.pk, 'user_id': user_id},
         )

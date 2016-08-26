@@ -12,31 +12,29 @@ class SurveyView(generics.RetrieveAPIView):
     serializer_class = SurveySerializer
 
 
-class SurveyPostView(generics.CreateAPIView):
+class SurveyCreateMixin:
+    def dispatch(self, request, *args, **kwargs):
+        survey_pk = kwargs.get('pk')
+        self.user_id = kwargs.get('user_id')
+        self.survey = get_object_or_404(Survey.objects.all(), pk=survey_pk)
+        return super().dispatch(request, *args, **kwargs)
+
+    def perform_create(self, serializer):
+        serializer.save(survey=self.survey, user_id=self.user_id)
+
+
+class SurveyCreateView(SurveyCreateMixin, generics.CreateAPIView):
     serializer_class = SurveyResponseSerializer
 
-    def dispatch(self, request, *args, **kwargs):
-        survey_pk = kwargs.pop('pk')
-        self.survey = get_object_or_404(Survey.objects.all(), pk=survey_pk)
-        return super().dispatch(request, *args, **kwargs)
 
-    def get_serializer(self, *args, **kwargs):
-        kwargs['data']['survey'] = self.survey.pk
-        kwargs['data']['user_id'] = self.kwargs.pop('user_id')
-        serializer = super().get_serializer(*args, **kwargs)
-        return serializer
-
-
-class SurveyLatestView(generics.ListAPIView):
+class SurveyGetLatestCreateView(
+        SurveyCreateMixin,
+        generics.RetrieveAPIView,
+        generics.CreateAPIView):
+    serializer_class = SurveyResponseSerializer
     queryset = UserResponse.objects.all()
 
-    def dispatch(self, request, *args, **kwargs):
-        survey_pk = kwargs.pop('pk')
-        self.user_id = kwargs.pop('user_id')
-        self.survey = get_object_or_404(Survey.objects.all(), pk=survey_pk)
-        return super().dispatch(request, *args, **kwargs)
-
-    def list(self, request, *args, **kwargs):
+    def get(self, request, *args, **kwargs):
         data = self.get_queryset().latest_for_user(self.survey, self.user_id)
         # Trim down the dictionary returned so it's just {<fieldset_pk>: <answers>}
         for fieldset_pk, entry in data.items():
