@@ -34,7 +34,7 @@ module.directive('surveysForm', [
                             // Only set the empty model if the model has not
                             // been set.
                             if (Object.keys($scope.model).length === 0) {
-                                $scope.model = FieldsetParser.parseModel(structure);
+                                $scope.model = FieldsetParser.parseFormToModel(structure);
                             }
                         });
                     }
@@ -43,7 +43,7 @@ module.directive('surveysForm', [
                 $scope.$watch('responseUrl', (url) => {
                     if (url) {
                         API.get(url).then(function (data) {
-                            $scope.model = FieldsetParser.parseData(data);
+                            $scope.model = FieldsetParser.parseResponseToModel(data);
                         });
                     }
                 });

@@ -40,7 +40,7 @@ _module.directive('surveysForm', [_api2.default.componentName, _fieldsetsParser2
                         // Only set the empty model if the model has not
                         // been set.
                         if (Object.keys($scope.model).length === 0) {
-                            $scope.model = FieldsetParser.parseModel(structure);
+                            $scope.model = FieldsetParser.parseFormToModel(structure);
                         }
                     });
                 }
@@ -49,7 +49,7 @@ _module.directive('surveysForm', [_api2.default.componentName, _fieldsetsParser2
             $scope.$watch('responseUrl', function (url) {
                 if (url) {
                     API.get(url).then(function (data) {
-                        $scope.model = FieldsetParser.parseData(data);
+                        $scope.model = FieldsetParser.parseResponseToModel(data);
                     });
                 }
             });
@@ -365,7 +365,7 @@ _module.service(moduleProperties.componentName, [_fieldsConfig2.default.componen
         return fields;
     };
 
-    this.parseModel = function (form) {
+    this.parseFormToModel = function (form) {
         var model = [];
 
         form.fieldsets.forEach(function (fieldset, index) {
@@ -378,7 +378,7 @@ _module.service(moduleProperties.componentName, [_fieldsConfig2.default.componen
         return model;
     };
 
-    this.parseData = function (data) {
+    this.parseResponseToModel = function (data) {
         var model = [];
 
         Object.keys(data).forEach(function (id, index) {

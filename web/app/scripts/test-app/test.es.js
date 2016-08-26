@@ -19,7 +19,7 @@
                 const form = res.data.OK.response_data;
 
                 this.fields = FieldsetParserService.parseFields(form);
-                this.model = FieldsetParserService.parseModel(form);
+                this.model = FieldsetParserService.parseFormToModel(form);
 
                 // Used by the `survey-form` directive to get the form and post
                 // the data.

@@ -73,7 +73,7 @@ module.service(moduleProperties.componentName, [
 
         };
 
-        this.parseModel = function (form) {
+        this.parseFormToModel = function (form) {
             let model = [];
 
             form.fieldsets.forEach((fieldset, index) => {
@@ -86,7 +86,7 @@ module.service(moduleProperties.componentName, [
             return model;
         }
 
-        this.parseData = function (data) {
+        this.parseResponseToModel = function (data) {
             let model = [];
 
             Object.keys(data).forEach((id, index) => {
