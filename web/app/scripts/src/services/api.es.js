@@ -33,6 +33,19 @@ module.service(moduleProperties.componentName, [
             getForm: function (url) {
                 return $http.get(url)
                     .then((response) => response.data);
+            },
+            get: function (url) {
+                return $http.get(url)
+                    .then((response) => response.data);
+            },
+            post: function (url, responses) {
+                const data = {
+                    // jscs:disable disallowQuotedKeysInObjects
+                    'user_responses': responses
+                    // jscs:enable disallowQuotedKeysInObjects
+                }
+                return $http.post(url, data)
+                    .then((response) => response.data);
             }
         }
     }

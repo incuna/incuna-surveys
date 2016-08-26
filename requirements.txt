@@ -3,6 +3,7 @@ colour-runner==0.0.4
 coverage==4.0.3
 dj-inmemorystorage==1.4.0
 dj-database-url==0.4.0
+django-cors-headers==1.1.0
 django-orderable==4.0.3
 djangorestframework==3.4.3
 factory-boy==2.6.0

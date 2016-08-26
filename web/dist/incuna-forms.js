@@ -8,6 +8,10 @@ exports.moduleProperties = undefined;
 
 var _libraries = require('./../libraries.js');
 
+var _api = require('./../services/api.js');
+
+var _api2 = _interopRequireDefault(_api);
+
 var _fieldsetsParser = require('./../services/fieldsets-parser.js');
 
 var _fieldsetsParser2 = _interopRequireDefault(_fieldsetsParser);
@@ -18,29 +22,53 @@ var moduleProperties = exports.moduleProperties = {
     moduleName: 'incuna-surveys.form-directive'
 };
 
-var _module = _libraries.angular.module(moduleProperties.moduleName, [_fieldsetsParser2.default.moduleName]);
+var _module = _libraries.angular.module(moduleProperties.moduleName, [_api2.default.moduleName, _fieldsetsParser2.default.moduleName]);
 
-_module.directive('surveysForm', [_fieldsetsParser2.default.componentName, function (FieldsetParserService) {
+_module.directive('surveysForm', [_api2.default.componentName, _fieldsetsParser2.default.componentName, function (API, FieldsetParser) {
     return {
         restrict: 'A',
         scope: {
-            formStructure: '='
+            formUrl: '=',
+            responseUrl: '='
         },
-        template: '<formly-form model="model" fields="fields"></formly-form>',
-        link: function link($scope, $element, $attrs) {
-            $scope.$watch('formStructure', function (form) {
-                if (form) {
-                    $scope.fields = FieldsetParserService.parseFields(form);
-                    $scope.model = FieldsetParserService.parseModel(form);
+        templateUrl: 'templates/incuna-surveys/survey-form.html',
+        link: function link($scope) {
+            $scope.$watch('formUrl', function (url) {
+                if (url) {
+                    API.getForm(url).then(function (structure) {
+                        $scope.fields = FieldsetParser.parseFields(structure);
+                        // Only set the empty model if the model has not
+                        // been set.
+                        if (Object.keys($scope.model).length === 0) {
+                            $scope.model = FieldsetParser.parseFormToModel(structure);
+                        }
+                    });
                 }
             });
+
+            $scope.$watch('responseUrl', function (url) {
+                if (url) {
+                    API.get(url).then(function (data) {
+                        $scope.model = FieldsetParser.parseResponseToModel(data);
+                    });
+                }
+            });
+
+            $scope.submit = function () {
+                if ($scope.responseUrl) {
+                    // TODO: Handle errors.
+                    API.post($scope.responseUrl, $scope.model);
+                }
+            };
+
+            $scope.submit();
         }
     };
 }]);
 
 exports.default = moduleProperties;
 
-},{"./../libraries.js":3,"./../services/fieldsets-parser.js":8}],2:[function(require,module,exports){
+},{"./../libraries.js":3,"./../services/api.js":6,"./../services/fieldsets-parser.js":8}],2:[function(require,module,exports){
 angular.module('incuna-surveys-fields.templates', []).run(['$templateCache', function($templateCache) {
   'use strict';
 
@@ -55,7 +83,7 @@ angular.module('incuna-surveys-fields.templates', []).run(['$templateCache', fun
 
 
   $templateCache.put('templates/incuna-surveys/fields/free-text.html',
-    "<div drf-form-field=to.fieldOptions class=text field-id=options.key><input type=text class=text-input id=\"{{ options.key }}\" ng-model=model[to.fieldSetIndex].answers[options.key]></div>"
+    "<div drf-form-field=to.fieldOptions class=text field-id=options.key><input type=text class=text-input id=\"{{ options.key }}\" ng-model=model[to.fieldSetIndex].answers[options.key] ng-required=to.fieldOptions.required></div>"
   );
 
 
@@ -75,7 +103,7 @@ angular.module('incuna-surveys-fields.templates', []).run(['$templateCache', fun
 
 
   $templateCache.put('templates/incuna-surveys/fields/radio.html',
-    "<div drf-form field=to.fieldOptions class=radio><div ng-repeat=\"choice in to.choices\" class=\"checkable radio\"><input type=radio id=\"{{ options.key }}-{{ $index }}\" ng-value=$index ng-model=model[to.fieldSetIndex].answers[options.key]><label for=\"{{ options.key }}-{{ $index }}\">{{ choice }}</label></div></div>"
+    "<div drf-form field=to.fieldOptions class=radio><div ng-repeat=\"choice in to.choices\" class=\"checkable radio\"><input type=radio id=\"{{ options.key }}-{{ $index }}\" ng-value=$index ng-model=model[to.fieldSetIndex].answers[options.key] ng-required=to.fieldOptions.required><label for=\"{{ options.key }}-{{ $index }}\">{{ choice }}</label></div></div>"
   );
 
 }]);
@@ -182,6 +210,21 @@ _module.service(moduleProperties.componentName, ['$http', _projectConfig2.defaul
         },
         getForm: function getForm(url) {
             return $http.get(url).then(function (response) {
+                return response.data;
+            });
+        },
+        get: function get(url) {
+            return $http.get(url).then(function (response) {
+                return response.data;
+            });
+        },
+        post: function post(url, responses) {
+            var data = {
+                // jscs:disable disallowQuotedKeysInObjects
+                'user_responses': responses
+                // jscs:enable disallowQuotedKeysInObjects
+            };
+            return $http.post(url, data).then(function (response) {
                 return response.data;
             });
         }
@@ -322,13 +365,26 @@ _module.service(moduleProperties.componentName, [_fieldsConfig2.default.componen
         return fields;
     };
 
-    this.parseModel = function (form) {
+    this.parseFormToModel = function (form) {
         var model = [];
 
         form.fieldsets.forEach(function (fieldset, index) {
             model.push({
-                fieldset: index + 1,
+                fieldset: fieldset.id,
                 answers: {}
+            });
+        });
+
+        return model;
+    };
+
+    this.parseResponseToModel = function (data) {
+        var model = [];
+
+        Object.keys(data).forEach(function (id, index) {
+            model.push({
+                fieldset: id,
+                answers: data[id]
             });
         });
 
@@ -338,4 +394,6 @@ _module.service(moduleProperties.componentName, [_fieldsConfig2.default.componen
 
 exports.default = moduleProperties;
 
-},{"./../libraries.js":3,"./fields-config.js":7}]},{},[1,2,3,4,5,6,7,8]);
+},{"./../libraries.js":3,"./fields-config.js":7}],9:[function(require,module,exports){
+
+},{}]},{},[1,2,3,4,5,6,7,8,9]);

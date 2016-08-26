@@ -73,13 +73,26 @@ module.service(moduleProperties.componentName, [
 
         };
 
-        this.parseModel = function (form) {
+        this.parseFormToModel = function (form) {
             let model = [];
 
             form.fieldsets.forEach((fieldset, index) => {
                 model.push({
-                    fieldset: index + 1,
+                    fieldset: fieldset.id,
                     answers: {}
+                });
+            });
+
+            return model;
+        }
+
+        this.parseResponseToModel = function (data) {
+            let model = [];
+
+            Object.keys(data).forEach((id, index) => {
+                model.push({
+                    fieldset: id,
+                    answers: data[id]
                 });
             });
 

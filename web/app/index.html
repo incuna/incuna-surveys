@@ -44,7 +44,14 @@
 
             <hr>
             <h2>Surveys form directive:</h2>
-            <div surveys-form form-structure="form.structure"></div>
+            <h5>GET URL:</h5>
+            <input type="text" ng-model="form.getUrl">
+            <h5>POST URL:</h5>
+            <input type="text" ng-model="form.postUrl">
+            <hr>
+
+            <div surveys-form form-url="form.formUrl" response-url="form.responseUrl"></div>
+
         </section>
     </body>
 </html>

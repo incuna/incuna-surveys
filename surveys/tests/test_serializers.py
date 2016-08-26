@@ -20,14 +20,17 @@ class TestSerializers(APIExampleMixin, APIRequestTestCase):
 
     def test_post(self):
         data = self.api_example_data('/forms/pk/respond', 'post')['fields']
-        data['survey'] = self.survey.pk
 
         # Assert that we pass validation.
         serializer = serializers.SurveyResponseSerializer(data=data)
         self.assertTrue(serializer.is_valid(), serializer.errors)
 
+        validated_data = serializer.validated_data
+        validated_data['survey'] = self.survey
+        validated_data['user_id'] = 'User#20#'
+
         # Assert that one response per fieldset is created.
-        serializer.create(serializer.validated_data)
+        serializer.create(validated_data)
         self.assertEqual(models.UserResponse.objects.count(), 3)
 
         # Assert enough detail about one of the responses to verify the data has been

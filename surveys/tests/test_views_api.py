@@ -15,6 +15,8 @@ from ..serializers import SurveySerializer
 
 
 class TestSurveyViews(APIRequestTestCase):
+    user_id = 'User#20#'
+
     @classmethod
     def setUpTestData(cls):
         create_survey_data(cls)
@@ -40,7 +42,6 @@ class TestSurveyViews(APIRequestTestCase):
     def get_post_data(self):
         """Helper method.  Produces suitable POST data."""
         return {
-            'user_id': 'User#20#',
             'user_responses': [
                 {
                     'fieldset': 1,
@@ -51,9 +52,9 @@ class TestSurveyViews(APIRequestTestCase):
 
     def call_post_view(self, data):
         """Helper method.  Calls the post view with the specified data."""
-        view = views_api.SurveyPostView.as_view()
+        view = views_api.SurveyCreateView.as_view()
         request = self.create_request(method='post', data=data)
-        return view(request, pk=self.survey.pk)
+        return view(request, pk=self.survey.pk, user_id=self.user_id)
 
     def test_post_response(self):
         """Test that the view can retrieve a survey and return correct JSON."""
@@ -63,7 +64,7 @@ class TestSurveyViews(APIRequestTestCase):
 
         # Assert the UserResponse object was created correctly.
         user_response = UserResponse.objects.first()
-        self.assertEqual(user_response.user_id, data['user_id'])
+        self.assertEqual(user_response.user_id, self.user_id)
         self.assertEqual(user_response.answers, data['user_responses'][0]['answers'])
 
     def test_post_object_created(self):
@@ -74,20 +75,20 @@ class TestSurveyViews(APIRequestTestCase):
 
         # Assert the UserResponse object was created correctly.
         user_response = UserResponse.objects.first()
-        self.assertEqual(user_response.user_id, data['user_id'])
+        self.assertEqual(user_response.user_id, self.user_id)
         self.assertEqual(user_response.answers, data['user_responses'][0]['answers'])
 
     def test_post_404(self):
         wrong_pk = self.survey.pk + 42
 
-        view = views_api.SurveyPostView.as_view()
+        view = views_api.SurveyCreateView.as_view()
         request = self.create_request(method='post', data={})
 
         with self.assertRaises(Http404):
-            view(request, pk=wrong_pk)
+            view(request, pk=wrong_pk, user_id=self.user_id)
 
 
-class TestSurveyLatestView(APIExampleMixin, APIRequestTestCase):
+class TestSurveyGetLatestCreateView(APIExampleMixin, APIRequestTestCase):
     @classmethod
     def setUpTestData(cls):
         create_api_example_data(cls)
@@ -114,7 +115,7 @@ class TestSurveyLatestView(APIExampleMixin, APIRequestTestCase):
 
     def test_get(self):
         """Test that the view can retrieve a survey and return correct JSON."""
-        view = views_api.SurveyLatestView.as_view()
+        view = views_api.SurveyGetLatestCreateView.as_view()
         request = self.create_request()
         response = view(request, pk=self.survey.pk, user_id=self.user_id)
 
@@ -128,7 +129,7 @@ class TestSurveyLatestView(APIExampleMixin, APIRequestTestCase):
 
     def test_missing_user_id(self):
         """Test that the view deals elegantly with an unrecognised user_id."""
-        view = views_api.SurveyLatestView.as_view()
+        view = views_api.SurveyGetLatestCreateView.as_view()
         request = self.create_request()
         response = view(request, pk=self.survey.pk, user_id='nonsense')
         self.assertEqual(response.data, {})

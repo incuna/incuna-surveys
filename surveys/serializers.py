@@ -74,11 +74,9 @@ class UserResponseSerializer(serializers.ModelSerializer):
 class SurveyResponseSerializer(serializers.Serializer):
     """Serializer for a user's answers to a whole survey."""
     user_responses = UserResponseSerializer(many=True)
-    survey = serializers.PrimaryKeyRelatedField(queryset=models.Survey.objects.all())
-    user_id = serializers.CharField()
 
     class Meta:
-        fields = ['survey', 'user_id', 'user_responses']
+        fields = ['user_responses']
 
     def create(self, validated_data):
         """
@@ -93,7 +91,6 @@ class SurveyResponseSerializer(serializers.Serializer):
         """
         response_data = validated_data['user_responses']
         responses = []
-
         for response in response_data:
             response['survey'] = validated_data['survey']
             response['user_id'] = validated_data['user_id']
