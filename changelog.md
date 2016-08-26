@@ -2,7 +2,7 @@
 
 This project uses Semantic Versioning (2.0).
 
-### UPCOMING
+### 0.0.5
 * Add web API.post service to post form data to a url.
 * Update web survey-form to use urls to get the form and get and post response data.
 * Move user_id from the api serializer to the url.
