@@ -21,6 +21,8 @@
                 this.fields = FieldsetParserService.parseFields(form);
                 this.model = FieldsetParserService.parseModel(form);
 
+                // Used by the `survey-form` directive to get the form and post
+                // the data.
                 this.getUrl = 'http://127.0.0.1:8000/forms/1'
                 this.postUrl = 'http://127.0.0.1:8000/forms/1/respond/test-user'
             });

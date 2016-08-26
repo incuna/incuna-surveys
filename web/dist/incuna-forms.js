@@ -34,9 +34,9 @@ _module.directive('surveysForm', [_api2.default.componentName, _fieldsetsParser2
         templateUrl: 'templates/incuna-surveys/survey-form.html',
         link: function link($scope) {
             $scope.form = {};
-            $scope.$watch('getUrl', function (value) {
-                if (value) {
-                    API.getForm(value).then(function (structure) {
+            $scope.$watch('getUrl', function (url) {
+                if (url) {
+                    API.getForm(url).then(function (structure) {
                         $scope.fields = FieldsetParser.parseFields(structure);
                         $scope.model = FieldsetParser.parseModel(structure);
                     });
