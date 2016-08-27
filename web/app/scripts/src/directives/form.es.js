@@ -44,7 +44,7 @@ module.directive('surveysForm', [
                 $scope.$watch('responseUrl', (url) => {
                     if (url) {
                         API.get(url).then(function (data) {
-                            $scope.model = FieldsetParser.parseResponseToModel(data);
+                            $scope.model = data;
                         });
                     }
                 });
@@ -55,8 +55,6 @@ module.directive('surveysForm', [
                         API.post($scope.responseUrl, $scope.model);
                     }
                 }
-
-                $scope.submit();
             }
         };
     }

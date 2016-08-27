@@ -13,6 +13,8 @@ class SurveyView(generics.RetrieveAPIView):
 
 
 class SurveyCreateMixin:
+    serializer_class = SurveyResponseSerializer
+
     def dispatch(self, request, *args, **kwargs):
         survey_pk = kwargs.get('pk')
         self.user_id = kwargs.get('user_id')
@@ -24,14 +26,13 @@ class SurveyCreateMixin:
 
 
 class SurveyCreateView(SurveyCreateMixin, generics.CreateAPIView):
-    serializer_class = SurveyResponseSerializer
+    pass
 
 
 class SurveyGetLatestCreateView(
         SurveyCreateMixin,
         generics.RetrieveAPIView,
         generics.CreateAPIView):
-    serializer_class = SurveyResponseSerializer
     queryset = UserResponse.objects.all()
 
     def get(self, request, *args, **kwargs):
