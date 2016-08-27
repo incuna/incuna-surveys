@@ -9,7 +9,8 @@ export const moduleProperties = {
 
 const module = angular.module(moduleProperties.moduleName, [
     API.moduleName,
-    FieldsetParser.moduleName
+    FieldsetParser.moduleName,
+    'incuna-surveys-form.templates'
 ]);
 
 module.directive('surveysForm', [
@@ -25,7 +26,7 @@ module.directive('surveysForm', [
                 formUrl: '=',
                 responseUrl: '='
             },
-            templateUrl: 'templates/incuna-surveys/survey-form.html',
+            templateUrl: 'templates/incuna-surveys/form/survey-form.html',
             link: function ($scope) {
                 $scope.$watch('formUrl', (url) => {
                     if (url) {

@@ -22,7 +22,7 @@ var moduleProperties = exports.moduleProperties = {
     moduleName: 'incuna-surveys.form-directive'
 };
 
-var _module = _libraries.angular.module(moduleProperties.moduleName, [_api2.default.moduleName, _fieldsetsParser2.default.moduleName]);
+var _module = _libraries.angular.module(moduleProperties.moduleName, [_api2.default.moduleName, _fieldsetsParser2.default.moduleName, 'incuna-surveys-form.templates']);
 
 _module.directive('surveysForm', [_api2.default.componentName, _fieldsetsParser2.default.componentName, function (API, FieldsetParser) {
     return {
@@ -31,7 +31,7 @@ _module.directive('surveysForm', [_api2.default.componentName, _fieldsetsParser2
             formUrl: '=',
             responseUrl: '='
         },
-        templateUrl: 'templates/incuna-surveys/survey-form.html',
+        templateUrl: 'templates/incuna-surveys/form/survey-form.html',
         link: function link($scope) {
             $scope.$watch('formUrl', function (url) {
                 if (url) {
@@ -68,7 +68,7 @@ _module.directive('surveysForm', [_api2.default.componentName, _fieldsetsParser2
 
 exports.default = moduleProperties;
 
-},{"./../libraries.js":3,"./../services/api.js":6,"./../services/fieldsets-parser.js":8}],2:[function(require,module,exports){
+},{"./../libraries.js":4,"./../services/api.js":7,"./../services/fieldsets-parser.js":9}],2:[function(require,module,exports){
 angular.module('incuna-surveys-fields.templates', []).run(['$templateCache', function($templateCache) {
   'use strict';
 
@@ -109,6 +109,16 @@ angular.module('incuna-surveys-fields.templates', []).run(['$templateCache', fun
 }]);
 
 },{}],3:[function(require,module,exports){
+angular.module('incuna-surveys-form.templates', []).run(['$templateCache', function($templateCache) {
+  'use strict';
+
+  $templateCache.put('templates/incuna-surveys/form/survey-form.html',
+    "<form ng-submit=submit()><formly-form model=model fields=fields></formly-form><button type=submit>Submit</button></form>"
+  );
+
+}]);
+
+},{}],4:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -116,7 +126,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 var angular = exports.angular = window.angular;
 
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 'use strict';
 
 var _libraries = require('./libraries.js');
@@ -137,7 +147,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 _libraries.angular.module('incuna-surveys', ['drf-form-field', 'aif-slider-input', 'checklist-model', _fieldsConfig2.default.moduleName, _api2.default.moduleName, _form2.default.moduleName]);
 
-},{"./directives/form.js":1,"./libraries.js":3,"./services/api.js":6,"./services/fields-config.js":7}],5:[function(require,module,exports){
+},{"./directives/form.js":1,"./libraries.js":4,"./services/api.js":7,"./services/fields-config.js":8}],6:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -171,7 +181,7 @@ _module.provider(moduleProperties.componentName, [function () {
 
 exports.default = moduleProperties;
 
-},{"./../libraries.js":3}],6:[function(require,module,exports){
+},{"./../libraries.js":4}],7:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -233,7 +243,7 @@ _module.service(moduleProperties.componentName, ['$http', _projectConfig2.defaul
 
 exports.default = moduleProperties;
 
-},{"./../libraries.js":3,"./../providers/project-config.js":5}],7:[function(require,module,exports){
+},{"./../libraries.js":4,"./../providers/project-config.js":6}],8:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -248,7 +258,7 @@ var moduleProperties = exports.moduleProperties = {
     componentName: 'FieldsConfig'
 };
 
-var _module = _libraries.angular.module(moduleProperties.moduleName, ['formly']);
+var _module = _libraries.angular.module(moduleProperties.moduleName, ['incuna-surveys-fields.templates', 'formly']);
 
 _module.service(moduleProperties.componentName, [function () {
     this.templatesBase = 'templates/incuna-surveys/fields';
@@ -287,7 +297,7 @@ _module.run(['formlyConfig', moduleProperties.componentName, function (formlyCon
 
 exports.default = moduleProperties;
 
-},{"./../libraries.js":3}],8:[function(require,module,exports){
+},{"./../libraries.js":4}],9:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -394,6 +404,4 @@ _module.service(moduleProperties.componentName, [_fieldsConfig2.default.componen
 
 exports.default = moduleProperties;
 
-},{"./../libraries.js":3,"./fields-config.js":7}],9:[function(require,module,exports){
-
-},{}]},{},[1,2,3,4,5,6,7,8,9]);
+},{"./../libraries.js":4,"./fields-config.js":8}]},{},[1,2,3,4,5,6,7,8,9]);
