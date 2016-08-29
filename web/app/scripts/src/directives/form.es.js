@@ -28,6 +28,7 @@ module.directive('surveysForm', [
             },
             templateUrl: 'templates/incuna-surveys/form/survey-form.html',
             link: function ($scope) {
+                $scope.model = {};
                 $scope.$watch('formUrl', (url) => {
                     if (url) {
                         API.getForm(url).then(function (structure) {

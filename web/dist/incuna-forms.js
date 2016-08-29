@@ -33,6 +33,7 @@ _module.directive('surveysForm', [_api2.default.componentName, _fieldsetsParser2
         },
         templateUrl: 'templates/incuna-surveys/form/survey-form.html',
         link: function link($scope) {
+            $scope.model = {};
             $scope.$watch('formUrl', function (url) {
                 if (url) {
                     API.getForm(url).then(function (structure) {
