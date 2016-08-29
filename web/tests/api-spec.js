@@ -11,7 +11,7 @@ describe('api service', function () {
             this.api = API;
         });
 
-        this.post = fixture.load('forms/pk/respond/post.json')
+        this.post = fixture.load('forms/pk/respond/user_id/post.json')
         this.get = fixture.load('forms/pk/respond/user_id/get.json')
 
         this.$httpBackend.when('GET', 'localhost:8000/forms')

@@ -4,7 +4,7 @@ describe('FieldsetParserService', function () {
         fixture.setBase('tests/api-description');
         this.fieldset = fixture.load('forms/pk/get.json').OK.response_data;
         this.data = fixture.load('forms/pk/respond/user_id/get.json').OK.response_data;
-        this.postResponses = fixture.load('forms/pk/respond/post.json').fields.user_responses;
+        this.postResponses = fixture.load('forms/pk/respond/user_id/post.json').fields.user_responses;
 
         angular.module('formly', []);
         angular.mock.module({
@@ -121,7 +121,7 @@ describe('FieldsetParserService', function () {
         it('should be equal to the post data', function () {
             expect(this.parsedResposes).toEqual(this.postResponses);
         });
-        
+
     });
 
 
