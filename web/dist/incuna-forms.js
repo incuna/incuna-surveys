@@ -376,7 +376,7 @@ _module.service(moduleProperties.componentName, [_fieldsConfig2.default.componen
     this.parseFormToModel = function (form) {
         var model = {};
 
-        form.fieldsets.forEach(function (fieldset, index) {
+        form.fieldsets.forEach(function (fieldset) {
             model[fieldset.id] = {};
         });
 
@@ -388,7 +388,7 @@ _module.service(moduleProperties.componentName, [_fieldsConfig2.default.componen
 
         Object.keys(model).forEach(function (id) {
             responses.push({
-                fieldset: id,
+                fieldset: parseInt(id),
                 answers: model[id]
             });
         });

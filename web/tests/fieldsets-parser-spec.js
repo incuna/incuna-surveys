@@ -4,6 +4,7 @@ describe('FieldsetParserService', function () {
         fixture.setBase('tests/api-description');
         this.fieldset = fixture.load('forms/pk/get.json').OK.response_data;
         this.data = fixture.load('forms/pk/respond/user_id/get.json').OK.response_data;
+        this.postResponses = fixture.load('forms/pk/respond/post.json').fields.user_responses;
 
         angular.module('formly', []);
         angular.mock.module({
@@ -19,6 +20,7 @@ describe('FieldsetParserService', function () {
 
         this.result = this.Parser.parseFields(this.fieldset);
         this.emptyModel = this.Parser.parseFormToModel(this.fieldset);
+        this.parsedResposes = this.Parser.parseModelToResponce(this.data);
     });
 
     describe('parseFieldsets method return array', function () {
@@ -95,7 +97,7 @@ describe('FieldsetParserService', function () {
 
     describe('parseFormToModel model object', function () {
 
-        it('should be an Array', function () {
+        it('should be an Object', function () {
             expect(this.emptyModel).toEqual(jasmine.any(Object));
         });
 
@@ -109,5 +111,18 @@ describe('FieldsetParserService', function () {
         });
         
     });
+
+    describe('parseModelToResponce object', function () {
+
+        it('should be an Array', function () {
+            expect(this.parsedResposes).toEqual(jasmine.any(Array));
+        });
+
+        it('should be equal to the post data', function () {
+            expect(this.parsedResposes).toEqual(this.postResponses);
+        });
+        
+    });
+
 
 });
