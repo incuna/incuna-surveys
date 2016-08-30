@@ -2,7 +2,7 @@
 
 This project uses Semantic Versioning (2.0).
 
-### 0.1.0 (Upcoming)
+### 0.1.0
 * Add survey list view.
 * Add optional `start_date` and `end_date` for `Survey`.
 
