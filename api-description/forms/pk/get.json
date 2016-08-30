@@ -6,6 +6,8 @@
         "response_data": {
             "name": "How have you been using the site?",
             "description": "Form description",
+            "start_date": null,
+            "end_date": null,
             "url": "http://localhost:8000/forms/1",
             "fieldsets": [
                 {

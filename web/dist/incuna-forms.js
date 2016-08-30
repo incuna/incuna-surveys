@@ -401,4 +401,6 @@ _module.service(moduleProperties.componentName, [_fieldsConfig2.default.componen
 
 exports.default = moduleProperties;
 
-},{"./../libraries.js":4,"./fields-config.js":8}]},{},[1,2,3,4,5,6,7,8,9]);
+},{"./../libraries.js":4,"./fields-config.js":8}],10:[function(require,module,exports){
+
+},{}]},{},[1,2,3,4,5,6,7,8,9,10]);
