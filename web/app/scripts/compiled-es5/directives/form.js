@@ -21,7 +21,7 @@ var moduleProperties = exports.moduleProperties = {
     moduleName: 'incuna-surveys.form-directive'
 };
 
-var _module = _libraries.angular.module(moduleProperties.moduleName, [_api2.default.moduleName, _fieldsetsParser2.default.moduleName, 'incuna-surveys-form.templates']);
+var _module = _libraries.angular.module(moduleProperties.moduleName, [_api2.default.moduleName, _fieldsetsParser2.default.moduleName]);
 
 _module.directive('surveysForm', [_api2.default.componentName, _fieldsetsParser2.default.componentName, function (API, FieldsetParser) {
     return {

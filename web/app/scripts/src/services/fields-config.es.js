@@ -6,7 +6,6 @@ export const moduleProperties = {
 };
 
 const module = angular.module(moduleProperties.moduleName, [
-    'incuna-surveys-fields.templates',
     'formly'
 ]);
 

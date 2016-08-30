@@ -9,8 +9,7 @@ export const moduleProperties = {
 
 const module = angular.module(moduleProperties.moduleName, [
     API.moduleName,
-    FieldsetParser.moduleName,
-    'incuna-surveys-form.templates'
+    FieldsetParser.moduleName
 ]);
 
 module.directive('surveysForm', [

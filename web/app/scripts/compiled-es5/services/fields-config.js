@@ -12,7 +12,7 @@ var moduleProperties = exports.moduleProperties = {
     componentName: 'FieldsConfig'
 };
 
-var _module = _libraries.angular.module(moduleProperties.moduleName, ['incuna-surveys-fields.templates', 'formly']);
+var _module = _libraries.angular.module(moduleProperties.moduleName, ['formly']);
 
 _module.service(moduleProperties.componentName, [function () {
     this.templatesBase = 'templates/incuna-surveys/fields';

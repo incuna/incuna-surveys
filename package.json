@@ -30,6 +30,8 @@
     "karma-json-fixtures-preprocessor": "0.0.6"
   },
   "files": [
-    "web"
-  ]
+    "web",
+    "import-paths.js"
+  ],
+  "dependencies": {}
 }

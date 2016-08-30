@@ -1,7 +1,7 @@
 describe('surveysForm directive', function() {
     const getResponse = {any: 'Any'};
     const postData = {other: 'Other'};
-    const fields = {thing: 'Thig'}; 
+    const fields = {thing: 'Thing'}; 
     const formUrl = 'http://from-url';
     const responseUrl = 'http://response-url';
 
@@ -14,6 +14,7 @@ describe('surveysForm directive', function() {
                 setType: angular.noop
             }
         });
+        angular.mock.module('incune-surveys-form.templates');
         angular.mock.module('incuna-surveys.form-directive');
 
         inject(function(_$rootScope_, _$compile_, _$q_, _API_, _FieldsParser_) {
