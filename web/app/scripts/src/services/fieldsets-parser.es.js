@@ -49,7 +49,7 @@ module.service(moduleProperties.componentName, [
                         key: field.id,
                         type: field.field_type,
                         templateOptions: {
-                            fieldSetIndex: fieldset.id - 1,
+                            fieldSetId: fieldset.id,
                             choices: field.answers,
                             fieldOptions: {
                                 // jscs:disable disallowQuotedKeysInObjects
@@ -74,30 +74,27 @@ module.service(moduleProperties.componentName, [
         };
 
         this.parseFormToModel = function (form) {
-            let model = [];
+            let model = {};
 
-            form.fieldsets.forEach((fieldset, index) => {
-                model.push({
-                    fieldset: fieldset.id,
-                    answers: {}
-                });
+            form.fieldsets.forEach((fieldset) => {
+                model[fieldset.id] = {};
             });
 
             return model;
-        }
+        };
 
-        this.parseResponseToModel = function (data) {
-            let model = [];
+        this.parseModelToResponse = function (model) {
+            let responses = [];
 
-            Object.keys(data).forEach((id, index) => {
-                model.push({
-                    fieldset: id,
-                    answers: data[id]
+            Object.keys(model).forEach((id) => {
+                responses.push({
+                    fieldset: parseInt(id),
+                    answers: model[id]
                 });
             });
 
-            return model;
-        }
+            return responses;
+        };
     }
 ]);
 

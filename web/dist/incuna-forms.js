@@ -31,8 +31,9 @@ _module.directive('surveysForm', [_api2.default.componentName, _fieldsetsParser2
             formUrl: '=',
             responseUrl: '='
         },
-        templateUrl: 'templates/incuna-surveys/survey-form.html',
+        templateUrl: 'templates/incuna-surveys/form/survey-form.html',
         link: function link($scope) {
+            $scope.model = {};
             $scope.$watch('formUrl', function (url) {
                 if (url) {
                     API.getForm(url).then(function (structure) {
@@ -49,7 +50,7 @@ _module.directive('surveysForm', [_api2.default.componentName, _fieldsetsParser2
             $scope.$watch('responseUrl', function (url) {
                 if (url) {
                     API.get(url).then(function (data) {
-                        $scope.model = FieldsetParser.parseResponseToModel(data);
+                        $scope.model = data;
                     });
                 }
             });
@@ -57,23 +58,22 @@ _module.directive('surveysForm', [_api2.default.componentName, _fieldsetsParser2
             $scope.submit = function () {
                 if ($scope.responseUrl) {
                     // TODO: Handle errors.
-                    API.post($scope.responseUrl, $scope.model);
+                    var responses = FieldsetParser.parseModelToResponse($scope.model);
+                    API.post($scope.responseUrl, responses);
                 }
             };
-
-            $scope.submit();
         }
     };
 }]);
 
 exports.default = moduleProperties;
 
-},{"./../libraries.js":3,"./../services/api.js":6,"./../services/fieldsets-parser.js":8}],2:[function(require,module,exports){
+},{"./../libraries.js":4,"./../services/api.js":7,"./../services/fieldsets-parser.js":9}],2:[function(require,module,exports){
 angular.module('incuna-surveys-fields.templates', []).run(['$templateCache', function($templateCache) {
   'use strict';
 
   $templateCache.put('templates/incuna-surveys/fields/checkbox.html',
-    "<div drf-form-field=to.fieldOptions field-id=options.key class=checkbox><div ng-repeat=\"choice in to.choices\" class=\"checkable checkbox\"><input class=checkbox-input id=\"{{ options.key }}-{{ $index }}\" type=checkbox checklist-model=model[to.fieldSetIndex].answers[options.key] checklist-value=$index><label class=checkbox-label for=\"{{ options.key }}-{{ $index }}\">{{ choice }}</label></div></div>"
+    "<div drf-form-field=to.fieldOptions field-id=options.key class=checkbox><div ng-repeat=\"choice in to.choices\" class=\"checkable checkbox\"><input class=checkbox-input id=\"{{ options.key }}-{{ $index }}\" type=checkbox checklist-model=model[to.fieldSetId][options.key] checklist-value=$index><label class=checkbox-label for=\"{{ options.key }}-{{ $index }}\">{{ choice }}</label></div></div>"
   );
 
 
@@ -83,7 +83,7 @@ angular.module('incuna-surveys-fields.templates', []).run(['$templateCache', fun
 
 
   $templateCache.put('templates/incuna-surveys/fields/free-text.html',
-    "<div drf-form-field=to.fieldOptions class=text field-id=options.key><input type=text class=text-input id=\"{{ options.key }}\" ng-model=model[to.fieldSetIndex].answers[options.key] ng-required=to.fieldOptions.required></div>"
+    "<div drf-form-field=to.fieldOptions class=text field-id=options.key><input type=text class=text-input id=\"{{ options.key }}\" ng-model=model[to.fieldSetId][options.key] ng-required=to.fieldOptions.required></div>"
   );
 
 
@@ -93,22 +93,32 @@ angular.module('incuna-surveys-fields.templates', []).run(['$templateCache', fun
 
 
   $templateCache.put('templates/incuna-surveys/fields/number.html',
-    "<div drf-form-field=to.fieldOptions class=number field-id=options.key><input type=text class=number-input id=\"{{ options.key }}\" ng-model=model[to.fieldSetIndex].answers[options.key]></div>"
+    "<div drf-form-field=to.fieldOptions class=number field-id=options.key><input type=text class=number-input id=\"{{ options.key }}\" ng-model=model[to.fieldSetId][options.key]></div>"
   );
 
 
   $templateCache.put('templates/incuna-surveys/fields/percentage.html',
-    "<div drf-form-field=to.fieldOptions field-id=options.key class=slider><div aif-slider-input model=model[to.fieldSetIndex].answers[options.key] ceiling=100 slider-low-label=0% slider-high-label=100%></div></div>"
+    "<div drf-form-field=to.fieldOptions field-id=options.key class=slider><div aif-slider-input model=model[to.fieldSetId][options.key] ceiling=100 slider-low-label=0% slider-high-label=100%></div></div>"
   );
 
 
   $templateCache.put('templates/incuna-surveys/fields/radio.html',
-    "<div drf-form field=to.fieldOptions class=radio><div ng-repeat=\"choice in to.choices\" class=\"checkable radio\"><input type=radio id=\"{{ options.key }}-{{ $index }}\" ng-value=$index ng-model=model[to.fieldSetIndex].answers[options.key] ng-required=to.fieldOptions.required><label for=\"{{ options.key }}-{{ $index }}\">{{ choice }}</label></div></div>"
+    "<div drf-form field=to.fieldOptions class=radio><div ng-repeat=\"choice in to.choices\" class=\"checkable radio\"><input type=radio id=\"{{ options.key }}-{{ $index }}\" ng-value=$index ng-model=model[to.fieldSetId][options.key] ng-required=to.fieldOptions.required><label for=\"{{ options.key }}-{{ $index }}\">{{ choice }}</label></div></div>"
   );
 
 }]);
 
 },{}],3:[function(require,module,exports){
+angular.module('incuna-surveys-form.templates', []).run(['$templateCache', function($templateCache) {
+  'use strict';
+
+  $templateCache.put('templates/incuna-surveys/form/survey-form.html',
+    "<form ng-submit=submit()><formly-form model=model fields=fields></formly-form><button type=submit>Submit</button></form>"
+  );
+
+}]);
+
+},{}],4:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -116,7 +126,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 var angular = exports.angular = window.angular;
 
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 'use strict';
 
 var _libraries = require('./libraries.js');
@@ -137,7 +147,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 _libraries.angular.module('incuna-surveys', ['drf-form-field', 'aif-slider-input', 'checklist-model', _fieldsConfig2.default.moduleName, _api2.default.moduleName, _form2.default.moduleName]);
 
-},{"./directives/form.js":1,"./libraries.js":3,"./services/api.js":6,"./services/fields-config.js":7}],5:[function(require,module,exports){
+},{"./directives/form.js":1,"./libraries.js":4,"./services/api.js":7,"./services/fields-config.js":8}],6:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -171,7 +181,7 @@ _module.provider(moduleProperties.componentName, [function () {
 
 exports.default = moduleProperties;
 
-},{"./../libraries.js":3}],6:[function(require,module,exports){
+},{"./../libraries.js":4}],7:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -233,7 +243,7 @@ _module.service(moduleProperties.componentName, ['$http', _projectConfig2.defaul
 
 exports.default = moduleProperties;
 
-},{"./../libraries.js":3,"./../providers/project-config.js":5}],7:[function(require,module,exports){
+},{"./../libraries.js":4,"./../providers/project-config.js":6}],8:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -287,7 +297,7 @@ _module.run(['formlyConfig', moduleProperties.componentName, function (formlyCon
 
 exports.default = moduleProperties;
 
-},{"./../libraries.js":3}],8:[function(require,module,exports){
+},{"./../libraries.js":4}],9:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -342,7 +352,7 @@ _module.service(moduleProperties.componentName, [_fieldsConfig2.default.componen
                     key: field.id,
                     type: field.field_type,
                     templateOptions: {
-                        fieldSetIndex: fieldset.id - 1,
+                        fieldSetId: fieldset.id,
                         choices: field.answers,
                         fieldOptions: {
                             // jscs:disable disallowQuotedKeysInObjects
@@ -366,34 +376,31 @@ _module.service(moduleProperties.componentName, [_fieldsConfig2.default.componen
     };
 
     this.parseFormToModel = function (form) {
-        var model = [];
+        var model = {};
 
-        form.fieldsets.forEach(function (fieldset, index) {
-            model.push({
-                fieldset: fieldset.id,
-                answers: {}
-            });
+        form.fieldsets.forEach(function (fieldset) {
+            model[fieldset.id] = {};
         });
 
         return model;
     };
 
-    this.parseResponseToModel = function (data) {
-        var model = [];
+    this.parseModelToResponse = function (model) {
+        var responses = [];
 
-        Object.keys(data).forEach(function (id, index) {
-            model.push({
-                fieldset: id,
-                answers: data[id]
+        Object.keys(model).forEach(function (id) {
+            responses.push({
+                fieldset: parseInt(id),
+                answers: model[id]
             });
         });
 
-        return model;
+        return responses;
     };
 }]);
 
 exports.default = moduleProperties;
 
-},{"./../libraries.js":3,"./fields-config.js":7}],9:[function(require,module,exports){
+},{"./../libraries.js":4,"./fields-config.js":8}],10:[function(require,module,exports){
 
-},{}]},{},[1,2,3,4,5,6,7,8,9]);
+},{}]},{},[1,2,3,4,5,6,7,8,9,10]);

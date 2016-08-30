@@ -4,6 +4,7 @@ describe('FieldsetParserService', function () {
         fixture.setBase('tests/api-description');
         this.fieldset = fixture.load('forms/pk/get.json').OK.response_data;
         this.data = fixture.load('forms/pk/respond/user_id/get.json').OK.response_data;
+        this.postResponses = fixture.load('forms/pk/respond/user_id/post.json').fields.user_responses;
 
         angular.module('formly', []);
         angular.mock.module({
@@ -19,7 +20,7 @@ describe('FieldsetParserService', function () {
 
         this.result = this.Parser.parseFields(this.fieldset);
         this.emptyModel = this.Parser.parseFormToModel(this.fieldset);
-        this.dataModel = this.Parser.parseResponseToModel(this.data);
+        this.parsedResposes = this.Parser.parseModelToResponse(this.data);
     });
 
     describe('parseFieldsets method return array', function () {
@@ -68,7 +69,7 @@ describe('FieldsetParserService', function () {
 
                         expect(field.key).toBe(1);
                         expect(field.type).toBe('free_text');
-                        expect(field.templateOptions.fieldSetIndex).toBe(0);
+                        expect(field.templateOptions.fieldSetId).toBe(1);
                         expect(fieldOptions.required).toBe(true);
                         expect(fieldOptions.label).toBe('How did you discover the site?');
                         expect(fieldOptions.help_text).toBe('Search engine, friend...');
@@ -96,57 +97,32 @@ describe('FieldsetParserService', function () {
 
     describe('parseFormToModel model object', function () {
 
-        it('should be an Array', function () {
-            expect(this.emptyModel).toEqual(jasmine.any(Array));
+        it('should be an Object', function () {
+            expect(this.emptyModel).toEqual(jasmine.any(Object));
         });
 
-        it('should create as many elements as there are fieldsets', function () {
-            expect(this.emptyModel.length).toBe(3);
-        });
-
-        describe('each fieldset', function () {
-            
-            it('should have a proper 1-based number', function () {
-                expect(this.emptyModel[0].fieldset).toBe(1);
-                expect(this.emptyModel[1].fieldset).toBe(2);
-                expect(this.emptyModel[2].fieldset).toBe(3);
-            });
-
-            it('should have an empty answers object', function () {
-                expect(this.emptyModel[0].answers).toEqual({});
-                expect(this.emptyModel[1].answers).toEqual({});
-                expect(this.emptyModel[2].answers).toEqual({});
-            });
-            
+        it('should create three empty fieldsets', function () {
+            const expected = {
+                1: {},
+                2: {},
+                3: {}
+            }
+            expect(this.emptyModel).toEqual(expected);
         });
         
     });
 
-    describe('parseResponseToModel model object', function () {
-        it('should be an Object', function () {
-            expect(this.dataModel).toEqual(jasmine.any(Array));
+    describe('parseModelToResponse object', function () {
+
+        it('should be an Array', function () {
+            expect(this.parsedResposes).toEqual(jasmine.any(Array));
         });
 
-        it('should create as many elements as there are keys', function () {
-            expect(this.dataModel.length).toBe(3);
-        });
-
-        describe('each fieldset', function () {
-            
-            it('should have a proper 1-based number', function () {
-                expect(this.dataModel[0].fieldset).toBe('1');
-                expect(this.dataModel[1].fieldset).toBe('2');
-                expect(this.dataModel[2].fieldset).toBe('3');
-            });
-
-            it('should have answers object', function () {
-                expect(this.dataModel[0].answers).toEqual(this.data[1]);
-                expect(this.dataModel[1].answers).toEqual(this.data[2]);
-                expect(this.dataModel[2].answers).toEqual(this.data[3]);
-            });
-
+        it('should be equal to the post data', function () {
+            expect(this.parsedResposes).toEqual(this.postResponses);
         });
 
     });
-    
+
+
 });

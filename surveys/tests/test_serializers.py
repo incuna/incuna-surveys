@@ -31,7 +31,7 @@ class TestSerializers(APIExampleMixin, APIRequestTestCase):
         self.assertEqual(expected_data, data)
 
     def test_post(self):
-        data = self.api_example_data('/forms/pk/respond', 'post')['fields']
+        data = self.api_example_data('/forms/pk/respond/user_id', 'post')['fields']
 
         # Assert that we pass validation.
         serializer = serializers.SurveyResponseSerializer(data=data)
@@ -53,7 +53,7 @@ class TestSerializers(APIExampleMixin, APIRequestTestCase):
         self.assertEqual(response.answers, {'1': 'Friends'})
 
     def test_post_fail_validation(self):
-        data = self.api_example_data('/forms/pk/respond', 'post')['fields']
+        data = self.api_example_data('/forms/pk/respond/user_id', 'post')['fields']
         data['survey'] = self.survey.pk
 
         # Change the submitted response to the third question so as to make it fail

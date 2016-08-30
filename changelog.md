@@ -2,6 +2,12 @@
 
 This project uses Semantic Versioning (2.0).
 
+### UPCOMING
+* Fix potential frontend bug using fiedset index rather than id.
+* Simplify internal frontend model representation to match api survey response get.
+* Fix survey-form directive import to include template.
+* Move post api_description to match urls.
+
 ### 0.1.0
 * Add survey list view.
 * Add optional `start_date` and `end_date` for `Survey`.
