@@ -8,6 +8,13 @@ class TestAPIUrls(URLTestCase):
     user_id = 'User#20@!_ Id'
     quoted_user_id = 'User%2320@!_%20Id'
 
+    def test_survey_forms(self):
+        self.assert_url_matches_view(
+            view=views_api.SurveyListView,
+            expected_url='/forms',
+            url_name='survey-forms',
+        )
+
     def test_survey_form(self):
         self.assert_url_matches_view(
             view=views_api.SurveyView,

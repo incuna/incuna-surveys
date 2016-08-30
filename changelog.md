@@ -2,6 +2,10 @@
 
 This project uses Semantic Versioning (2.0).
 
+### 0.1.0 (Upcoming)
+* Add survey list view.
+* Add optional `start_date` and `end_date` for `Survey`.
+
 ### 0.0.5
 * Add web API.post service to post form data to a url.
 * Update web survey-form to use urls to get the form and get and post response data.

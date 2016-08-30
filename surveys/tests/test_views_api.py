@@ -14,6 +14,27 @@ from ..models import UserResponse
 from ..serializers import SurveySerializer
 
 
+class TestSurveyListView(APIRequestTestCase):
+    @classmethod
+    def setUpTestData(cls):
+        create_survey_data(cls)
+
+    def test_get(self):
+        """Test that the view can retrieve a survey and return correct JSON."""
+        view = views_api.SurveyListView.as_view()
+        request = self.create_request()
+        response = view(request)
+
+        self.assertEqual(response.status_code, 200)
+
+        expected_data = SurveySerializer(
+            instance=[self.survey],
+            context={'request': request},
+            many=True,
+        ).data
+        self.assertEqual(response.data, expected_data)
+
+
 class TestSurveyViews(APIRequestTestCase):
     user_id = 'User#20#'
 
