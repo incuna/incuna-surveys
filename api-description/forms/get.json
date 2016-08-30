@@ -6,15 +6,73 @@
         "response_data": [
             {
                 "name": "How have you been using the site?",
+                "description": "Form description",
+                "start_date": null,
+                "end_date": null,
                 "url": "http://localhost:8000/forms/1",
-                "start_date": null,
-                "end_date": null
-            },
-            {
-                "name": "Another form",
-                "url": "http://localhost:8000/forms/2",
-                "start_date": null,
-                "end_date": null
+                "fieldsets": [
+                    {
+                        "id": 1,
+                        "name": "Free text field",
+                        "description": "Field group description",
+                        "fields": [
+                            {
+                                "id": 1,
+                                "name": "How did you discover the site?",
+                                "help_text": "Search engine, friend...",
+                                "field_type": "free_text",
+                                "required": true,
+                                "answers": []
+                            }
+                        ]
+                    },
+                    {
+                        "id": 2,
+                        "name": "Numeric fields",
+                        "description": "Some additional text expanding on the above",
+                        "fields": [
+                            {
+                                "id": 2,
+                                "name": "What is the answer to the ultimate question?",
+                                "help_text": "",
+                                "field_type": "number",
+                                "required": false,
+                                "answers": []
+                            },
+                            {
+                                "id": 3,
+                                "name": "How much percentage does it take?",
+                                "help_text": "",
+                                "field_type": "percentage",
+                                "required": true,
+                                "answers": []
+                            }
+                        ]
+                    },
+                    {
+                        "id": 3,
+                        "name": "Choice fields",
+                        "description": "Some additional text expanding on the above",
+                        "fields": [
+                            {
+                                "id": 4,
+                                "name": "How many time do you visit the site per day?",
+                                "help_text": "Choose a valid answer.",
+                                "field_type": "radio",
+                                "required": true,
+                                "answers": ["One time", "Two times", "Three times or more"]
+                            },
+                            {
+                                "id": 5,
+                                "name": "Choose more than one answer.",
+                                "help_text": "",
+                                "field_type": "checkbox",
+                                "required": false,
+                                "answers": ["One time", "Two times", "Three times or more"]
+                            }
+                        ]
+                    }
+                ]
             }
         ]
     }

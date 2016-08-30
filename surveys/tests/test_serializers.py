@@ -18,6 +18,18 @@ class TestSerializers(APIExampleMixin, APIRequestTestCase):
 
         self.assertEqual(expected_data, data)
 
+    def test_get_many(self):
+        """Test the heavily nested SurveySerializer serializes data correctly."""
+        serializer = serializers.SurveySerializer(
+            instance=[self.survey],
+            context={'request': self.create_request(SERVER_NAME='localhost:8000')},
+            many=True,
+        )
+        data = serializer.data
+        expected_data = self.api_example_data('/forms', 'get')['OK']['response_data']
+
+        self.assertEqual(expected_data, data)
+
     def test_post(self):
         data = self.api_example_data('/forms/pk/respond', 'post')['fields']
 

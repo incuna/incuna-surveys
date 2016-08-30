@@ -6,6 +6,11 @@ from .models import Survey, UserResponse
 from .serializers import SurveyResponseSerializer, SurveySerializer
 
 
+class SurveyListView(generics.ListAPIView):
+    queryset = Survey.objects.all()
+    serializer_class = SurveySerializer
+
+
 class SurveyView(generics.RetrieveAPIView):
     """Display a survey to the user."""
     queryset = Survey.objects.all()
