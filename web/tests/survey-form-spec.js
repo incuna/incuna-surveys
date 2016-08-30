@@ -14,7 +14,8 @@ describe('surveysForm directive', function() {
                 setType: angular.noop
             }
         });
-        angular.mock.module('incune-surveys-form.templates');
+        angular.mock.module('incuna-surveys-fields.templates');
+        angular.mock.module('incuna-surveys-form.templates');
         angular.mock.module('incuna-surveys.form-directive');
 
         inject(function(_$rootScope_, _$compile_, _$q_, _API_, _FieldsParser_) {
