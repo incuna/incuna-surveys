@@ -83,7 +83,7 @@ module.service(moduleProperties.componentName, [
             return model;
         };
 
-        this.parseModelToResponce = function (model) {
+        this.parseModelToResponse = function (model) {
             let responses = [];
 
             Object.keys(model).forEach((id) => {

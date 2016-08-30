@@ -20,7 +20,7 @@ describe('FieldsetParserService', function () {
 
         this.result = this.Parser.parseFields(this.fieldset);
         this.emptyModel = this.Parser.parseFormToModel(this.fieldset);
-        this.parsedResposes = this.Parser.parseModelToResponce(this.data);
+        this.parsedResposes = this.Parser.parseModelToResponse(this.data);
     });
 
     describe('parseFieldsets method return array', function () {
@@ -112,7 +112,7 @@ describe('FieldsetParserService', function () {
         
     });
 
-    describe('parseModelToResponce object', function () {
+    describe('parseModelToResponse object', function () {
 
         it('should be an Array', function () {
             expect(this.parsedResposes).toEqual(jasmine.any(Array));

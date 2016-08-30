@@ -50,10 +50,10 @@ module.directive('surveysForm', [
                     }
                 });
 
-                $scope.submit = () => {
+                $scope.submit = function () {
                     if ($scope.responseUrl) {
                         // TODO: Handle errors.
-                        const responses = FieldsetParser.parseModelToResponce($scope.model);
+                        const responses = FieldsetParser.parseModelToResponse($scope.model);
                         API.post($scope.responseUrl, responses);
                     }
                 }
