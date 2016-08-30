@@ -5,4 +5,3 @@ lib
 .coverage
 .coverage.*
 node_modules
-compiled-es5
