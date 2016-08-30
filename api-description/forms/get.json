@@ -6,11 +6,15 @@
         "response_data": [
             {
                 "name": "How have you been using the site?",
-                "url": "http://localhost:8000/forms/1"
+                "url": "http://localhost:8000/forms/1",
+                "start_date": null,
+                "end_date": null
             },
             {
                 "name": "Another form",
-                "url": "http://localhost:8000/forms/2"
+                "url": "http://localhost:8000/forms/2",
+                "start_date": null,
+                "end_date": null
             }
         ]
     }

@@ -25,7 +25,7 @@ class SurveySerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = models.Survey
-        fields = ['name', 'description', 'url', 'fieldsets']
+        fields = ['name', 'description', 'url', 'fieldsets', 'start_date', 'end_date']
         extra_kwargs = {
             'url': {'view_name': 'survey-form'},
         }
