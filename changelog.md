@@ -2,7 +2,7 @@
 
 This project uses Semantic Versioning (2.0).
 
-### 0.2.0 (upcoming)
+### 0.2.0
 * Rename `admin.py` to `base_admin.py`.
 
 ### 0.1.1
