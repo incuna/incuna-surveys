@@ -44,11 +44,3 @@ class SurveyFieldsetOrderingAdmin(OrderableAdmin):
 
 class UserResponseAdmin(OrderableAdmin):
     list_display = ('fieldset', 'user_id')
-
-
-admin.site.register(models.SurveyField, SurveyFieldAdmin)
-admin.site.register(models.SurveyFieldset, SurveyFieldsetAdmin)
-admin.site.register(models.Survey, SurveyAdmin)
-admin.site.register(models.SurveyFieldOrdering, SurveyFieldOrderingAdmin)
-admin.site.register(models.SurveyFieldsetOrdering, SurveyFieldsetOrderingAdmin)
-admin.site.register(models.UserResponse, UserResponseAdmin)
