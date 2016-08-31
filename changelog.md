@@ -2,6 +2,9 @@
 
 This project uses Semantic Versioning (2.0).
 
+### 0.2.0 (upcoming)
+* Rename `admin.py` to `base_admin.py`.
+
 ### 0.1.1
 * Fix potential frontend bug using fiedset index rather than id.
 * Simplify internal frontend model representation to match api survey response get.

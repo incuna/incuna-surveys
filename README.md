@@ -7,6 +7,39 @@ Allows the creation of custom questionnaires and surveys via the admin.
 
 To set the `apiRoot` use `ProjectConfigProvider.setApiRoot()`
 
+## Backend
+
+### Admin
+
+Create an `admin.py` with the following content:
+
+```python
+from django.contrib import admin
+from surveys.base_admin import (
+    SurveyAdmin,
+    SurveyFieldAdmin,
+    SurveyFieldOrderingAdmin,
+    SurveyFieldsetAdmin,
+    SurveyFieldsetOrderingAdmin,
+    UserResponseAdmin,
+)
+from surveys.models import (
+    Survey,
+    SurveyField,
+    SurveyFieldOrdering,
+    SurveyFieldset,
+    SurveyFieldsetOrdering,
+    UserResponse,
+)
+
+admin.site.register(models.SurveyField, SurveyFieldAdmin)
+admin.site.register(models.SurveyFieldset, SurveyFieldsetAdmin)
+admin.site.register(models.Survey, SurveyAdmin)
+admin.site.register(models.SurveyFieldOrdering, SurveyFieldOrderingAdmin)
+admin.site.register(models.SurveyFieldsetOrdering, SurveyFieldsetOrderingAdmin)
+admin.site.register(models.UserResponse, UserResponseAdmin)
+```
+
 # Development
 
 ## Frontend
