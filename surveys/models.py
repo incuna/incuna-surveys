@@ -221,8 +221,8 @@ class UserResponse(models.Model):
     AUTH_USER_MODEL.  This is in order to support anonymous surveys, where users don't
     have to register, and might be identified by a session ID instead.
     """
-    fieldset = models.ForeignKey(SurveyFieldset)
     survey = models.ForeignKey(Survey)
+    fieldset = models.ForeignKey(SurveyFieldset)
     user_id = models.CharField(max_length=255)
     date_created = models.DateTimeField(default=timezone.now)
     answers = JSONField()
