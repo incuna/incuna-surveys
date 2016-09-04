@@ -2,6 +2,10 @@
 
 This project uses Semantic Versioning (2.0).
 
+### UPCOMING
+
+* Add default `sort_order` ordering to Orderable models.
+
 ### 0.2.0
 * Rename `admin.py` to `base_admin.py`.
 

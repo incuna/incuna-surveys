@@ -99,7 +99,7 @@ class SurveyFieldOrdering(Orderable):
     field = models.ForeignKey(SurveyField, on_delete=models.CASCADE)
     fieldset = models.ForeignKey(SurveyFieldset, on_delete=models.CASCADE)
 
-    class Meta:
+    class Meta(Orderable.Meta):
         unique_together = ('field', 'fieldset')
 
 
@@ -111,7 +111,7 @@ class SurveyFieldsetOrdering(Orderable):
     fieldset = models.ForeignKey(SurveyFieldset, on_delete=models.CASCADE)
     survey = models.ForeignKey(Survey, on_delete=models.CASCADE)
 
-    class Meta:
+    class Meta(Orderable.Meta):
         unique_together = ('survey', 'fieldset')
 
 
