@@ -28,8 +28,8 @@ describe('surveysForm directive', function() {
             this.scope.formUrl = formUrl;
             this.scope.responseUrl = responseUrl;
         })
-        this.compileDirective = function () {
-            const tpl = '<div surveys-form form-url="formUrl" response-url="responseUrl"></div>';
+        this.tpl = '<div surveys-form form-url="formUrl" response-url="responseUrl"></div>';
+        this.compileDirective = function (tpl) {
             this.elm = this.$compile(tpl)(this.scope);
             this.scope.$digest();
         };
@@ -49,7 +49,7 @@ describe('surveysForm directive', function() {
 
     describe('initialisation', function() {
         beforeEach(function() {
-            this.compileDirective();
+            this.compileDirective(this.tpl);
         });
 
         it('should produce 1 form and a button', function() {
@@ -88,9 +88,9 @@ describe('surveysForm directive', function() {
 
     describe('submit', function() {
         beforeEach(function() {
-            this.compileDirective();
+            this.compileDirective(this.tpl);
             spyOn(this.FieldsParser, 'parseModelToResponse').and.returnValue(postData);
-            spyOn(this.API, 'post');
+            spyOn(this.API, 'post').and.returnValue(this.$q.defer().promise);
 
             this.elm.isolateScope().submit();
         });
@@ -99,6 +99,40 @@ describe('surveysForm directive', function() {
         });
         it('should API.post with the responseUrl and the post data', function() {
             expect(this.API.post).toHaveBeenCalledWith(responseUrl, postData)
+        });
+    });
+
+    describe('submit success', function() {
+        beforeEach(function() {
+            this.scope.mySubmit = jasmine.createSpy('mySubmit');
+            this.scope.myFailure = jasmine.createSpy('myFailure');
+            const tpl = '<div surveys-form form-url="formUrl" response-url="responseUrl" on-success="mySubmit()" on-failure="myFailure()"></div>';
+            this.compileDirective(tpl);
+
+            spyOn(this.FieldsParser, 'parseModelToResponse').and.returnValue(postData);
+
+            this.isolated = this.elm.isolateScope()
+        });
+        it('should be defiend', function() {
+            expect(this.isolated.onSuccess).toBeDefined();
+        });
+        it('should call the success callback if the post succeeds', function() {
+            const responseDefer = this.$q.defer();
+            responseDefer.resolve(postData);
+            spyOn(this.API, 'post').and.returnValue(responseDefer.promise);
+            this.isolated.submit();
+            expect(this.API.post).toHaveBeenCalledWith(responseUrl, postData)
+            this.scope.$digest();
+            expect(this.scope.mySubmit).toHaveBeenCalledWith();
+        });
+        it('should call the failure callback if the post fails', function() {
+            const responseDefer = this.$q.defer();
+            responseDefer.reject();
+            spyOn(this.API, 'post').and.returnValue(responseDefer.promise);
+            this.isolated.submit();
+            expect(this.API.post).toHaveBeenCalledWith(responseUrl, postData)
+            this.scope.$digest();
+            expect(this.scope.myFailure).toHaveBeenCalledWith();
         });
     });
     

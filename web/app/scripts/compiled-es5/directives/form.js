@@ -28,37 +28,39 @@ _module.directive('surveysForm', [_api2.default.componentName, _fieldsetsParser2
         restrict: 'A',
         scope: {
             formUrl: '=',
-            responseUrl: '='
+            responseUrl: '=',
+            onSuccess: '&',
+            onFailure: '&'
         },
         templateUrl: 'templates/incuna-surveys/form/survey-form.html',
-        link: function link($scope) {
-            $scope.model = {};
-            $scope.$watch('formUrl', function (url) {
+        link: function link(scope) {
+            scope.model = {};
+            scope.$watch('formUrl', function (url) {
                 if (url) {
                     API.getForm(url).then(function (structure) {
-                        $scope.fields = FieldsetParser.parseFields(structure);
+                        scope.fields = FieldsetParser.parseFields(structure);
                         // Only set the empty model if the model has not
                         // been set.
-                        if (Object.keys($scope.model).length === 0) {
-                            $scope.model = FieldsetParser.parseFormToModel(structure);
+                        if (Object.keys(scope.model).length === 0) {
+                            scope.model = FieldsetParser.parseFormToModel(structure);
                         }
                     });
                 }
             });
 
-            $scope.$watch('responseUrl', function (url) {
+            scope.$watch('responseUrl', function (url) {
                 if (url) {
                     API.get(url).then(function (data) {
-                        $scope.model = data;
+                        scope.model = data;
                     });
                 }
             });
 
-            $scope.submit = function () {
-                if ($scope.responseUrl) {
+            scope.submit = function () {
+                if (scope.responseUrl) {
                     // TODO: Handle errors.
-                    var responses = FieldsetParser.parseModelToResponse($scope.model);
-                    API.post($scope.responseUrl, responses);
+                    var responses = FieldsetParser.parseModelToResponse(scope.model);
+                    API.post(scope.responseUrl, responses).then(scope.onSuccess).catch(scope.onFailure);
                 }
             };
         }

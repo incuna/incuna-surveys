@@ -11,6 +11,9 @@
             FieldsetParserService,
             $http
         ) {
+            this.doSubmit = function () {
+                alert('You Saved!!!');
+            }
 
             $http({
                 method: 'GET',
