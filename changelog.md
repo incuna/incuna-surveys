@@ -2,7 +2,7 @@
 
 This project uses Semantic Versioning (2.0).
 
-### UPCOMING
+### 0.2.1
 
 * Add default `sort_order` ordering to Orderable models.
 * Add admin fields and filtering.
