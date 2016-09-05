@@ -53,6 +53,7 @@ _module.service(moduleProperties.componentName, [_fieldsConfig2.default.componen
                     type: field.field_type,
                     templateOptions: {
                         fieldSetId: fieldset.id,
+                        autoId: 'id-' + fieldset.id + '-' + field.id,
                         choices: field.answers,
                         fieldOptions: {
                             // jscs:disable disallowQuotedKeysInObjects

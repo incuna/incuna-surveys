@@ -2,6 +2,11 @@
 
 This project uses Semantic Versioning (2.0).
 
+### UPCOMING
+
+* Escape twig templates.
+* Ensure field ids are unique across fieldsets.
+
 ### 0.2.0
 * Rename `admin.py` to `base_admin.py`.
 
