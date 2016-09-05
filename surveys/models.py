@@ -99,7 +99,7 @@ class SurveyFieldOrdering(Orderable):
     field = models.ForeignKey(SurveyField, on_delete=models.CASCADE)
     fieldset = models.ForeignKey(SurveyFieldset, on_delete=models.CASCADE)
 
-    class Meta:
+    class Meta(Orderable.Meta):
         unique_together = ('field', 'fieldset')
 
 
@@ -111,7 +111,7 @@ class SurveyFieldsetOrdering(Orderable):
     fieldset = models.ForeignKey(SurveyFieldset, on_delete=models.CASCADE)
     survey = models.ForeignKey(Survey, on_delete=models.CASCADE)
 
-    class Meta:
+    class Meta(Orderable.Meta):
         unique_together = ('survey', 'fieldset')
 
 
@@ -221,8 +221,8 @@ class UserResponse(models.Model):
     AUTH_USER_MODEL.  This is in order to support anonymous surveys, where users don't
     have to register, and might be identified by a session ID instead.
     """
-    fieldset = models.ForeignKey(SurveyFieldset)
     survey = models.ForeignKey(Survey)
+    fieldset = models.ForeignKey(SurveyFieldset)
     user_id = models.CharField(max_length=255)
     date_created = models.DateTimeField(default=timezone.now)
     answers = JSONField()

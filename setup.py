@@ -6,7 +6,9 @@ setup(
     name='incuna-surveys',
     packages=find_packages(),
     include_package_data=True,
-    install_requires=[],
+    install_requires=[
+        'django-orderable==4.0.4',
+    ],
     description=(
         'Allows the creation of custom questionnaires and surveys via the Django admin.'
     ),

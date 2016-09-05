@@ -4,6 +4,8 @@ This project uses Semantic Versioning (2.0).
 
 ### UPCOMING
 
+* Add default `sort_order` ordering to Orderable models.
+* Add admin fields and filtering.
 * Escape twig templates.
 * Ensure field ids are unique across fieldsets.
 
