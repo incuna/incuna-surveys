@@ -2,7 +2,7 @@
 
 This project uses Semantic Versioning (2.0).
 
-### Upcoming
+### 0.4.0
 * Add `not-empty` class to field wrapper, for styling purposes.
 * Add classes to fieldset header
 * Remove field-id from checkbox and slider template
