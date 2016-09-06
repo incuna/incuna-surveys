@@ -38,6 +38,20 @@ class TestSurveyFieldset(TestCase):
         fieldset = self.factory.create()
         self.assertEqual(str(fieldset), fieldset.name)
 
+    def test_get_ordered_fields(self):
+        fieldset = self.factory.create()
+        second = factories.SurveyFieldOrderingFactory.create(
+            fieldset=fieldset,
+            sort_order=2,
+        ).field
+        first = factories.SurveyFieldOrderingFactory.create(
+            fieldset=fieldset,
+            sort_order=1,
+        ).field
+
+        self.assertCountEqual(fieldset.fields.all(), [second, first])
+        self.assertCountEqual(fieldset.get_ordered_fields(), [first, second])
+
 
 class TestSurvey(TestCase):
     model = models.Survey
@@ -51,6 +65,20 @@ class TestSurvey(TestCase):
         survey = self.factory.create()
         expected_url = drf_reverse('survey-form', kwargs={'pk': survey.pk})
         self.assertEqual(survey.get_api_url(), expected_url)
+
+    def test_get_ordered_fieldsets(self):
+        survey = self.factory.create()
+        second = factories.SurveyFieldsetOrderingFactory.create(
+            survey=survey,
+            sort_order=2,
+        ).fieldset
+        first = factories.SurveyFieldsetOrderingFactory.create(
+            survey=survey,
+            sort_order=1,
+        ).fieldset
+
+        self.assertCountEqual(survey.fieldsets.all(), [second, first])
+        self.assertCountEqual(survey.get_ordered_fieldsets(), [first, second])
 
 
 class TestUserResponse(TestCase):

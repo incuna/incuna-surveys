@@ -12,7 +12,7 @@ class SurveyFieldSerializer(serializers.ModelSerializer):
 
 class SurveyFieldsetSerializer(serializers.ModelSerializer):
     """A complete fieldset.  Nested into SurveySerializer but also works alone."""
-    fields = SurveyFieldSerializer(many=True)
+    fields = SurveyFieldSerializer(source='get_ordered_fields', many=True)
 
     class Meta:
         model = models.SurveyFieldset
@@ -21,7 +21,7 @@ class SurveyFieldsetSerializer(serializers.ModelSerializer):
 
 class SurveySerializer(serializers.HyperlinkedModelSerializer):
     """Serializer for a full survey."""
-    fieldsets = SurveyFieldsetSerializer(many=True)
+    fieldsets = SurveyFieldsetSerializer(source='get_ordered_fieldsets', many=True)
 
     class Meta:
         model = models.Survey
