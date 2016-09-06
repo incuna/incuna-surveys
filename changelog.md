@@ -2,7 +2,7 @@
 
 This project uses Semantic Versioning (2.0).
 
-### UPCOMING
+### 0.3.0
 * Add surveys-form directive on-success and on-failure callbacks
 
 ### 0.2.1
