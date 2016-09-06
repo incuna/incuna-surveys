@@ -2,6 +2,9 @@
 
 This project uses Semantic Versioning (2.0).
 
+### UPCOMING
+* Add surveys-form directive on-success and on-failure callbacks
+
 ### 0.2.1
 
 * Add default `sort_order` ordering to Orderable models.
