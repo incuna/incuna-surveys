@@ -2,6 +2,10 @@
 
 This project uses Semantic Versioning (2.0).
 
+### Upcoming
+* Add `not-empty` class to field wrapper, for styling purposes.
+* Add classes to fieldset header
+
 ### 0.3.0
 * Add surveys-form directive on-success and on-failure callbacks
 
