@@ -30,22 +30,12 @@ _module.service(moduleProperties.componentName, [_fieldsConfig2.default.componen
     this.parseFields = function (form) {
         var fields = [];
 
-        fields[0] = {
-            templateUrl: FieldsConfig.headerTemplateUrl,
-            templateOptions: {
-                formName: form.name,
-                formDescription: form.description
-            }
-        };
-
         form.fieldsets.forEach(function (fieldset) {
-            var fieldGroup = [{
-                templateUrl: FieldsConfig.fieldsetHeaderTemplateUrl,
-                templateOptions: {
-                    fieldGroupName: fieldset.name,
-                    fieldGroupDesc: fieldset.description
-                }
-            }];
+            var fieldGroup = {
+                wrapper: 'panel',
+                templateOptions: fieldset,
+                fieldGroup: []
+            };
 
             fieldset.fields.forEach(function (field) {
                 var fieldObject = {
@@ -65,12 +55,10 @@ _module.service(moduleProperties.componentName, [_fieldsConfig2.default.componen
                     }
                 };
 
-                fieldGroup.push(fieldObject);
+                fieldGroup.fieldGroup.push(fieldObject);
             });
 
-            fields.push({
-                fieldGroup: fieldGroup
-            });
+            fields.push(fieldGroup);
         });
 
         return fields;

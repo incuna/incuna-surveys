@@ -39,6 +39,7 @@ _module.directive('surveysForm', [_api2.default.componentName, _fieldsetsParser2
             scope.$watch('formUrl', function (url) {
                 if (url) {
                     API.getForm(url).then(function (structure) {
+                        scope.form = structure;
                         scope.fields = FieldsetParser.parseFields(structure);
                         // Only set the empty model if the model has not
                         // been set.
@@ -75,37 +76,37 @@ angular.module('incuna-surveys-fields.templates', []).run(['$templateCache', fun
   'use strict';
 
   $templateCache.put('templates/incuna-surveys/fields/checkbox.html',
-    "<div drf-form-field=to.fieldOptions field-id=options.key class=checkbox><div ng-repeat=\"choice in to.choices\" class=\"checkable checkbox\">{% raw %} <input class=checkbox-input id=\"{{ to.autoId }}-{{ $index }}\" type=checkbox checklist-model=model[to.fieldSetId][options.key] checklist-value=$index><label class=checkbox-label for=\"{{ to.autoId }}-{{ $index }}\" ng-bind=choice></label>{% endraw %}</div></div>"
-  );
-
-
-  $templateCache.put('templates/incuna-surveys/fields/fieldset-header.html',
-    "<h3 ng-bind=to.fieldGroupName></h3><h4 ng-bind=to.fieldGroupDesc></h4>"
+    "<div drf-form-field=to.fieldOptions class=checkbox><div ng-repeat=\"choice in to.choices\" class=\"checkable checkbox\">{% raw %} <input class=checkbox-input id=\"{{ to.autoId }}-{{ $index }}\" type=checkbox checklist-model=model[to.fieldSetId][options.key] checklist-value=$index><label class=checkbox-label for=\"{{ to.autoId }}-{{ $index }}\" ng-bind=choice></label>{% endraw %}</div></div>"
   );
 
 
   $templateCache.put('templates/incuna-surveys/fields/free-text.html',
-    "<div drf-form-field=to.fieldOptions class=text field-id=options.key><input type=text class=text-input id=\"{% raw %}{{ to.autoId }}{% endraw %}\" ng-model=model[to.fieldSetId][options.key] ng-required=to.fieldOptions.required></div>"
+    "<div drf-form-field=to.fieldOptions class=\"text {% raw %}{{ model[to.fieldSetId][options.key] ? 'not-empty' : '' }}{% endraw %}\" field-id=to.autoId><input type=text class=text-input id=\"{% raw %}{{ to.autoId }}{% endraw %}\" ng-model=model[to.fieldSetId][options.key] ng-required=to.fieldOptions.required></div>"
   );
 
 
   $templateCache.put('templates/incuna-surveys/fields/header.html',
-    "<h1 ng-bind=to.formName></h1><h2 ng-bind=to.formDescription></h2>"
+    "<h1 ng-bind=to.formName class=form-name></h1><h2 ng-bind=to.formDescription class=form-desc></h2>"
   );
 
 
   $templateCache.put('templates/incuna-surveys/fields/number.html',
-    "<div drf-form-field=to.fieldOptions class=number field-id=options.key><input type=text class=number-input id=\"{% raw %}{{ to.autoId }}{% endraw %}\" ng-model=model[to.fieldSetId][options.key]></div>"
+    "<div drf-form-field=to.fieldOptions class=\"number {% raw %}{{ model[to.fieldSetId][options.key] ? 'not-empty' : '' }}{% endraw %}\" field-id=to.autoId><input type=text class=number-input id=\"{% raw %}{{ to.autoId }}{% endraw %}\" ng-model=model[to.fieldSetId][options.key]></div>"
   );
 
 
   $templateCache.put('templates/incuna-surveys/fields/percentage.html',
-    "<div drf-form-field=to.fieldOptions field-id=options.key class=slider><div aif-slider-input model=model[to.fieldSetId][options.key] ceiling=100 slider-low-label=0% slider-high-label=100%></div></div>"
+    "<div drf-form-field=to.fieldOptions class=slider><div aif-slider-input model=model[to.fieldSetId][options.key] ceiling=100 slider-low-label=0% slider-high-label=100%></div></div>"
   );
 
 
   $templateCache.put('templates/incuna-surveys/fields/radio.html',
     "<div drf-form field=to.fieldOptions class=radio><div ng-repeat=\"choice in to.choices\" class=\"checkable radio\">{% raw %} <input type=radio id=\"{{ to.autoId }}-{{ $index }}\" ng-value=$index ng-model=model[to.fieldSetId][options.key] ng-required=to.fieldOptions.required><label for=\"{{ to.autoId }}-{{ $index }}\" ng-bind=choice></label>{% endraw %}</div></div>"
+  );
+
+
+  $templateCache.put('templates/incuna-surveys/fields/wrapper.html',
+    "{% raw %}<div class=\"panel panel-primary\"><div class=\"panel-heading px-nested-panel-heading clearfix\" id=id-{{options.templateOptions.id}}><h3 ng-bind=options.templateOptions.name class=field-group-name></h3><h4 ng-bind=options.templateOptions.description class=field-group-desc></h4></div>test<div class=\"panel-body px-nested-panel-body\"><formly-transclude></formly-transclude></div></div>{% endraw %}"
   );
 
 }]);
@@ -115,7 +116,7 @@ angular.module('incuna-surveys-form.templates', []).run(['$templateCache', funct
   'use strict';
 
   $templateCache.put('templates/incuna-surveys/form/survey-form.html',
-    "<form ng-submit=submit()><formly-form model=model fields=fields></formly-form><button type=submit>Submit</button></form>"
+    "<form ng-submit=submit()><h1 ng-bind=form.name class=form-name></h1><h2 ng-bind=form.description class=form-desc></h2><formly-form model=model fields=fields></formly-form><button type=submit>Submit</button></form>"
   );
 
 }]);
@@ -264,8 +265,6 @@ var _module = _libraries.angular.module(moduleProperties.moduleName, ['formly'])
 
 _module.service(moduleProperties.componentName, [function () {
     this.templatesBase = 'templates/incuna-surveys/fields';
-    this.headerTemplateUrl = this.templatesBase + '/header.html';
-    this.fieldsetHeaderTemplateUrl = this.templatesBase + '/fieldset-header.html';
 }]);
 
 _module.run(['formlyConfig', moduleProperties.componentName, function (formlyConfig, FieldsConfig) {
@@ -295,6 +294,11 @@ _module.run(['formlyConfig', moduleProperties.componentName, function (formlyCon
         name: 'radio',
         templateUrl: templatesBase + '/radio.html'
     });
+
+    formlyConfig.setWrapper([{
+        name: 'panel',
+        templateUrl: templatesBase + '/wrapper.html'
+    }]);
 }]);
 
 exports.default = moduleProperties;
@@ -332,22 +336,12 @@ _module.service(moduleProperties.componentName, [_fieldsConfig2.default.componen
     this.parseFields = function (form) {
         var fields = [];
 
-        fields[0] = {
-            templateUrl: FieldsConfig.headerTemplateUrl,
-            templateOptions: {
-                formName: form.name,
-                formDescription: form.description
-            }
-        };
-
         form.fieldsets.forEach(function (fieldset) {
-            var fieldGroup = [{
-                templateUrl: FieldsConfig.fieldsetHeaderTemplateUrl,
-                templateOptions: {
-                    fieldGroupName: fieldset.name,
-                    fieldGroupDesc: fieldset.description
-                }
-            }];
+            var fieldGroup = {
+                wrapper: 'panel',
+                templateOptions: fieldset,
+                fieldGroup: []
+            };
 
             fieldset.fields.forEach(function (field) {
                 var fieldObject = {
@@ -367,12 +361,10 @@ _module.service(moduleProperties.componentName, [_fieldsConfig2.default.componen
                     }
                 };
 
-                fieldGroup.push(fieldObject);
+                fieldGroup.fieldGroup.push(fieldObject);
             });
 
-            fields.push({
-                fieldGroup: fieldGroup
-            });
+            fields.push(fieldGroup);
         });
 
         return fields;

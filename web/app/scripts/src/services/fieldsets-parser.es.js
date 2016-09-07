@@ -25,24 +25,14 @@ module.service(moduleProperties.componentName, [
         this.parseFields = function (form) {
             let fields = [];
 
-            fields[0] = {
-                templateUrl: FieldsConfig.headerTemplateUrl,
-                templateOptions: {
-                    formName: form.name,
-                    formDescription: form.description
-                }
-            };
-
             form.fieldsets.forEach((fieldset) => {
-                let fieldGroup = [
+                let fieldGroup = 
                     {
-                        templateUrl: FieldsConfig.fieldsetHeaderTemplateUrl,
-                        templateOptions: {
-                            fieldGroupName: fieldset.name,
-                            fieldGroupDesc: fieldset.description
-                        }
+                        wrapper: 'panel',
+                        templateOptions: fieldset,
+                        fieldGroup: []
                     }
-                ];
+                ;
 
                 fieldset.fields.forEach((field) => {
                     let fieldObject = {
@@ -62,12 +52,12 @@ module.service(moduleProperties.componentName, [
                         }
                     };
 
-                    fieldGroup.push(fieldObject);
+                    fieldGroup.fieldGroup.push(fieldObject);
                 });
 
-                fields.push({
+                fields.push(
                     fieldGroup
-                });
+                );
             });
 
             return fields;
