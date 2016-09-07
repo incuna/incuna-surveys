@@ -21,45 +21,30 @@ module.service(moduleProperties.componentName, [
     FieldsConfigModule.componentName,
     function () {
         this.parseFields = function (form) {
-            let fields = [];
-
-            form.fieldsets.forEach((fieldset) => {
-                let fieldGroup =
-                    {
-                        wrapper: 'panel',
-                        templateOptions: fieldset,
-                        fieldGroup: []
-                    }
-                ;
-
-                fieldset.fields.forEach((field) => {
-                    let fieldObject = {
-                        key: field.id,
-                        type: field.field_type,
-                        templateOptions: {
-                            fieldSetId: fieldset.id,
-                            autoId: `id-${fieldset.id}-${field.id}`,
-                            choices: field.answers,
-                            fieldOptions: {
-                                // jscs:disable disallowQuotedKeysInObjects
-                                'help_text': field.help_text,
-                                required: field.required,
-                                label: field.name
-                                // jscs:enable disallowQuotedKeysInObjects
+            return form.fieldsets.map((fieldset) => {
+                return {
+                    wrapper: 'panel',
+                    templateOptions: fieldset,
+                    fieldGroup: fieldset.fields.map((field) => {
+                        return {
+                            key: field.id,
+                            type: field.field_type,
+                            templateOptions: {
+                                fieldSetId: fieldset.id,
+                                autoId: `id-${fieldset.id}-${field.id}`,
+                                choices: field.answers,
+                                fieldOptions: {
+                                    // jscs:disable disallowQuotedKeysInObjects
+                                    'help_text': field.help_text,
+                                    required: field.required,
+                                    label: field.name
+                                    // jscs:enable disallowQuotedKeysInObjects
+                                }
                             }
-                        }
-                    };
-
-                    fieldGroup.fieldGroup.push(fieldObject);
-                });
-
-                fields.push(
-                    fieldGroup
-                );
+                        };
+                    })
+                };
             });
-
-            return fields;
-
         };
 
         this.parseFormToModel = function (form) {

@@ -28,40 +28,30 @@ var _module = _libraries.angular.module(moduleProperties.moduleName, [_fieldsCon
 
 _module.service(moduleProperties.componentName, [_fieldsConfig2.default.componentName, function () {
     this.parseFields = function (form) {
-        var fields = [];
-
-        form.fieldsets.forEach(function (fieldset) {
-            var fieldGroup = {
+        return form.fieldsets.map(function (fieldset) {
+            return {
                 wrapper: 'panel',
                 templateOptions: fieldset,
-                fieldGroup: []
-            };
-
-            fieldset.fields.forEach(function (field) {
-                var fieldObject = {
-                    key: field.id,
-                    type: field.field_type,
-                    templateOptions: {
-                        fieldSetId: fieldset.id,
-                        autoId: 'id-' + fieldset.id + '-' + field.id,
-                        choices: field.answers,
-                        fieldOptions: {
-                            // jscs:disable disallowQuotedKeysInObjects
-                            'help_text': field.help_text,
-                            required: field.required,
-                            label: field.name
-                            // jscs:enable disallowQuotedKeysInObjects
+                fieldGroup: fieldset.fields.map(function (field) {
+                    return {
+                        key: field.id,
+                        type: field.field_type,
+                        templateOptions: {
+                            fieldSetId: fieldset.id,
+                            autoId: 'id-' + fieldset.id + '-' + field.id,
+                            choices: field.answers,
+                            fieldOptions: {
+                                // jscs:disable disallowQuotedKeysInObjects
+                                'help_text': field.help_text,
+                                required: field.required,
+                                label: field.name
+                                // jscs:enable disallowQuotedKeysInObjects
+                            }
                         }
-                    }
-                };
-
-                fieldGroup.fieldGroup.push(fieldObject);
-            });
-
-            fields.push(fieldGroup);
+                    };
+                })
+            };
         });
-
-        return fields;
     };
 
     this.parseFormToModel = function (form) {

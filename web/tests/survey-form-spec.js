@@ -11,7 +11,8 @@ describe('surveysForm directive', function() {
         angular.module('formly', []);
         angular.mock.module({
             formlyConfig: {
-                setType: angular.noop
+                setType: angular.noop,
+                setWrapper: angular.noop
             }
         });
         angular.mock.module('incuna-surveys-fields.templates');
@@ -65,6 +66,11 @@ describe('surveysForm directive', function() {
 
         it('should call API.getForm with the formUrl', function() {
             expect(this.API.getForm).toHaveBeenCalledWith(formUrl);
+        });
+
+        it('should add the getForm response to the scope', function() {
+            const isolated = this.elm.isolateScope()
+            expect(isolated.form).toBe(this.formResponse);
         });
 
         it('should call API.get with the responseUrl', function() {
