@@ -85,11 +85,6 @@ angular.module('incuna-surveys-fields.templates', []).run(['$templateCache', fun
   );
 
 
-  $templateCache.put('templates/incuna-surveys/fields/header.html',
-    "<h1 ng-bind=to.formName class=form-name></h1><h2 ng-bind=to.formDescription class=form-desc></h2>"
-  );
-
-
   $templateCache.put('templates/incuna-surveys/fields/number.html',
     "<div drf-form-field=to.fieldOptions class=\"number {% raw %}{{ model[to.fieldSetId][options.key] ? 'not-empty' : '' }}{% endraw %}\" field-id=to.autoId><input type=text class=number-input id=\"{% raw %}{{ to.autoId }}{% endraw %}\" ng-model=model[to.fieldSetId][options.key]></div>"
   );
@@ -106,7 +101,7 @@ angular.module('incuna-surveys-fields.templates', []).run(['$templateCache', fun
 
 
   $templateCache.put('templates/incuna-surveys/fields/wrapper.html',
-    "{% raw %}<div class=\"panel panel-primary\"><div class=\"panel-heading px-nested-panel-heading clearfix\" id=id-{{options.templateOptions.id}}><h3 ng-bind=options.templateOptions.name class=field-group-name></h3><h4 ng-bind=options.templateOptions.description class=field-group-desc></h4></div>test<div class=\"panel-body px-nested-panel-body\"><formly-transclude></formly-transclude></div></div>{% endraw %}"
+    "{% raw %}<section class=\"form-section form-section-{{options.templateOptions.id}}\"><header class=form-section-header><h3 ng-bind=options.templateOptions.name class=form-section-name></h3><h4 ng-bind=options.templateOptions.description class=form-section-desc></h4></header><fieldset class=\"form-section-body content\"><formly-transclude></formly-transclude></fieldset></section>{% endraw %}"
   );
 
 }]);
@@ -116,7 +111,7 @@ angular.module('incuna-surveys-form.templates', []).run(['$templateCache', funct
   'use strict';
 
   $templateCache.put('templates/incuna-surveys/form/survey-form.html',
-    "<form ng-submit=submit()><h1 ng-bind=form.name class=form-name></h1><h2 ng-bind=form.description class=form-desc></h2><formly-form model=model fields=fields></formly-form><button type=submit>Submit</button></form>"
+    "<form class=question-form ng-submit=submit()><header class=form-header><h1 ng-bind=form.name class=form-name></h1><h2 ng-bind=form.description class=form-desc></h2></header><formly-form class=form-body model=model fields=fields></formly-form><button class=button-submit type=submit>Submit</button></form>"
   );
 
 }]);
