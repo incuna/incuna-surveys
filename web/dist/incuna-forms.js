@@ -308,26 +308,18 @@ exports.moduleProperties = undefined;
 
 var _libraries = require('./../libraries.js');
 
-var _fieldsConfig = require('./fields-config.js');
-
-var _fieldsConfig2 = _interopRequireDefault(_fieldsConfig);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-/*
- *
- * This module parses a form API into an angular-formly array
- *
- */
-
 var moduleProperties = exports.moduleProperties = {
     moduleName: 'incuna-surveys.field-parser',
     componentName: 'FieldsParser'
-};
+}; /*
+    *
+    * This module parses a form API into an angular-formly array
+    *
+    */
 
-var _module = _libraries.angular.module(moduleProperties.moduleName, [_fieldsConfig2.default.moduleName]);
+var _module = _libraries.angular.module(moduleProperties.moduleName, []);
 
-_module.service(moduleProperties.componentName, [_fieldsConfig2.default.componentName, function () {
+_module.service(moduleProperties.componentName, [function () {
     this.parseFields = function (form) {
         return form.fieldsets.map(function (fieldset) {
             return {
@@ -381,4 +373,4 @@ _module.service(moduleProperties.componentName, [_fieldsConfig2.default.componen
 
 exports.default = moduleProperties;
 
-},{"./../libraries.js":4,"./fields-config.js":8}]},{},[1,2,3,4,5,6,7,8,9]);
+},{"./../libraries.js":4}]},{},[1,2,3,4,5,6,7,8,9]);

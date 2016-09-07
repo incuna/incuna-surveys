@@ -6,19 +6,14 @@
 
 import { angular } from '../libraries';
 
-import FieldsConfigModule from 'fields-config';
-
 export const moduleProperties = {
     moduleName: 'incuna-surveys.field-parser',
     componentName: 'FieldsParser'
 };
 
-const module = angular.module(moduleProperties.moduleName, [
-    FieldsConfigModule.moduleName
-]);
+const module = angular.module(moduleProperties.moduleName, []);
 
 module.service(moduleProperties.componentName, [
-    FieldsConfigModule.componentName,
     function () {
         this.parseFields = function (form) {
             return form.fieldsets.map((fieldset) => {
