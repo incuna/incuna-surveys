@@ -26,7 +26,7 @@ var moduleProperties = exports.moduleProperties = {
 
 var _module = _libraries.angular.module(moduleProperties.moduleName, [_fieldsConfig2.default.moduleName]);
 
-_module.service(moduleProperties.componentName, [_fieldsConfig2.default.componentName, function (FieldsConfig) {
+_module.service(moduleProperties.componentName, [_fieldsConfig2.default.componentName, function () {
     this.parseFields = function (form) {
         var fields = [];
 

@@ -19,14 +19,12 @@ const module = angular.module(moduleProperties.moduleName, [
 
 module.service(moduleProperties.componentName, [
     FieldsConfigModule.componentName,
-    function (
-        FieldsConfig
-    ) {
+    function () {
         this.parseFields = function (form) {
             let fields = [];
 
             form.fieldsets.forEach((fieldset) => {
-                let fieldGroup = 
+                let fieldGroup =
                     {
                         wrapper: 'panel',
                         templateOptions: fieldset,

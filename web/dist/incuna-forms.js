@@ -85,11 +85,6 @@ angular.module('incuna-surveys-fields.templates', []).run(['$templateCache', fun
   );
 
 
-  $templateCache.put('templates/incuna-surveys/fields/header.html',
-    "<h1 ng-bind=to.formName class=form-name></h1><h2 ng-bind=to.formDescription class=form-desc></h2>"
-  );
-
-
   $templateCache.put('templates/incuna-surveys/fields/number.html',
     "<div drf-form-field=to.fieldOptions class=\"number {% raw %}{{ model[to.fieldSetId][options.key] ? 'not-empty' : '' }}{% endraw %}\" field-id=to.autoId><input type=text class=number-input id=\"{% raw %}{{ to.autoId }}{% endraw %}\" ng-model=model[to.fieldSetId][options.key]></div>"
   );
@@ -332,7 +327,7 @@ var moduleProperties = exports.moduleProperties = {
 
 var _module = _libraries.angular.module(moduleProperties.moduleName, [_fieldsConfig2.default.moduleName]);
 
-_module.service(moduleProperties.componentName, [_fieldsConfig2.default.componentName, function (FieldsConfig) {
+_module.service(moduleProperties.componentName, [_fieldsConfig2.default.componentName, function () {
     this.parseFields = function (form) {
         var fields = [];
 
