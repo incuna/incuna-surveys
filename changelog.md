@@ -2,6 +2,10 @@
 
 This project uses Semantic Versioning (2.0).
 
+
+### 0.5.0
+  * Add ordered m2m accessors for Survey.get_ordered_fieldsets() SurveyFieldset.get_ordered_fields().
+
 ### 0.4.0
 * Add `not-empty` class to field wrapper, for styling purposes.
 * Add classes to fieldset header
