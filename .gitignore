@@ -5,3 +5,4 @@ lib
 .coverage
 .coverage.*
 node_modules
+bower_components

@@ -27,7 +27,7 @@ angular.module('incuna-surveys-fields.templates', []).run(['$templateCache', fun
 
 
   $templateCache.put('templates/incuna-surveys/fields/wrapper.html',
-    "{% raw %}<div class=\"panel panel-primary\"><div class=\"panel-heading px-nested-panel-heading clearfix\" id=id-{{options.templateOptions.id}}><h3 ng-bind=options.templateOptions.name class=field-group-name></h3><h4 ng-bind=options.templateOptions.description class=field-group-desc></h4></div>test<div class=\"panel-body px-nested-panel-body\"><formly-transclude></formly-transclude></div></div>{% endraw %}"
+    "{% raw %}<section class=\"form-section form-section-{{options.templateOptions.id}}\"><header class=form-section-header><h3 ng-bind=options.templateOptions.name class=form-section-name></h3><h4 ng-bind=options.templateOptions.description class=form-section-desc></h4></header><fieldset class=\"form-section-body content\"><formly-transclude></formly-transclude></fieldset></section>{% endraw %}"
   );
 
 }]);
