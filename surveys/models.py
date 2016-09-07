@@ -71,6 +71,9 @@ class SurveyFieldset(models.Model):
     def __str__(self):
         return self.name
 
+    def get_ordered_fields(self):
+        return self.fields.order_by('surveyfieldordering__sort_order')
+
 
 class Survey(models.Model):
     """An entire survey form.  Contains one or more ordered fieldsets."""
@@ -89,6 +92,9 @@ class Survey(models.Model):
 
     def get_api_url(self):
         return drf_reverse('survey-form', kwargs={'pk': self.pk})
+
+    def get_ordered_fieldsets(self):
+        return self.fieldsets.order_by('surveyfieldsetordering__sort_order')
 
 
 class SurveyFieldOrdering(Orderable):
