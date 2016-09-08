@@ -35,6 +35,17 @@ _module.directive('surveysForm', [_api2.default.componentName, _fieldsetsParser2
         templateUrl: 'templates/incuna-surveys/form/survey-form.html',
         link: function link(scope) {
             scope.model = {};
+            scope.percentageComplete = 0;
+
+            var getTotalQuestions = function getTotalQuestions() {
+                var questions = scope.form.fieldsets;
+                scope.totalQuestionCount = 0;
+
+                _libraries.angular.forEach(questions, function (question) {
+                    scope.totalQuestionCount = scope.totalQuestionCount + question.fields.length;
+                });
+            };
+
             scope.$watch('formUrl', function (url) {
                 if (url) {
                     API.getForm(url).then(function (structure) {
@@ -44,10 +55,34 @@ _module.directive('surveysForm', [_api2.default.componentName, _fieldsetsParser2
                         // been set.
                         if (Object.keys(scope.model).length === 0) {
                             scope.model = FieldsetParser.parseFormToModel(structure);
+                            getTotalQuestions();
                         }
                     });
                 }
             });
+
+            var checkAnswered = function checkAnswered(answers) {
+                var answered = 0;
+                _libraries.angular.forEach(answers, function (answerGroup) {
+                    _libraries.angular.forEach(answerGroup, function (item) {
+                        if (item > 0 || item.length > 0) {
+                            answered = answered + 1;
+                        }
+                    });
+                });
+
+                return answered;
+            };
+
+            var calculatePercentageComplete = function calculatePercentageComplete(completedQuestions) {
+                var result = completedQuestions / scope.totalQuestionCount * 100;
+                scope.percentageComplete = Math.round(result);
+            };
+
+            scope.$watch('model', function (answers) {
+                var completedQuestions = checkAnswered(answers);
+                calculatePercentageComplete(completedQuestions);
+            }, true);
 
             scope.$watch('responseUrl', function (url) {
                 if (url) {
