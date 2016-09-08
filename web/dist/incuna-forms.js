@@ -37,13 +37,13 @@ _module.directive('surveysForm', [_api2.default.componentName, _fieldsetsParser2
         link: function link(scope) {
             scope.model = {};
             scope.percentageComplete = 0 + '%';
+            var totalQuestionCount = 0;
 
             var countQuestionsTotal = function countQuestionsTotal() {
                 var questions = scope.form.fieldsets;
-                scope.totalQuestionCount = 0;
 
                 _libraries.angular.forEach(questions, function (question) {
-                    scope.totalQuestionCount = scope.totalQuestionCount + question.fields.length;
+                    totalQuestionCount = totalQuestionCount + question.fields.length;
                 });
             };
 
@@ -84,7 +84,7 @@ _module.directive('surveysForm', [_api2.default.componentName, _fieldsetsParser2
             };
 
             var calculatePercentageComplete = function calculatePercentageComplete(completedQuestions) {
-                var result = completedQuestions / scope.totalQuestionCount * 100;
+                var result = completedQuestions / totalQuestionCount * 100;
                 if (!isNaN(result)) {
                     scope.percentageComplete = Math.round(result) + '%';
                 }
