@@ -59,8 +59,11 @@ _module.directive('surveysForm', [_api2.default.componentName, _fieldsetsParser2
 
             scope.submit = function () {
                 if (scope.responseUrl) {
-                    // TODO: Handle errors.
-                    API.post(scope.responseUrl, scope.model).then(scope.onSuccess).catch(scope.onFailure);
+                    API.post(scope.responseUrl, scope.model).then(scope.onSuccess).catch(function (response) {
+                        var errors = response && response.data && response.data;
+                        FieldsetParser.addFieldErros(scope.fields, errors);
+                        scope.onFailure();
+                    });
                 }
             };
         }

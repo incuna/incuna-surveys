@@ -55,6 +55,17 @@ _module.service(moduleProperties.componentName, [function () {
 
         return model;
     };
+
+    this.addFieldErros = function (fields, errors) {
+        fields.forEach(function (fieldset) {
+            var key = fieldset.templateOptions.id;
+            var fieldsetErros = errors[key];
+            fieldset.fieldGroup.forEach(function (field) {
+                var fieldError = fieldsetErros && fieldsetErros[field.key];
+                field.templateOptions.fieldOptions.errors = fieldError;
+            });
+        });
+    };
 }]);
 
 exports.default = moduleProperties;

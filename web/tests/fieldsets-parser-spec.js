@@ -1,4 +1,5 @@
 describe('FieldsetParserService', function () {
+    const fieldErrors = {'1': {'1': ['This is an error']}};
 
     beforeEach(function () {
         fixture.setBase('tests/api-description');
@@ -37,7 +38,7 @@ describe('FieldsetParserService', function () {
 
             describe('each element', function () {
                 
-                it('should have a header as first element', function () {
+                it('should have a name and description', function () {
                     const fieldGroup = this.result[0];
 
                     expect(fieldGroup.wrapper).toBe('panel');
@@ -97,6 +98,24 @@ describe('FieldsetParserService', function () {
             expect(this.emptyModel).toEqual(expected);
         });
         
+    });
+
+    describe('addFieldErros object', function () {
+        it('should add erross to the results', function () {
+            this.Parser.addFieldErros(this.result, fieldErrors);
+            const field = this.result[0].fieldGroup[0];
+            const fieldOptions = field.templateOptions.fieldOptions;
+            expect(fieldOptions.errors).toBe(fieldErrors['1']['1']);
+        });
+
+        it('should clear erross from the results', function () {
+            const field = this.result[0].fieldGroup[0];
+            const fieldOptions = field.templateOptions.fieldOptions;
+            fieldOptions.errors = fieldErrors['1']['1'];
+            expect(fieldOptions.errors).toBe(fieldErrors['1']['1']);
+            this.Parser.addFieldErros(this.result, {});
+            expect(fieldOptions.errors).not.toBeDefined();
+        });
     });
 
 });
