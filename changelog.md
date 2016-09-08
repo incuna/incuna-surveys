@@ -2,6 +2,12 @@
 
 This project uses Semantic Versioning (2.0).
 
+### 0.6.1
+
+* BUGFIX: add missing hyphen in `drf-form-field` in radio.html
+
+### 0.6.0
+* Add a wrapper template to wrap field groups with a separate header and body
 
 ### 0.5.0
   * Add ordered m2m accessors for Survey.get_ordered_fieldsets() SurveyFieldset.get_ordered_fields().
