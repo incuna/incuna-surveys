@@ -1,6 +1,10 @@
 from django.http import Http404
 
-from .factories import UserResponseFactory
+from .factories import (
+    SurveyFieldOrderingFactory,
+    SurveyFieldsetOrderingFactory,
+    UserResponseFactory,
+)
 from .utils import (
     APIExampleMixin,
     APIRequestTestCase,
@@ -118,7 +122,7 @@ class TestSurveyGetLatestCreateView(APIExampleMixin, APIRequestTestCase):
             user_id=cls.user_id,
             fieldset=cls.fieldset_two,
             survey=cls.survey,
-            answers={'3': 5},
+            answers={'2': 15, '3': 5},
         )
         UserResponseFactory.create(
             user_id=cls.user_id,
@@ -155,5 +159,65 @@ class TestSurveyGetLatestCreateView(APIExampleMixin, APIRequestTestCase):
             '1': {'1': ''},
             '2': {'3': None, '2': None}
         }
+        data = json_decode(response.data)
+        self.assertEqual(data, expected_data)
+
+    def test_new_fieldset(self):
+        """Test that the view deals with fielset being added to the form."""
+        sfo = SurveyFieldsetOrderingFactory.create(
+            survey=self.survey,
+        )
+        fielset = sfo.fieldset
+
+        view = views_api.SurveyGetLatestCreateView.as_view()
+        request = self.create_request()
+        response = view(request, pk=self.survey.pk, user_id=self.user_id)
+        url = '/forms/pk/respond/user_id'
+        expected_data = self.api_example_data(url, 'get')['OK']['response_data']
+        expected_data[str(fielset.pk)] = {}
+        data = json_decode(response.data)
+        self.assertEqual(data, expected_data)
+
+    def test_new_field(self):
+        """Test that the view deals with a field being added to the form."""
+        SurveyFieldOrderingFactory.create(
+            field=self.field_one,
+            fieldset=self.fieldset_three,
+        )
+
+        view = views_api.SurveyGetLatestCreateView.as_view()
+        request = self.create_request()
+        response = view(request, pk=self.survey.pk, user_id=self.user_id)
+        url = '/forms/pk/respond/user_id'
+        expected_data = self.api_example_data(url, 'get')['OK']['response_data']
+        expected_data[str(self.fieldset_three.pk)][str(self.field_one.pk)] = ''
+        data = json_decode(response.data)
+        self.assertEqual(data, expected_data)
+
+    def test_missing_fieldset(self):
+        """Test that the view deals with fieldset data being removed from the from."""
+        key = str(self.fieldset_two.pk)
+        self.fieldset_two.delete()
+
+        view = views_api.SurveyGetLatestCreateView.as_view()
+        request = self.create_request()
+        response = view(request, pk=self.survey.pk, user_id=self.user_id)
+        url = '/forms/pk/respond/user_id'
+        expected_data = self.api_example_data(url, 'get')['OK']['response_data']
+        del expected_data[key]
+        data = json_decode(response.data)
+        self.assertEqual(data, expected_data)
+
+    def test_missing_field(self):
+        """Test that the view deals with field data being removed from the from."""
+        key = str(self.field_five.pk)
+        self.field_five.delete()
+
+        view = views_api.SurveyGetLatestCreateView.as_view()
+        request = self.create_request()
+        response = view(request, pk=self.survey.pk, user_id=self.user_id)
+        url = '/forms/pk/respond/user_id'
+        expected_data = self.api_example_data(url, 'get')['OK']['response_data']
+        del expected_data[str(self.fieldset_three.pk)][key]
         data = json_decode(response.data)
         self.assertEqual(data, expected_data)
