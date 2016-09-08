@@ -4,6 +4,7 @@ describe('surveysForm directive', function() {
     const fields = {thing: 'Thing'}; 
     const formUrl = 'http://from-url';
     const responseUrl = 'http://response-url';
+    const percentageComplete = '60%';
 
     beforeEach(function () {
         fixture.setBase('tests/api-description');
@@ -28,6 +29,7 @@ describe('surveysForm directive', function() {
             this.scope = $rootScope.$new();
             this.scope.formUrl = formUrl;
             this.scope.responseUrl = responseUrl;
+            this.scope.percentageComplete = percentageComplete;
         })
         this.tpl = '<div surveys-form form-url="formUrl" response-url="responseUrl"></div>';
         this.compileDirective = function (tpl) {
@@ -58,10 +60,11 @@ describe('surveysForm directive', function() {
             expect(this.elm.find('button').length).toEqual(1);
         });
 
-        it('should include the formUrl and responseUrl in the scope', function() {
+        it('should include the formUrl,responseUrl and percentageComplete in the scope', function() {
             const isolated = this.elm.isolateScope()
             expect(isolated.formUrl).toBe(formUrl);
             expect(isolated.responseUrl).toBe(responseUrl);
+            expect(isolated.percentageComplete).toBe(percentageComplete);
         });
 
         it('should call API.getForm with the formUrl', function() {
