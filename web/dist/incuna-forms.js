@@ -62,6 +62,14 @@ _module.directive('surveysForm', [_api2.default.componentName, _fieldsetsParser2
                 }
             });
 
+            // answers is an object containing objects
+            // object {
+            //     1 : {
+            //         2 : 0
+            //         3 : 0
+            //     }
+            // }
+            // answered is a number of type number
             var countNumberOfAnsweredQuestions = function countNumberOfAnsweredQuestions(answers) {
                 var answered = 0;
                 _libraries.angular.forEach(answers, function (answerGroup) {

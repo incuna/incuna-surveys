@@ -56,6 +56,14 @@ module.directive('surveysForm', [
                     }
                 });
 
+                // answers is an object containing objects
+                // object {
+                //     1 : {
+                //         2 : 0
+                //         3 : 0
+                //     }
+                // }
+                // answered is a number of type number
                 const countNumberOfAnsweredQuestions = function (answers) {
                     let answered = 0;
                     angular.forEach(answers, function (answerGroup) {
