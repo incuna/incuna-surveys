@@ -75,14 +75,14 @@ module.directive('surveysForm', [
                     });
 
                     return answered;
-                }
+                };
 
                 const calculatePercentageComplete = function (completedQuestions) {
                     const result = ((completedQuestions / scope.totalQuestionCount) * 100)
                     if (!isNaN(result)) {
                         scope.percentageComplete = Math.round(result) + '%';
                     }
-                }
+                };
 
                 // Using true to compare the subelements.
                 scope.$watch('model', (answers) => {
