@@ -16,15 +16,19 @@ var _fieldsetsParser = require('./../services/fieldsets-parser.js');
 
 var _fieldsetsParser2 = _interopRequireDefault(_fieldsetsParser);
 
+var _calculatePercentageComplete = require('./../services/calculate-percentage-complete.js');
+
+var _calculatePercentageComplete2 = _interopRequireDefault(_calculatePercentageComplete);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var moduleProperties = exports.moduleProperties = {
     moduleName: 'incuna-surveys.form-directive'
 };
 
-var _module = _libraries.angular.module(moduleProperties.moduleName, [_api2.default.moduleName, _fieldsetsParser2.default.moduleName]);
+var _module = _libraries.angular.module(moduleProperties.moduleName, [_api2.default.moduleName, _fieldsetsParser2.default.moduleName, _calculatePercentageComplete2.default.moduleName]);
 
-_module.directive('surveysForm', [_api2.default.componentName, _fieldsetsParser2.default.componentName, function (API, FieldsetParser) {
+_module.directive('surveysForm', [_api2.default.componentName, _fieldsetsParser2.default.componentName, _calculatePercentageComplete2.default.componentName, function (API, FieldsetParser, CalculateCompletion) {
     return {
         restrict: 'A',
         scope: {
@@ -39,14 +43,6 @@ _module.directive('surveysForm', [_api2.default.componentName, _fieldsetsParser2
             scope.percentageComplete = 0 + '%';
             var totalQuestionCount = 0;
 
-            var countQuestionsTotal = function countQuestionsTotal() {
-                var questions = scope.form.fieldsets;
-
-                questions.forEach(function (question) {
-                    totalQuestionCount = totalQuestionCount + question.fields.length;
-                });
-            };
-
             scope.$watch('formUrl', function (url) {
                 if (url) {
                     API.getForm(url).then(function (structure) {
@@ -56,47 +52,17 @@ _module.directive('surveysForm', [_api2.default.componentName, _fieldsetsParser2
                         // been set.
                         if (Object.keys(scope.model).length === 0) {
                             scope.model = FieldsetParser.parseFormToModel(structure);
-                            countQuestionsTotal();
+                            totalQuestionCount = CalculateCompletion.countQuestionsTotal(scope.form.fieldsets);
+                            console.log('hi', totalQuestionCount);
                         }
                     });
                 }
             });
 
-            // answers is an object containing objects
-            // object {
-            //     1 : {
-            //         2 : 0
-            //         3 : 0
-            //     }
-            // }
-            // answered is a number of type number
-            var countNumberOfAnsweredQuestions = function countNumberOfAnsweredQuestions(answers) {
-                var answered = 0;
-
-                for (var groupKey in answers) {
-                    var answerGroup = answers[groupKey];
-                    for (var answerKey in answerGroup) {
-                        var answer = answerGroup[answerKey];
-                        if (answer > 0 || answer.length > 0) {
-                            answered++;
-                        }
-                    }
-                }
-
-                return answered;
-            };
-
-            var calculatePercentageComplete = function calculatePercentageComplete(completedQuestions) {
-                var result = completedQuestions / totalQuestionCount * 100;
-                if (!isNaN(result)) {
-                    scope.percentageComplete = Math.round(result) + '%';
-                }
-            };
-
-            // Using true to compare the subelements.
+            // Using true to compare the sub-elements.
             scope.$watch('model', function (answers) {
-                var numberOfCompletedQuestions = countNumberOfAnsweredQuestions(answers);
-                calculatePercentageComplete(numberOfCompletedQuestions);
+                var numberOfCompletedQuestions = CalculateCompletion.countNumberOfAnsweredQuestions(answers);
+                scope.percentageComplete = CalculateCompletion.calculatePercentageComplete(numberOfCompletedQuestions, totalQuestionCount);
             }, true);
 
             scope.$watch('responseUrl', function (url) {
@@ -120,7 +86,7 @@ _module.directive('surveysForm', [_api2.default.componentName, _fieldsetsParser2
 
 exports.default = moduleProperties;
 
-},{"./../libraries.js":4,"./../services/api.js":7,"./../services/fieldsets-parser.js":9}],2:[function(require,module,exports){
+},{"./../libraries.js":4,"./../services/api.js":7,"./../services/calculate-percentage-complete.js":8,"./../services/fieldsets-parser.js":10}],2:[function(require,module,exports){
 angular.module('incuna-surveys-fields.templates', []).run(['$templateCache', function($templateCache) {
   'use strict';
 
@@ -194,7 +160,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 _libraries.angular.module('incuna-surveys', ['drf-form-field', 'aif-slider-input', 'checklist-model', _fieldsConfig2.default.moduleName, _api2.default.moduleName, _form2.default.moduleName]);
 
-},{"./directives/form.js":1,"./libraries.js":4,"./services/api.js":7,"./services/fields-config.js":8}],6:[function(require,module,exports){
+},{"./directives/form.js":1,"./libraries.js":4,"./services/api.js":7,"./services/fields-config.js":9}],6:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -301,6 +267,75 @@ exports.moduleProperties = undefined;
 var _libraries = require('./../libraries.js');
 
 var moduleProperties = exports.moduleProperties = {
+    moduleName: 'incuna-surveys.calculate-completion-percent',
+    componentName: 'calculateCompletionPercent'
+}; /*
+    *
+    * This module calculates the survey completion percentage/
+    *
+    */
+
+var _module = _libraries.angular.module(moduleProperties.moduleName, []);
+
+_module.service(moduleProperties.componentName, [function () {
+    this.countQuestionsTotal = function (form) {
+        var questions = form;
+        var totalQuestionCount = 0;
+
+        questions.forEach(function (question) {
+            totalQuestionCount = totalQuestionCount + question.fields.length;
+        });
+
+        return totalQuestionCount;
+    };
+
+    // answers is an object containing objects
+    // object {
+    //     1 : {
+    //         2 : 0
+    //         3 : 0
+    //     }
+    // }
+    // answered is a number of type number
+    this.countNumberOfAnsweredQuestions = function (answers) {
+        var answered = 0;
+
+        for (var groupKey in answers) {
+            var answerGroup = answers[groupKey];
+            for (var answerKey in answerGroup) {
+                var answer = answerGroup[answerKey];
+                if (answer > 0 || answer.length > 0) {
+                    answered++;
+                }
+            }
+        }
+
+        return answered;
+    };
+
+    this.calculatePercentageComplete = function (completedQuestions, totalQuestionCount) {
+        var result = completedQuestions / totalQuestionCount * 100;
+        if (result >= 0) {
+            return Math.round(result) + '%';
+        }
+
+        return 0 + '%';
+    };
+}]);
+
+exports.default = moduleProperties;
+
+},{"./../libraries.js":4}],9:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.moduleProperties = undefined;
+
+var _libraries = require('./../libraries.js');
+
+var moduleProperties = exports.moduleProperties = {
     moduleName: 'incuna-surveys.formly-config',
     componentName: 'FieldsConfig'
 };
@@ -347,7 +382,7 @@ _module.run(['formlyConfig', moduleProperties.componentName, function (formlyCon
 
 exports.default = moduleProperties;
 
-},{"./../libraries.js":4}],9:[function(require,module,exports){
+},{"./../libraries.js":4}],10:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -422,4 +457,4 @@ _module.service(moduleProperties.componentName, [function () {
 
 exports.default = moduleProperties;
 
-},{"./../libraries.js":4}]},{},[1,2,3,4,5,6,7,8,9]);
+},{"./../libraries.js":4}]},{},[1,2,3,4,5,6,7,8,9,10]);

@@ -2,6 +2,7 @@ import { angular } from '../libraries';
 
 import API from '../services/api';
 import FieldsetParser from '../services/fieldsets-parser';
+import CalculateCompletion from '../services/calculate-percentage-complete';
 
 export const moduleProperties = {
     moduleName: 'incuna-surveys.form-directive'
@@ -9,15 +10,18 @@ export const moduleProperties = {
 
 const module = angular.module(moduleProperties.moduleName, [
     API.moduleName,
-    FieldsetParser.moduleName
+    FieldsetParser.moduleName,
+    CalculateCompletion.moduleName
 ]);
 
 module.directive('surveysForm', [
     API.componentName,
     FieldsetParser.componentName,
+    CalculateCompletion.componentName,
     function (
         API,
-        FieldsetParser
+        FieldsetParser,
+        CalculateCompletion
     ) {
         return {
             restrict: 'A',
@@ -33,14 +37,6 @@ module.directive('surveysForm', [
                 scope.percentageComplete = 0 + '%';
                 let totalQuestionCount = 0;
 
-                const countQuestionsTotal = function () {
-                    const questions = scope.form.fieldsets;
-
-                    questions.forEach((question) => {
-                        totalQuestionCount = totalQuestionCount + question.fields.length;
-                    });
-                };
-
                 scope.$watch('formUrl', (url) => {
                     if (url) {
                         API.getForm(url).then(function (structure) {
@@ -50,47 +46,17 @@ module.directive('surveysForm', [
                             // been set.
                             if (Object.keys(scope.model).length === 0) {
                                 scope.model = FieldsetParser.parseFormToModel(structure);
-                                countQuestionsTotal();
+                                totalQuestionCount = CalculateCompletion.countQuestionsTotal(scope.form.fieldsets);
+                                console.log('hi', totalQuestionCount)
                             }
                         });
                     }
                 });
 
-                // answers is an object containing objects
-                // object {
-                //     1 : {
-                //         2 : 0
-                //         3 : 0
-                //     }
-                // }
-                // answered is a number of type number
-                const countNumberOfAnsweredQuestions = function (answers) {
-                    let answered = 0;
-
-                    for (const groupKey in answers) {
-                        const answerGroup = answers[groupKey];
-                        for (const answerKey in answerGroup) {
-                            const answer = answerGroup[answerKey];
-                            if (answer > 0 || answer.length > 0) {
-                                answered++;
-                            }
-                        }
-                    }
-
-                    return answered;
-                };
-
-                const calculatePercentageComplete = function (completedQuestions) {
-                    const result = ((completedQuestions / totalQuestionCount) * 100)
-                    if (!isNaN(result)) {
-                        scope.percentageComplete = Math.round(result) + '%';
-                    }
-                };
-
-                // Using true to compare the subelements.
+                // Using true to compare the sub-elements.
                 scope.$watch('model', (answers) => {
-                    const numberOfCompletedQuestions = countNumberOfAnsweredQuestions(answers);
-                    calculatePercentageComplete(numberOfCompletedQuestions)
+                    const numberOfCompletedQuestions = CalculateCompletion.countNumberOfAnsweredQuestions(answers);
+                    scope.percentageComplete = CalculateCompletion.calculatePercentageComplete(numberOfCompletedQuestions, totalQuestionCount);
                 }, true);
 
                 scope.$watch('responseUrl', (url) => {
