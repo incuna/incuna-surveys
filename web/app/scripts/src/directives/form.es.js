@@ -67,10 +67,10 @@ module.directive('surveysForm', [
                 const countNumberOfAnsweredQuestions = function (answers) {
                     let answered = 0;
 
-                    for (let groupKey in answers) {
-                        let answerGroup = answers[groupKey]
-                        for (let answerKey in answerGroup) {
-                            let answer = answerGroup[answerKey]
+                    for (const groupKey in answers) {
+                        const answerGroup = answers[groupKey];
+                        for (const answerKey in answerGroup) {
+                            const answer = answerGroup[answerKey];
                             if (answer > 0 || answer.length > 0) {
                                 answered++;
                             }
