@@ -1,6 +1,13 @@
+import json
+
 from rest_framework import serializers
+from rest_framework.utils.encoders import JSONEncoder
 
 from . import models
+
+
+def json_decode(answers):
+    return json.loads(json.dumps(answers, cls=JSONEncoder))
 
 
 class SurveyFieldSerializer(serializers.ModelSerializer):
@@ -31,56 +38,21 @@ class SurveySerializer(serializers.HyperlinkedModelSerializer):
         }
 
 
-class FieldValidationSerializer(serializers.Serializer):
-    """
-    Gets initialised with some dynamic fields based on a given fieldset.
-
-    Doesn't actually create anything or relate directly to an endpoint, but is used
-    to verify validation for submitted answers.
-    """
-    def __init__(self, fieldset, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-        fields = fieldset.fields.all()
-        for field in fields:
-            self.fields[str(field.pk)] = field.get_serializer_field()
-
-
-class UserResponseSerializer(serializers.ModelSerializer):
-    """
-    Serializer for a user's response to one fieldset, but without a survey required.
-
-    Intended only for use as nested into SurveyResponseSerializer.
-    """
-    user_id = serializers.CharField(required=False)
-
-    class Meta:
-        model = models.UserResponse
-        fields = ['fieldset', 'user_id', 'answers']
-
-    def validate(self, attrs):
-        attrs = super().validate(attrs)
-
-        fieldset = attrs['fieldset']
-        validator = FieldValidationSerializer(
-            fieldset=fieldset,
-            data=attrs['answers'],
-        )
-
-        validator.is_valid(raise_exception=True)
-        return attrs
-
-
 class SurveyResponseSerializer(serializers.Serializer):
-    """Serializer for a user's answers to a whole survey."""
-    user_responses = UserResponseSerializer(many=True)
-
-    class Meta:
-        fields = ['user_responses']
+    def get_fields(self):
+        """
+        Dynamically generate the fields from the survey fieldsets.
+        Returns a dictionary of {field_name: field_instance}.
+        """
+        survey = self.context['survey']
+        return {
+            str(fs.pk): FieldsetResponseSerializer(fieldset=fs, context=self.context)
+            for fs in survey.get_ordered_fieldsets()
+        }
 
     def create(self, validated_data):
         """
-        Create all the individual UserResponse objects using the UserResponseSerializer.
+        Create all the individual UserResponse objects.
 
         We have to do it explicitly because this serializer doesn't have a model.
         DRF can only automatically create the nested models when they're foreign-keyed
@@ -89,11 +61,32 @@ class SurveyResponseSerializer(serializers.Serializer):
         We also need to fill in the survey, which isn't supplied explicitly for each of
         the individual user response objects.
         """
-        response_data = validated_data['user_responses']
-        responses = []
-        for response in response_data:
-            response['survey'] = validated_data['survey']
-            response['user_id'] = validated_data['user_id']
-            responses.append(UserResponseSerializer(data=response).create(response))
+
+        survey = validated_data.pop('survey')
+        user_id = validated_data.pop('user_id')
+        for fieldset_pk, answers in validated_data.items():
+            fieldset = survey.fieldsets.get(pk=fieldset_pk)
+            models.UserResponse.objects.create(
+                survey=survey,
+                user_id=user_id,
+                fieldset=fieldset,
+                answers=json_decode(answers),
+            )
 
         return validated_data
+
+
+class FieldsetResponseSerializer(serializers.Serializer):
+    def __init__(self, fieldset, *args, **kwargs):
+        self.fieldset = fieldset
+        super().__init__(*args, **kwargs)
+
+    def get_fields(self):
+        """
+        Dynamically generate the fields from the fieldset fields.
+        Returns a dictionary of {field_name: field_instance}.
+        """
+        return {
+            str(field.pk): field.get_serializer_field()
+            for field in self.fieldset.get_ordered_fields()
+        }

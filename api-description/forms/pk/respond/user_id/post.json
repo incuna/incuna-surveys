@@ -2,54 +2,30 @@
     "description": "Endpoint to answer a form",
     "url": "http://localhost:8000/forms/1/respond/test-user",
     "fields": {
-        "user_responses": [
-            {
-                "fieldset": 1,
-                "answers": {
-                    "1": "Friends"
-                }
-            },
-            {
-                "fieldset": 2,
-                "answers": {
-                    "3": 5
-                }
-            },
-            {
-                "fieldset": 3,
-                "answers": {
-                    "4": 0,
-                    "5": [1, 2]
-                }
-            }
-        ]
+        "1": {
+            "1": "Friends"
+        },
+        "2": {
+            "3": 5
+        },
+        "3": {
+            "4": 0,
+            "5": [1, 2]
+        }
     },
     "OK": {
         "status": 201,
         "response_data": {
-            "survey": 1,
-            "user_id": "User#20#",
-            "user_responses": [
-                {
-                    "fieldset": 1,
-                    "answers": {
-                        "1": "Friends"
-                    }
-                },
-                {
-                    "fieldset": 2,
-                    "answers": {
-                        "3": 5
-                    }
-                },
-                {
-                    "fieldset": 3,
-                    "answers": {
-                        "4": 0,
-                        "5": [1, 2]
-                    }
-                }
-            ]
+            "1": {
+                "1": "Friends"
+            },
+            "2": {
+                "3": 5
+            },
+            "3": {
+                "4": 0,
+                "5": [1, 2]
+            }
         }
     }
 }
