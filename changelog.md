@@ -2,6 +2,10 @@
 
 This project uses Semantic Versioning (2.0).
 
+### Upcoming
+
+* BUGFIX: add missing hyphen in `drf-form-field` in radio.html
+
 ### 0.6.0
 * Add a wrapper template to wrap field groups with a separate header and body
 
