@@ -61,13 +61,12 @@ _module.directive('surveysForm', [_api2.default.componentName, _fieldsetsParser2
                 }
             });
 
-            // Check and count the number of questions answered.
-            var checkAnswered = function checkAnswered(answers) {
+            var countNumberOfAnsweredQuestions = function countNumberOfAnsweredQuestions(answers) {
                 var answered = 0;
                 _libraries.angular.forEach(answers, function (answerGroup) {
                     _libraries.angular.forEach(answerGroup, function (item) {
                         if (item > 0 || item.length > 0) {
-                            answered = answered + 1;
+                            answered++;
                         }
                     });
                 });
@@ -82,11 +81,10 @@ _module.directive('surveysForm', [_api2.default.componentName, _fieldsetsParser2
                 }
             };
 
-            // Watching the model for changes.
             // Using true to compare the subelements.
             scope.$watch('model', function (answers) {
-                var completedQuestions = checkAnswered(answers);
-                calculatePercentageComplete(completedQuestions);
+                var numberOfCompletedQuestions = countNumberOfAnsweredQuestions(answers);
+                calculatePercentageComplete(numberOfCompletedQuestions);
             }, true);
 
             scope.$watch('responseUrl', function (url) {

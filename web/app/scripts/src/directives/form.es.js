@@ -56,13 +56,12 @@ module.directive('surveysForm', [
                     }
                 });
 
-                // Check and count the number of questions answered.
-                const checkAnswered = function (answers) {
+                const countNumberOfAnsweredQuestions = function (answers) {
                     let answered = 0;
                     angular.forEach(answers, function (answerGroup) {
                         angular.forEach(answerGroup, function (item) {
                             if (item > 0 || item.length > 0) {
-                                answered = answered + 1;
+                                answered++;
                             }
                         });
                     });
@@ -71,17 +70,16 @@ module.directive('surveysForm', [
                 }
 
                 const calculatePercentageComplete = function (completedQuestions) {
-                    let result = ((completedQuestions / scope.totalQuestionCount) * 100)
+                    const result = ((completedQuestions / scope.totalQuestionCount) * 100)
                     if (!isNaN(result)) {
                         scope.percentageComplete = Math.round(result) + '%';
                     }
                 }
 
-                // Watching the model for changes.
                 // Using true to compare the subelements.
                 scope.$watch('model', (answers) => {
-                    let completedQuestions = checkAnswered(answers);
-                    calculatePercentageComplete(completedQuestions)
+                    const numberOfCompletedQuestions = countNumberOfAnsweredQuestions(answers);
+                    calculatePercentageComplete(numberOfCompletedQuestions)
                 }, true);
 
                 scope.$watch('responseUrl', (url) => {
