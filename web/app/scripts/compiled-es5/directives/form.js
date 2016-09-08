@@ -75,8 +75,7 @@ _module.directive('surveysForm', [_api2.default.componentName, _fieldsetsParser2
             scope.submit = function () {
                 if (scope.responseUrl) {
                     // TODO: Handle errors.
-                    var responses = FieldsetParser.parseModelToResponse(scope.model);
-                    API.post(scope.responseUrl, responses).then(scope.onSuccess).catch(scope.onFailure);
+                    API.post(scope.responseUrl, scope.model).then(scope.onSuccess).catch(scope.onFailure);
                 }
             };
         }

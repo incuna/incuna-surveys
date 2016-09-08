@@ -51,19 +51,6 @@ module.service(moduleProperties.componentName, [
 
             return model;
         };
-
-        this.parseModelToResponse = function (model) {
-            let responses = [];
-
-            Object.keys(model).forEach((id) => {
-                responses.push({
-                    fieldset: parseInt(id),
-                    answers: model[id]
-                });
-            });
-
-            return responses;
-        };
     }
 ]);
 

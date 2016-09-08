@@ -55,19 +55,6 @@ _module.service(moduleProperties.componentName, [function () {
 
         return model;
     };
-
-    this.parseModelToResponse = function (model) {
-        var responses = [];
-
-        Object.keys(model).forEach(function (id) {
-            responses.push({
-                fieldset: parseInt(id),
-                answers: model[id]
-            });
-        });
-
-        return responses;
-    };
 }]);
 
 exports.default = moduleProperties;

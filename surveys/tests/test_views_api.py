@@ -1,5 +1,3 @@
-import json
-
 from django.http import Http404
 
 from .factories import UserResponseFactory
@@ -11,7 +9,7 @@ from .utils import (
 )
 from .. import views_api
 from ..models import UserResponse
-from ..serializers import SurveySerializer
+from ..serializers import json_decode, SurveySerializer
 
 
 class TestSurveyListView(APIRequestTestCase):
@@ -63,12 +61,7 @@ class TestSurveyViews(APIRequestTestCase):
     def get_post_data(self):
         """Helper method.  Produces suitable POST data."""
         return {
-            'user_responses': [
-                {
-                    'fieldset': 1,
-                    'answers': {'1': 42}
-                }
-            ],
+            '1': {'1': 42}
         }
 
     def call_post_view(self, data):
@@ -86,7 +79,7 @@ class TestSurveyViews(APIRequestTestCase):
         # Assert the UserResponse object was created correctly.
         user_response = UserResponse.objects.first()
         self.assertEqual(user_response.user_id, self.user_id)
-        self.assertEqual(user_response.answers, data['user_responses'][0]['answers'])
+        self.assertEqual(user_response.answers, data['1'])
 
     def test_post_object_created(self):
         """Test that the view creates UserResponses correctly."""
@@ -97,7 +90,7 @@ class TestSurveyViews(APIRequestTestCase):
         # Assert the UserResponse object was created correctly.
         user_response = UserResponse.objects.first()
         self.assertEqual(user_response.user_id, self.user_id)
-        self.assertEqual(user_response.answers, data['user_responses'][0]['answers'])
+        self.assertEqual(user_response.answers, data['1'])
 
     def test_post_404(self):
         wrong_pk = self.survey.pk + 42
@@ -142,10 +135,14 @@ class TestSurveyGetLatestCreateView(APIExampleMixin, APIRequestTestCase):
 
         self.assertEqual(response.status_code, 200)
 
-        # Take the data to and from JSON to turn integer indices into strings.
-        data = json.loads(json.dumps(response.data))
+        # The data is asserted thoroughly in the serializer test, so we'll just check
+        # that it's the same data here and hasn't been tampered with.  That way, if the
+        # serializer is broken, only that test should fail, and this test will be
+        # unconcerned by changes to the serializer format.
         url = '/forms/pk/respond/user_id'
         expected_data = self.api_example_data(url, 'get')['OK']['response_data']
+
+        data = json_decode(response.data)
         self.assertEqual(data, expected_data)
 
     def test_missing_user_id(self):
@@ -153,4 +150,10 @@ class TestSurveyGetLatestCreateView(APIExampleMixin, APIRequestTestCase):
         view = views_api.SurveyGetLatestCreateView.as_view()
         request = self.create_request()
         response = view(request, pk=self.survey.pk, user_id='nonsense')
-        self.assertEqual(response.data, {})
+        expected_data = {
+            '3': {'5': None, '4': None},
+            '1': {'1': ''},
+            '2': {'3': None, '2': None}
+        }
+        data = json_decode(response.data)
+        self.assertEqual(data, expected_data)
