@@ -36,9 +36,9 @@ _module.directive('surveysForm', [_api2.default.componentName, _fieldsetsParser2
         templateUrl: 'templates/incuna-surveys/form/survey-form.html',
         link: function link(scope) {
             scope.model = {};
-            scope.percentageComplete = 0;
+            scope.percentageComplete = 0 + '%';
 
-            var getTotalQuestions = function getTotalQuestions() {
+            var countQuestions = function countQuestions() {
                 var questions = scope.form.fieldsets;
                 scope.totalQuestionCount = 0;
 
@@ -56,7 +56,7 @@ _module.directive('surveysForm', [_api2.default.componentName, _fieldsetsParser2
                         // been set.
                         if (Object.keys(scope.model).length === 0) {
                             scope.model = FieldsetParser.parseFormToModel(structure);
-                            getTotalQuestions();
+                            countQuestions();
                         }
                     });
                 }
@@ -77,7 +77,9 @@ _module.directive('surveysForm', [_api2.default.componentName, _fieldsetsParser2
 
             var calculatePercentageComplete = function calculatePercentageComplete(completedQuestions) {
                 var result = completedQuestions / scope.totalQuestionCount * 100;
-                scope.percentageComplete = Math.round(result);
+                if (!isNaN(result)) {
+                    scope.percentageComplete = Math.round(result) + '%';
+                }
             };
 
             scope.$watch('model', function (answers) {
@@ -146,7 +148,7 @@ angular.module('incuna-surveys-form.templates', []).run(['$templateCache', funct
   'use strict';
 
   $templateCache.put('templates/incuna-surveys/form/survey-form.html',
-    "<form class=question-form ng-submit=submit()><header class=form-header><h1 ng-bind=form.name class=form-name></h1><h2 ng-bind=form.description class=form-desc></h2></header><formly-form class=form-body model=model fields=fields></formly-form><button class=button-submit type=submit>Submit</button></form>"
+    "<form class=question-form ng-submit=submit()><div ng-bind=percentageComplete></div><header class=form-header><h1 ng-bind=form.name class=form-name></h1><h2 ng-bind=form.description class=form-desc></h2></header><formly-form class=form-body model=model fields=fields></formly-form><button class=button-submit type=submit>Submit</button></form>"
   );
 
 }]);

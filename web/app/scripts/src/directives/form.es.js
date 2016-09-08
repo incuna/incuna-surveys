@@ -30,9 +30,9 @@ module.directive('surveysForm', [
             templateUrl: 'templates/incuna-surveys/form/survey-form.html',
             link: function (scope) {
                 scope.model = {};
-                scope.percentageComplete = 0;
+                scope.percentageComplete = 0 + '%';
 
-                const getTotalQuestions = function () {
+                const countQuestions = function () {
                     const questions = scope.form.fieldsets;
                     scope.totalQuestionCount = 0;
 
@@ -50,7 +50,7 @@ module.directive('surveysForm', [
                             // been set.
                             if (Object.keys(scope.model).length === 0) {
                                 scope.model = FieldsetParser.parseFormToModel(structure);
-                                getTotalQuestions();
+                                countQuestions();
                             }
                         });
                     }
@@ -71,7 +71,9 @@ module.directive('surveysForm', [
 
                 const calculatePercentageComplete = function (completedQuestions) {
                     let result = ((completedQuestions/scope.totalQuestionCount)*100)
-                    scope.percentageComplete = Math.round(result);
+                    if (!isNaN(result)) {
+                        scope.percentageComplete = Math.round(result) + '%';
+                    }
                 }
 
                 scope.$watch('model', (answers) => {
