@@ -2,6 +2,10 @@
 
 This project uses Semantic Versioning (2.0).
 
+### Upcoming
+
+* Add classes to radio.html for styling
+
 ### 0.6.1
 
 * BUGFIX: add missing hyphen in `drf-form-field` in radio.html
