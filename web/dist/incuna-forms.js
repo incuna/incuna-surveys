@@ -61,8 +61,7 @@ _module.directive('surveysForm', [_api2.default.componentName, _fieldsetsParser2
             scope.submit = function () {
                 if (scope.responseUrl) {
                     // TODO: Handle errors.
-                    var responses = FieldsetParser.parseModelToResponse(scope.model);
-                    API.post(scope.responseUrl, responses).then(scope.onSuccess).catch(scope.onFailure);
+                    API.post(scope.responseUrl, scope.model).then(scope.onSuccess).catch(scope.onFailure);
                 }
             };
         }
@@ -226,12 +225,7 @@ _module.service(moduleProperties.componentName, ['$http', _projectConfig2.defaul
                 return response.data;
             });
         },
-        post: function post(url, responses) {
-            var data = {
-                // jscs:disable disallowQuotedKeysInObjects
-                'user_responses': responses
-                // jscs:enable disallowQuotedKeysInObjects
-            };
+        post: function post(url, data) {
             return $http.post(url, data).then(function (response) {
                 return response.data;
             });
@@ -355,19 +349,6 @@ _module.service(moduleProperties.componentName, [function () {
         });
 
         return model;
-    };
-
-    this.parseModelToResponse = function (model) {
-        var responses = [];
-
-        Object.keys(model).forEach(function (id) {
-            responses.push({
-                fieldset: parseInt(id),
-                answers: model[id]
-            });
-        });
-
-        return responses;
     };
 }]);
 

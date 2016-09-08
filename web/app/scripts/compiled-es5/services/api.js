@@ -44,12 +44,7 @@ _module.service(moduleProperties.componentName, ['$http', _projectConfig2.defaul
                 return response.data;
             });
         },
-        post: function post(url, responses) {
-            var data = {
-                // jscs:disable disallowQuotedKeysInObjects
-                'user_responses': responses
-                // jscs:enable disallowQuotedKeysInObjects
-            };
+        post: function post(url, data) {
             return $http.post(url, data).then(function (response) {
                 return response.data;
             });
