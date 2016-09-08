@@ -36,7 +36,7 @@ module.directive('surveysForm', [
                     const questions = scope.form.fieldsets;
                     scope.totalQuestionCount = 0;
 
-                    angular.forEach(questions, function(question) {
+                    angular.forEach(questions, function (question) {
                         scope.totalQuestionCount = scope.totalQuestionCount + question.fields.length;
                     });
                 };
@@ -59,8 +59,8 @@ module.directive('surveysForm', [
                 // Check and count the number of questions answered.
                 const checkAnswered = function (answers) {
                     let answered = 0;
-                    angular.forEach(answers, function(answerGroup) {
-                        angular.forEach(answerGroup, function(item) {
+                    angular.forEach(answers, function (answerGroup) {
+                        angular.forEach(answerGroup, function (item) {
                             if (item > 0 || item.length > 0) {
                                 answered = answered + 1;
                             }
@@ -71,7 +71,7 @@ module.directive('surveysForm', [
                 }
 
                 const calculatePercentageComplete = function (completedQuestions) {
-                    let result = ((completedQuestions/scope.totalQuestionCount)*100)
+                    let result = ((completedQuestions / scope.totalQuestionCount) * 100)
                     if (!isNaN(result)) {
                         scope.percentageComplete = Math.round(result) + '%';
                     }
