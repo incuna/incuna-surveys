@@ -95,16 +95,12 @@ describe('surveysForm directive', function() {
     describe('submit', function() {
         beforeEach(function() {
             this.compileDirective(this.tpl);
-            spyOn(this.FieldsParser, 'parseModelToResponse').and.returnValue(postData);
             spyOn(this.API, 'post').and.returnValue(this.$q.defer().promise);
 
             this.elm.isolateScope().submit();
         });
-        it('should call FieldsetParser.parseModelToResponse with the scope.model', function() {
-            expect(this.FieldsParser.parseModelToResponse).toHaveBeenCalledWith(getResponse);
-        });
         it('should API.post with the responseUrl and the post data', function() {
-            expect(this.API.post).toHaveBeenCalledWith(responseUrl, postData)
+            expect(this.API.post).toHaveBeenCalledWith(responseUrl, getResponse)
         });
     });
 
@@ -115,8 +111,6 @@ describe('surveysForm directive', function() {
             const tpl = '<div surveys-form form-url="formUrl" response-url="responseUrl" on-success="mySubmit()" on-failure="myFailure()"></div>';
             this.compileDirective(tpl);
 
-            spyOn(this.FieldsParser, 'parseModelToResponse').and.returnValue(postData);
-
             this.isolated = this.elm.isolateScope()
         });
         it('should be defiend', function() {
@@ -124,10 +118,10 @@ describe('surveysForm directive', function() {
         });
         it('should call the success callback if the post succeeds', function() {
             const responseDefer = this.$q.defer();
-            responseDefer.resolve(postData);
+            responseDefer.resolve(getResponse);
             spyOn(this.API, 'post').and.returnValue(responseDefer.promise);
             this.isolated.submit();
-            expect(this.API.post).toHaveBeenCalledWith(responseUrl, postData)
+            expect(this.API.post).toHaveBeenCalledWith(responseUrl, getResponse)
             this.scope.$digest();
             expect(this.scope.mySubmit).toHaveBeenCalledWith();
         });
@@ -136,7 +130,7 @@ describe('surveysForm directive', function() {
             responseDefer.reject();
             spyOn(this.API, 'post').and.returnValue(responseDefer.promise);
             this.isolated.submit();
-            expect(this.API.post).toHaveBeenCalledWith(responseUrl, postData)
+            expect(this.API.post).toHaveBeenCalledWith(responseUrl, getResponse)
             this.scope.$digest();
             expect(this.scope.myFailure).toHaveBeenCalledWith();
         });

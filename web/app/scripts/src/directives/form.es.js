@@ -55,8 +55,7 @@ module.directive('surveysForm', [
                 scope.submit = function () {
                     if (scope.responseUrl) {
                         // TODO: Handle errors.
-                        const responses = FieldsetParser.parseModelToResponse(scope.model);
-                        API.post(scope.responseUrl, responses)
+                        API.post(scope.responseUrl, scope.model)
                             .then(scope.onSuccess)
                             .catch(scope.onFailure);
                     }
