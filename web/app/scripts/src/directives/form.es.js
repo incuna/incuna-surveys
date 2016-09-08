@@ -32,7 +32,7 @@ module.directive('surveysForm', [
                 scope.model = {};
                 scope.percentageComplete = 0 + '%';
 
-                const countQuestions = function () {
+                const countQuestionsTotal = function () {
                     const questions = scope.form.fieldsets;
                     scope.totalQuestionCount = 0;
 
@@ -50,12 +50,13 @@ module.directive('surveysForm', [
                             // been set.
                             if (Object.keys(scope.model).length === 0) {
                                 scope.model = FieldsetParser.parseFormToModel(structure);
-                                countQuestions();
+                                countQuestionsTotal();
                             }
                         });
                     }
                 });
 
+                // Check and count the number of questions answered.
                 const checkAnswered = function (answers) {
                     let answered = 0;
                     angular.forEach(answers, function(answerGroup) {
@@ -76,6 +77,8 @@ module.directive('surveysForm', [
                     }
                 }
 
+                // Watching the model for changes.
+                // Using true to compare the subelements.
                 scope.$watch('model', (answers) => {
                     let completedQuestions = checkAnswered(answers);
                     calculatePercentageComplete(completedQuestions)

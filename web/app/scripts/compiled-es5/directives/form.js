@@ -37,7 +37,7 @@ _module.directive('surveysForm', [_api2.default.componentName, _fieldsetsParser2
             scope.model = {};
             scope.percentageComplete = 0 + '%';
 
-            var countQuestions = function countQuestions() {
+            var countQuestionsTotal = function countQuestionsTotal() {
                 var questions = scope.form.fieldsets;
                 scope.totalQuestionCount = 0;
 
@@ -55,12 +55,13 @@ _module.directive('surveysForm', [_api2.default.componentName, _fieldsetsParser2
                         // been set.
                         if (Object.keys(scope.model).length === 0) {
                             scope.model = FieldsetParser.parseFormToModel(structure);
-                            countQuestions();
+                            countQuestionsTotal();
                         }
                     });
                 }
             });
 
+            // Check and count the number of questions answered.
             var checkAnswered = function checkAnswered(answers) {
                 var answered = 0;
                 _libraries.angular.forEach(answers, function (answerGroup) {
@@ -81,6 +82,8 @@ _module.directive('surveysForm', [_api2.default.componentName, _fieldsetsParser2
                 }
             };
 
+            // Watching the model for changes.
+            // Using true to compare the subelements.
             scope.$watch('model', function (answers) {
                 var completedQuestions = checkAnswered(answers);
                 calculatePercentageComplete(completedQuestions);
