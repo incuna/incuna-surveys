@@ -56,12 +56,12 @@ _module.service(moduleProperties.componentName, [function () {
         return model;
     };
 
-    this.addFieldErros = function (fields, errors) {
+    this.addFieldErrors = function (fields, errors) {
         fields.forEach(function (fieldset) {
             var key = fieldset.templateOptions.id;
-            var fieldsetErros = errors[key];
+            var fieldsetErrors = errors[key];
             fieldset.fieldGroup.forEach(function (field) {
-                var fieldError = fieldsetErros && fieldsetErros[field.key];
+                var fieldError = fieldsetErrors && fieldsetErrors[field.key];
                 field.templateOptions.fieldOptions.errors = fieldError;
             });
         });

@@ -52,12 +52,12 @@ module.service(moduleProperties.componentName, [
             return model;
         };
 
-        this.addFieldErros = function (fields, errors) {
+        this.addFieldErrors = function (fields, errors) {
             fields.forEach((fieldset) => {
                 const key = fieldset.templateOptions.id;
-                const fieldsetErros = errors[key];
+                const fieldsetErrors = errors[key];
                 fieldset.fieldGroup.forEach((field) => {
-                    const fieldError = fieldsetErros && fieldsetErros[field.key];
+                    const fieldError = fieldsetErrors && fieldsetErrors[field.key];
                     field.templateOptions.fieldOptions.errors = fieldError;
                 });
             });

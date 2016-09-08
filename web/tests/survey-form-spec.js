@@ -139,18 +139,18 @@ describe('surveysForm directive', function() {
                 const responseDefer = this.$q.defer();
                 responseDefer.reject({data: postErrors});
                 spyOn(this.API, 'post').and.returnValue(responseDefer.promise);
-                spyOn(this.FieldsParser, 'addFieldErros');
+                spyOn(this.FieldsParser, 'addFieldErrors');
             });
 
             it('callback should be defiend', function() {
                 expect(this.isolated.onFailure).toBeDefined();
             });
 
-            it('should call addFieldErros if the post fails', function() {
+            it('should call addFieldErrors if the post fails', function() {
                 this.isolated.submit();
                 this.scope.$digest();
 
-                expect(this.FieldsParser.addFieldErros).toHaveBeenCalledWith(fields, postErrors);
+                expect(this.FieldsParser.addFieldErrors).toHaveBeenCalledWith(fields, postErrors);
             });
 
             it('callback be called if the post fails', function() {

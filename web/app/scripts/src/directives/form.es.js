@@ -57,8 +57,8 @@ module.directive('surveysForm', [
                         API.post(scope.responseUrl, scope.model)
                             .then(scope.onSuccess)
                             .catch((response) => {
-                                const errors = response && response.data && response.data;
-                                FieldsetParser.addFieldErros(scope.fields, errors)
+                                const errors = response && response.data;
+                                FieldsetParser.addFieldErrors(scope.fields, errors)
                                 scope.onFailure();
                             });
                     }

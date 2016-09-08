@@ -100,9 +100,9 @@ describe('FieldsetParserService', function () {
         
     });
 
-    describe('addFieldErros object', function () {
+    describe('addFieldErrors object', function () {
         it('should add erross to the results', function () {
-            this.Parser.addFieldErros(this.result, fieldErrors);
+            this.Parser.addFieldErrors(this.result, fieldErrors);
             const field = this.result[0].fieldGroup[0];
             const fieldOptions = field.templateOptions.fieldOptions;
             expect(fieldOptions.errors).toBe(fieldErrors['1']['1']);
@@ -113,7 +113,7 @@ describe('FieldsetParserService', function () {
             const fieldOptions = field.templateOptions.fieldOptions;
             fieldOptions.errors = fieldErrors['1']['1'];
             expect(fieldOptions.errors).toBe(fieldErrors['1']['1']);
-            this.Parser.addFieldErros(this.result, {});
+            this.Parser.addFieldErrors(this.result, {});
             expect(fieldOptions.errors).not.toBeDefined();
         });
     });
