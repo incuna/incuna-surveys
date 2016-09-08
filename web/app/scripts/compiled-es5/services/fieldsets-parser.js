@@ -7,73 +7,43 @@ exports.moduleProperties = undefined;
 
 var _libraries = require('./../libraries.js');
 
-var _fieldsConfig = require('./fields-config.js');
-
-var _fieldsConfig2 = _interopRequireDefault(_fieldsConfig);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-/*
- *
- * This module parses a form API into an angular-formly array
- *
- */
-
 var moduleProperties = exports.moduleProperties = {
     moduleName: 'incuna-surveys.field-parser',
     componentName: 'FieldsParser'
-};
+}; /*
+    *
+    * This module parses a form API into an angular-formly array
+    *
+    */
 
-var _module = _libraries.angular.module(moduleProperties.moduleName, [_fieldsConfig2.default.moduleName]);
+var _module = _libraries.angular.module(moduleProperties.moduleName, []);
 
-_module.service(moduleProperties.componentName, [_fieldsConfig2.default.componentName, function (FieldsConfig) {
+_module.service(moduleProperties.componentName, [function () {
     this.parseFields = function (form) {
-        var fields = [];
-
-        fields[0] = {
-            templateUrl: FieldsConfig.headerTemplateUrl,
-            templateOptions: {
-                formName: form.name,
-                formDescription: form.description
-            }
-        };
-
-        form.fieldsets.forEach(function (fieldset) {
-            var fieldGroup = [{
-                templateUrl: FieldsConfig.fieldsetHeaderTemplateUrl,
-                templateOptions: {
-                    fieldGroupName: fieldset.name,
-                    fieldGroupDesc: fieldset.description
-                }
-            }];
-
-            fieldset.fields.forEach(function (field) {
-                var fieldObject = {
-                    key: field.id,
-                    type: field.field_type,
-                    templateOptions: {
-                        fieldSetId: fieldset.id,
-                        autoId: 'id-' + fieldset.id + '-' + field.id,
-                        choices: field.answers,
-                        fieldOptions: {
-                            // jscs:disable disallowQuotedKeysInObjects
-                            'help_text': field.help_text,
-                            required: field.required,
-                            label: field.name
-                            // jscs:enable disallowQuotedKeysInObjects
+        return form.fieldsets.map(function (fieldset) {
+            return {
+                wrapper: 'panel',
+                templateOptions: fieldset,
+                fieldGroup: fieldset.fields.map(function (field) {
+                    return {
+                        key: field.id,
+                        type: field.field_type,
+                        templateOptions: {
+                            fieldSetId: fieldset.id,
+                            autoId: 'id-' + fieldset.id + '-' + field.id,
+                            choices: field.answers,
+                            fieldOptions: {
+                                // jscs:disable disallowQuotedKeysInObjects
+                                'help_text': field.help_text,
+                                required: field.required,
+                                label: field.name
+                                // jscs:enable disallowQuotedKeysInObjects
+                            }
                         }
-                    }
-                };
-
-                fieldGroup.push(fieldObject);
-            });
-
-            fields.push({
-                fieldGroup: fieldGroup
-            });
+                    };
+                })
+            };
         });
-
-        return fields;
     };
 
     this.parseFormToModel = function (form) {

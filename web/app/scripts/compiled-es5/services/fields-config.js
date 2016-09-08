@@ -16,8 +16,6 @@ var _module = _libraries.angular.module(moduleProperties.moduleName, ['formly'])
 
 _module.service(moduleProperties.componentName, [function () {
     this.templatesBase = 'templates/incuna-surveys/fields';
-    this.headerTemplateUrl = this.templatesBase + '/header.html';
-    this.fieldsetHeaderTemplateUrl = this.templatesBase + '/fieldset-header.html';
 }]);
 
 _module.run(['formlyConfig', moduleProperties.componentName, function (formlyConfig, FieldsConfig) {
@@ -47,6 +45,11 @@ _module.run(['formlyConfig', moduleProperties.componentName, function (formlyCon
         name: 'radio',
         templateUrl: templatesBase + '/radio.html'
     });
+
+    formlyConfig.setWrapper([{
+        name: 'panel',
+        templateUrl: templatesBase + '/wrapper.html'
+    }]);
 }]);
 
 exports.default = moduleProperties;

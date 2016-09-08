@@ -9,7 +9,8 @@ describe('FieldsetParserService', function () {
         angular.module('formly', []);
         angular.mock.module({
             formlyConfig: {
-                setType: angular.noop
+                setType: angular.noop,
+                setWrapper: angular.noop
             }
         });
         angular.mock.module('incuna-surveys.field-parser');
@@ -29,42 +30,29 @@ describe('FieldsetParserService', function () {
             expect(this.result).toEqual(jasmine.any(Array));
         })
 
-        describe('first element', function () {
-            
-            it('should contain a header template', function () {
-                expect(this.result[0].templateUrl).toContain('/header.html');
-            });
-
-            it('should have appropriate templateOptions', function () {
-                expect(this.result[0].templateOptions.formName).toBe('How have you been using the site?');
-                expect(this.result[0].templateOptions.formDescription).toBe('Form description');
-            });
-
-        });
-
         describe('field groups', function () {
             it('should be as many as there are field sets', function () {
                 // The api description has 3 fieldsets, the extra element is the header
-                expect(this.result.length).toBe(4); 
+                expect(this.result.length).toBe(3); 
             });
 
             describe('each element', function () {
                 
                 it('should have a header as first element', function () {
-                    const fieldGroup = this.result[1].fieldGroup[0];
+                    const fieldGroup = this.result[0];
 
-                    expect(fieldGroup.templateUrl).toContain('fieldset-header.html');
-                    expect(fieldGroup.templateOptions.fieldGroupName).toBe('Free text field');
-                    expect(fieldGroup.templateOptions.fieldGroupDesc).toBe('Field group description');
+                    expect(fieldGroup.wrapper).toBe('panel');
+                    expect(fieldGroup.templateOptions.name).toBe('Free text field');
+                    expect(fieldGroup.templateOptions.description).toBe('Field group description');
                 });
                 
                 it('should have a list of fields', function () {
-                    expect(this.result[2].fieldGroup.length).toBe(3);
+                    expect(this.result[1].fieldGroup.length).toBe(2);
                 });
 
                 describe('each field', function () {
                     it('should have apropriate values', function () {
-                        const field = this.result[1].fieldGroup[1];
+                        const field = this.result[0].fieldGroup[0];
                         const fieldOptions = field.templateOptions.fieldOptions;
 
                         expect(field.key).toBe(1);
@@ -76,13 +64,13 @@ describe('FieldsetParserService', function () {
                     });
 
                     it('should have empty choices for non-choice fields', function () {
-                        const field = this.result[1].fieldGroup[1];
+                        const field = this.result[0].fieldGroup[0];
 
                         expect(field.templateOptions.choices).toEqual([]);
                     });
 
                     it('should have a list of choices for choice fields', function () {
-                        const field = this.result[3].fieldGroup[1];
+                        const field = this.result[2].fieldGroup[0];
 
                         expect(field.templateOptions.choices).toEqual(['One time', 'Two times', 'Three times or more']);
                     });

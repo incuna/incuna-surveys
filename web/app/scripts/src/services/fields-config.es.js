@@ -12,8 +12,6 @@ const module = angular.module(moduleProperties.moduleName, [
 module.service(moduleProperties.componentName, [
     function () {
         this.templatesBase = 'templates/incuna-surveys/fields';
-        this.headerTemplateUrl = `${this.templatesBase}/header.html`;
-        this.fieldsetHeaderTemplateUrl = `${this.templatesBase}/fieldset-header.html`;
     }
 ]);
 
@@ -50,6 +48,11 @@ module.run([
             name: 'radio',
             templateUrl: `${templatesBase}/radio.html`
         });
+
+        formlyConfig.setWrapper([{
+            name: 'panel',
+            templateUrl: `${templatesBase}/wrapper.html`
+        }]);
     }
 ]);
 
