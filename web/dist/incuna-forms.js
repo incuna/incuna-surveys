@@ -73,13 +73,15 @@ _module.directive('surveysForm', [_api2.default.componentName, _fieldsetsParser2
             var countNumberOfAnsweredQuestions = function countNumberOfAnsweredQuestions(answers) {
                 var answered = 0;
 
-                _libraries.angular.forEach(answers, function (answerGroup) {
-                    _libraries.angular.forEach(answerGroup, function (item) {
-                        if (item > 0 || item.length > 0) {
+                for (var groupKey in answers) {
+                    var answerGroup = answers[groupKey];
+                    for (var answerKey in answerGroup) {
+                        var answer = answerGroup[answerKey];
+                        if (answer > 0 || answer.length > 0) {
                             answered++;
                         }
-                    });
-                });
+                    }
+                }
 
                 return answered;
             };

@@ -67,13 +67,15 @@ module.directive('surveysForm', [
                 const countNumberOfAnsweredQuestions = function (answers) {
                     let answered = 0;
 
-                    angular.forEach(answers, function (answerGroup) {
-                        angular.forEach(answerGroup, function (item) {
-                            if (item > 0 || item.length > 0) {
+                    for (let groupKey in answers) {
+                        let answerGroup = answers[groupKey]
+                        for (let answerKey in answerGroup) {
+                            let answer = answerGroup[answerKey]
+                            if (answer > 0 || answer.length > 0) {
                                 answered++;
                             }
-                        });
-                    });
+                        }
+                    }
 
                     return answered;
                 };
