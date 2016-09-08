@@ -42,7 +42,7 @@ _module.directive('surveysForm', [_api2.default.componentName, _fieldsetsParser2
             var countQuestionsTotal = function countQuestionsTotal() {
                 var questions = scope.form.fieldsets;
 
-                _libraries.angular.forEach(questions, function (question) {
+                questions.forEach(function (question) {
                     totalQuestionCount = totalQuestionCount + question.fields.length;
                 });
             };
@@ -72,6 +72,7 @@ _module.directive('surveysForm', [_api2.default.componentName, _fieldsetsParser2
             // answered is a number of type number
             var countNumberOfAnsweredQuestions = function countNumberOfAnsweredQuestions(answers) {
                 var answered = 0;
+
                 _libraries.angular.forEach(answers, function (answerGroup) {
                     _libraries.angular.forEach(answerGroup, function (item) {
                         if (item > 0 || item.length > 0) {

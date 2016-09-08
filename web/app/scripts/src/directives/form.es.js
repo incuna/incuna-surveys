@@ -36,7 +36,7 @@ module.directive('surveysForm', [
                 const countQuestionsTotal = function () {
                     const questions = scope.form.fieldsets;
 
-                    angular.forEach(questions, function (question) {
+                    questions.forEach((question) => {
                         totalQuestionCount = totalQuestionCount + question.fields.length;
                     });
                 };
@@ -66,6 +66,7 @@ module.directive('surveysForm', [
                 // answered is a number of type number
                 const countNumberOfAnsweredQuestions = function (answers) {
                     let answered = 0;
+
                     angular.forEach(answers, function (answerGroup) {
                         angular.forEach(answerGroup, function (item) {
                             if (item > 0 || item.length > 0) {
