@@ -47,7 +47,7 @@ _module.directive('calculatePercentage', [_calculatePercentage2.default.componen
 
 exports.default = moduleProperties;
 
-},{"./../libraries.js":5,"./../services/calculate-percentage.js":10}],2:[function(require,module,exports){
+},{"./../libraries.js":5,"./../services/calculate-percentage.js":9}],2:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -119,7 +119,7 @@ _module.directive('surveysForm', [_api2.default.componentName, _fieldsetsParser2
 
 exports.default = moduleProperties;
 
-},{"./../libraries.js":5,"./../services/api.js":8,"./../services/fieldsets-parser.js":12}],3:[function(require,module,exports){
+},{"./../libraries.js":5,"./../services/api.js":8,"./../services/fieldsets-parser.js":11}],3:[function(require,module,exports){
 angular.module('incuna-surveys-fields.templates', []).run(['$templateCache', function($templateCache) {
   'use strict';
 
@@ -202,7 +202,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 _libraries.angular.module('incuna-surveys', ['drf-form-field', 'aif-slider-input', 'checklist-model', _fieldsConfig2.default.moduleName, _api2.default.moduleName, _form2.default.moduleName, _calculatePercentage2.default.moduleName]);
 
-},{"./directives/calculate-percentage.js":1,"./directives/form.js":2,"./libraries.js":5,"./services/api.js":8,"./services/fields-config.js":11}],7:[function(require,module,exports){
+},{"./directives/calculate-percentage.js":1,"./directives/form.js":2,"./libraries.js":5,"./services/api.js":8,"./services/fields-config.js":10}],7:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -319,75 +319,6 @@ _module.service(moduleProperties.componentName, [function () {
         var questions = form;
         var totalQuestionCount = 0;
 
-        questions.forEach(function (question) {
-            totalQuestionCount = totalQuestionCount + question.fields.length;
-        });
-
-        return totalQuestionCount;
-    };
-
-    // answers is an object containing objects
-    // object {
-    //     1 : {
-    //         2 : 0
-    //         3 : 0
-    //     }
-    // }
-    // answered is a number of type number
-    this.countNumberOfAnsweredQuestions = function (answers) {
-        var answered = 0;
-
-        for (var groupKey in answers) {
-            var answerGroup = answers[groupKey];
-            for (var answerKey in answerGroup) {
-                var answer = answerGroup[answerKey];
-                if (answer > 0 || answer.length > 0) {
-                    answered++;
-                }
-            }
-        }
-
-        return answered;
-    };
-
-    this.calculatePercentageComplete = function (completedQuestions, totalQuestionCount) {
-        var result = completedQuestions / totalQuestionCount * 100;
-        if (result >= 0) {
-            return Math.round(result) + '%';
-        }
-
-        return 0 + '%';
-    };
-}]);
-
-exports.default = moduleProperties;
-
-},{"./../libraries.js":5}],10:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.moduleProperties = undefined;
-
-var _libraries = require('./../libraries.js');
-
-var moduleProperties = exports.moduleProperties = {
-    moduleName: 'incuna-surveys.calculate-completion-percent',
-    componentName: 'calculateCompletionPercent'
-}; /*
-    *
-    * This module calculates the survey completion percentage/
-    *
-    */
-
-var _module = _libraries.angular.module(moduleProperties.moduleName, []);
-
-_module.service(moduleProperties.componentName, [function () {
-    this.countQuestionsTotal = function (form) {
-        var questions = form;
-        var totalQuestionCount = 0;
-
         _libraries.angular.forEach(questions, function (question) {
             totalQuestionCount = totalQuestionCount + question.fieldGroup.length;
         });
@@ -431,7 +362,7 @@ _module.service(moduleProperties.componentName, [function () {
 
 exports.default = moduleProperties;
 
-},{"./../libraries.js":5}],11:[function(require,module,exports){
+},{"./../libraries.js":5}],10:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -488,7 +419,7 @@ _module.run(['formlyConfig', moduleProperties.componentName, function (formlyCon
 
 exports.default = moduleProperties;
 
-},{"./../libraries.js":5}],12:[function(require,module,exports){
+},{"./../libraries.js":5}],11:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -550,4 +481,4 @@ _module.service(moduleProperties.componentName, [function () {
 
 exports.default = moduleProperties;
 
-},{"./../libraries.js":5}]},{},[1,2,3,4,5,6,7,8,9,10,11,12]);
+},{"./../libraries.js":5}]},{},[1,2,3,4,5,6,7,8,9,10,11]);

@@ -15,11 +15,11 @@ const module = angular.module(moduleProperties.moduleName, []);
 
 module.service(moduleProperties.componentName, [
     function () {
-        this.countQuestionsTotal = function(form) {
+        this.countQuestionsTotal = function (form) {
             const questions = form;
             let totalQuestionCount = 0;
 
-            angular.forEach(questions, function(question) {
+            angular.forEach(questions, function (question) {
                 totalQuestionCount = totalQuestionCount + question.fieldGroup.length;
             });
 
@@ -56,7 +56,7 @@ module.service(moduleProperties.componentName, [
                 return Math.round(result) + '%';
             }
 
-            return  0 + '%';
+            return 0 + '%';
         };
 
     }
