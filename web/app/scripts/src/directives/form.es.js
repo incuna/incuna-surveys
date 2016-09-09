@@ -54,10 +54,13 @@ module.directive('surveysForm', [
 
                 scope.submit = function () {
                     if (scope.responseUrl) {
-                        // TODO: Handle errors.
                         API.post(scope.responseUrl, scope.model)
                             .then(scope.onSuccess)
-                            .catch(scope.onFailure);
+                            .catch((response) => {
+                                const errors = response && response.data;
+                                FieldsetParser.addFieldErrors(scope.fields, errors)
+                                scope.onFailure();
+                            });
                     }
                 }
             }

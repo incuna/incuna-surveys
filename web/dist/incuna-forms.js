@@ -109,8 +109,11 @@ _module.directive('surveysForm', [_api2.default.componentName, _fieldsetsParser2
 
             scope.submit = function () {
                 if (scope.responseUrl) {
-                    // TODO: Handle errors.
-                    API.post(scope.responseUrl, scope.model).then(scope.onSuccess).catch(scope.onFailure);
+                    API.post(scope.responseUrl, scope.model).then(scope.onSuccess).catch(function (response) {
+                        var errors = response && response.data;
+                        FieldsetParser.addFieldErrors(scope.fields, errors);
+                        scope.onFailure();
+                    });
                 }
             };
         }
@@ -144,7 +147,7 @@ angular.module('incuna-surveys-fields.templates', []).run(['$templateCache', fun
 
 
   $templateCache.put('templates/incuna-surveys/fields/radio.html',
-    "<div drf-form-field=to.fieldOptions class=radio><div ng-repeat=\"choice in to.choices\" class=\"checkable radio\">{% raw %} <input type=radio id=\"{{ to.autoId }}-{{ $index }}\" ng-value=$index ng-model=model[to.fieldSetId][options.key] ng-required=to.fieldOptions.required><label for=\"{{ to.autoId }}-{{ $index }}\" ng-bind=choice></label>{% endraw %}</div></div>"
+    "<div drf-form-field=to.fieldOptions class=radio><div ng-repeat=\"choice in to.choices\" class=\"checkable radio\">{% raw %} <input class=radio-input type=radio id=\"{{ to.autoId }}-{{ $index }}\" ng-value=$index ng-model=model[to.fieldSetId][options.key] ng-required=to.fieldOptions.required><label class=radio-label for=\"{{ to.autoId }}-{{ $index }}\" ng-bind=choice></label>{% endraw %}</div></div>"
   );
 
 
@@ -476,6 +479,17 @@ _module.service(moduleProperties.componentName, [function () {
         });
 
         return model;
+    };
+
+    this.addFieldErrors = function (fields, errors) {
+        fields.forEach(function (fieldset) {
+            var key = fieldset.templateOptions.id;
+            var fieldsetErrors = errors[key];
+            fieldset.fieldGroup.forEach(function (field) {
+                var fieldError = fieldsetErrors && fieldsetErrors[field.key];
+                field.templateOptions.fieldOptions.errors = fieldError;
+            });
+        });
     };
 }]);
 
