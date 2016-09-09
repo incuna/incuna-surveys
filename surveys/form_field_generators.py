@@ -46,7 +46,6 @@ class RadioFieldGenerator(ChoiceFieldGenerator):
 class MultipleChoiceFieldGenerator(ChoiceFieldGenerator):
     """A class for generating a MultipleChoiceField."""
     field_class = forms.MultipleChoiceField
-    required = False
 
     def get_field_kwargs(self, instance):
         kwargs = super().get_field_kwargs(instance)

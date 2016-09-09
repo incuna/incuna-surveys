@@ -2,7 +2,10 @@
 
 This project uses Semantic Versioning (2.0).
 
-## 0.8.0
+### 0.9.0
+* Allow null responses to survey fields.
+
+### 0.8.0
 * New feature: Calculate and display the survey completion percentage.
 
 ### 0.7.0
