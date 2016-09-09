@@ -50,7 +50,6 @@ class SurveyGetLatestCreateView(
 
     def get_data(self):
         """Get the latest data for the user and ensure all fields have a value"""
-
         latest_for_user = self.get_queryset().latest_for_user(self.survey, self.user_id)
         data = defaultdict(dict)
         for fieldset in self.survey.get_ordered_fieldsets():
@@ -63,7 +62,7 @@ class SurveyGetLatestCreateView(
                 key = str(field.pk)
                 if key not in answers:
                     # Set the fields initial value for any missing fields.
-                    answers[key] = field.get_serializer_field().initial
+                    answers[key] = field.get_serializer_field().get_initial()
 
             data[str(fieldset.pk)] = answers
 
