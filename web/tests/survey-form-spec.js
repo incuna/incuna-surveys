@@ -1,6 +1,7 @@
 describe('surveysForm directive', function() {
     const getResponse = {any: 'Any'};
     const postData = {other: 'Other'};
+    const postErrors = {some: 'Error'};
     const fields = {thing: 'Thing'}; 
     const formUrl = 'http://from-url';
     const responseUrl = 'http://response-url';
@@ -99,41 +100,66 @@ describe('surveysForm directive', function() {
 
             this.elm.isolateScope().submit();
         });
+
         it('should API.post with the responseUrl and the post data', function() {
             expect(this.API.post).toHaveBeenCalledWith(responseUrl, getResponse)
         });
     });
-
-    describe('submit success', function() {
+    describe('submit', function() {
         beforeEach(function() {
-            this.scope.mySubmit = jasmine.createSpy('mySubmit');
-            this.scope.myFailure = jasmine.createSpy('myFailure');
             const tpl = '<div surveys-form form-url="formUrl" response-url="responseUrl" on-success="mySubmit()" on-failure="myFailure()"></div>';
+            this.scope.myFailure = jasmine.createSpy('myFailure');
+            this.scope.mySubmit = jasmine.createSpy('mySubmit');
             this.compileDirective(tpl);
-
             this.isolated = this.elm.isolateScope()
+
         });
-        it('should be defiend', function() {
-            expect(this.isolated.onSuccess).toBeDefined();
+
+        describe('success callback', function() {
+            beforeEach(function() {
+            });
+
+            it('should be defiend', function() {
+                expect(this.isolated.onSuccess).toBeDefined();
+            });
+
+            it('should be called if the post succeeds', function() {
+                const responseDefer = this.$q.defer();
+                responseDefer.resolve(getResponse);
+                spyOn(this.API, 'post').and.returnValue(responseDefer.promise);
+                this.isolated.submit();
+                expect(this.API.post).toHaveBeenCalledWith(responseUrl, getResponse)
+                this.scope.$digest();
+                expect(this.scope.mySubmit).toHaveBeenCalledWith();
+            });
         });
-        it('should call the success callback if the post succeeds', function() {
-            const responseDefer = this.$q.defer();
-            responseDefer.resolve(getResponse);
-            spyOn(this.API, 'post').and.returnValue(responseDefer.promise);
-            this.isolated.submit();
-            expect(this.API.post).toHaveBeenCalledWith(responseUrl, getResponse)
-            this.scope.$digest();
-            expect(this.scope.mySubmit).toHaveBeenCalledWith();
+
+        describe('failure', function() {
+            beforeEach(function() {
+                const responseDefer = this.$q.defer();
+                responseDefer.reject({data: postErrors});
+                spyOn(this.API, 'post').and.returnValue(responseDefer.promise);
+                spyOn(this.FieldsParser, 'addFieldErrors');
+            });
+
+            it('callback should be defiend', function() {
+                expect(this.isolated.onFailure).toBeDefined();
+            });
+
+            it('should call addFieldErrors if the post fails', function() {
+                this.isolated.submit();
+                this.scope.$digest();
+
+                expect(this.FieldsParser.addFieldErrors).toHaveBeenCalledWith(fields, postErrors);
+            });
+
+            it('callback be called if the post fails', function() {
+                this.isolated.submit();
+                this.scope.$digest();
+                expect(this.scope.myFailure).toHaveBeenCalledWith();
+            });
         });
-        it('should call the failure callback if the post fails', function() {
-            const responseDefer = this.$q.defer();
-            responseDefer.reject();
-            spyOn(this.API, 'post').and.returnValue(responseDefer.promise);
-            this.isolated.submit();
-            expect(this.API.post).toHaveBeenCalledWith(responseUrl, getResponse)
-            this.scope.$digest();
-            expect(this.scope.myFailure).toHaveBeenCalledWith();
-        });
+
     });
     
 });

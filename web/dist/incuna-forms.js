@@ -60,8 +60,11 @@ _module.directive('surveysForm', [_api2.default.componentName, _fieldsetsParser2
 
             scope.submit = function () {
                 if (scope.responseUrl) {
-                    // TODO: Handle errors.
-                    API.post(scope.responseUrl, scope.model).then(scope.onSuccess).catch(scope.onFailure);
+                    API.post(scope.responseUrl, scope.model).then(scope.onSuccess).catch(function (response) {
+                        var errors = response && response.data;
+                        FieldsetParser.addFieldErrors(scope.fields, errors);
+                        scope.onFailure();
+                    });
                 }
             };
         }
@@ -349,6 +352,17 @@ _module.service(moduleProperties.componentName, [function () {
         });
 
         return model;
+    };
+
+    this.addFieldErrors = function (fields, errors) {
+        fields.forEach(function (fieldset) {
+            var key = fieldset.templateOptions.id;
+            var fieldsetErrors = errors[key];
+            fieldset.fieldGroup.forEach(function (field) {
+                var fieldError = fieldsetErrors && fieldsetErrors[field.key];
+                field.templateOptions.fieldOptions.errors = fieldError;
+            });
+        });
     };
 }]);
 
