@@ -35,7 +35,6 @@ describe('FieldsetParserService', function () {
 
         this.totalQuestions = this.Parser.countQuestionsTotal(questionSet);
         this.totalQuestionsAnswered = this.Parser.countNumberOfAnsweredQuestions(answerSet);
-        this.percentage = this.Parser.calculatePercentageComplete(this.totalQuestionsAnswered, this.totalQuestions);
     });
 
     describe('countQuestionsTotal function', function () {
@@ -51,8 +50,19 @@ describe('FieldsetParserService', function () {
     });
 
     describe('calculatePercentageComplete function', function () {
+        it('should return the 0 percentage when none answered', function () {
+            this.percentage = this.Parser.calculatePercentageComplete(0, this.totalQuestions);
+            expect(this.percentage).toBe(0 + '%');
+        });
+
         it('should return the percentage', function () {
+            this.percentage = this.Parser.calculatePercentageComplete(this.totalQuestionsAnswered, this.totalQuestions);
             expect(this.percentage).toBe(33 + '%');
+        });
+
+        it('should return the 100 percentage when all answered', function () {
+            this.percentage = this.Parser.calculatePercentageComplete(6, this.totalQuestions);
+            expect(this.percentage).toBe(100 + '%');
         });
     });
 });
