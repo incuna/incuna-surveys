@@ -2,6 +2,10 @@
 
 This project uses Semantic Versioning (2.0).
 
+## Upcoming
+
+* New feature: Calculate and display the survey completion percentage.
+
 ### 0.6.1
 
 * BUGFIX: add missing hyphen in `drf-form-field` in radio.html
