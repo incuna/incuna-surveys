@@ -14,6 +14,10 @@ var _form = require('./directives/form.js');
 
 var _form2 = _interopRequireDefault(_form);
 
+var _calculatePercentage = require('./directives/calculate-percentage.js');
+
+var _calculatePercentage2 = _interopRequireDefault(_calculatePercentage);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-_libraries.angular.module('incuna-surveys', ['drf-form-field', 'aif-slider-input', 'checklist-model', _fieldsConfig2.default.moduleName, _api2.default.moduleName, _form2.default.moduleName]);
+_libraries.angular.module('incuna-surveys', ['drf-form-field', 'aif-slider-input', 'checklist-model', _fieldsConfig2.default.moduleName, _api2.default.moduleName, _form2.default.moduleName, _calculatePercentage2.default.moduleName]);

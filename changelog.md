@@ -2,13 +2,14 @@
 
 This project uses Semantic Versioning (2.0).
 
-### 0.7.0
+## Upcoming
+* New feature: Calculate and display the survey completion percentage.
 
+### 0.7.0
 * Add classes to radio.html for styling
 * BUGFIX: Fix serializer to cope with response data that does not match the form.
 
 ### 0.6.1
-
 * BUGFIX: add missing hyphen in `drf-form-field` in radio.html
 
 ### 0.6.0
@@ -26,7 +27,6 @@ This project uses Semantic Versioning (2.0).
 * Add surveys-form directive on-success and on-failure callbacks
 
 ### 0.2.1
-
 * Add default `sort_order` ordering to Orderable models.
 * Add admin fields and filtering.
 * Escape twig templates.
