@@ -2,10 +2,10 @@
 
 This project uses Semantic Versioning (2.0).
 
-### Upcoming
+### 0.7.0
 
 * Add classes to radio.html for styling
-* Fix serializer to cope with response data that does not match the form.
+* BUGFIX: Fix serializer to cope with response data that does not match the form.
 
 ### 0.6.1
 
