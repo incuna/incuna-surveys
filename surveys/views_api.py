@@ -1,3 +1,5 @@
+from collections import defaultdict
+
 from rest_framework import generics
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
@@ -47,13 +49,24 @@ class SurveyGetLatestCreateView(
     queryset = UserResponse.objects.all()
 
     def get_data(self):
+        """Get the latest data for the user and ensure all fields have a value"""
+
         latest_for_user = self.get_queryset().latest_for_user(self.survey, self.user_id)
-        if not bool(latest_for_user):
-            return None
-        data = {}
-        # Trim down the dictionary returned so it's just {<fieldset_pk>: <answers>}
-        for fieldset_pk, entry in latest_for_user.items():
-            data[str(fieldset_pk)] = entry['answers']
+        data = defaultdict(dict)
+        for fieldset in self.survey.get_ordered_fieldsets():
+            try:
+                answers = latest_for_user[fieldset.pk]['answers']
+            except KeyError:
+                answers = {}
+
+            for field in fieldset.get_ordered_fields():
+                key = str(field.pk)
+                if key not in answers:
+                    # Set the fields initial value for any missing fields.
+                    answers[key] = field.get_serializer_field().initial
+
+            data[str(fieldset.pk)] = answers
+
         return data
 
     def retrieve(self, request, *args, **kwargs):
