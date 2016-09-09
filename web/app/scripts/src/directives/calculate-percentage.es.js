@@ -1,6 +1,5 @@
 import { angular } from '../libraries';
 
-import API from '../services/api';
 import CalculateCompletion from '../services/calculate-percentage';
 
 export const moduleProperties = {
@@ -8,17 +7,12 @@ export const moduleProperties = {
 };
 
 const module = angular.module(moduleProperties.moduleName, [
-    API.moduleName,
     CalculateCompletion.moduleName
 ]);
 
 module.directive('calculatePercentage', [
-    API.componentName,
     CalculateCompletion.componentName,
-    function (
-        API,
-        CalculateCompletion
-    ) {
+    function (CalculateCompletion) {
         return {
             restrict: 'A',
             scope: {

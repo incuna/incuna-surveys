@@ -8,10 +8,6 @@ exports.moduleProperties = undefined;
 
 var _libraries = require('./../libraries.js');
 
-var _api = require('./../services/api.js');
-
-var _api2 = _interopRequireDefault(_api);
-
 var _calculatePercentage = require('./../services/calculate-percentage.js');
 
 var _calculatePercentage2 = _interopRequireDefault(_calculatePercentage);
@@ -22,9 +18,9 @@ var moduleProperties = exports.moduleProperties = {
     moduleName: 'incuna-surveys.calculate-percentage-directive'
 };
 
-var _module = _libraries.angular.module(moduleProperties.moduleName, [_api2.default.moduleName, _calculatePercentage2.default.moduleName]);
+var _module = _libraries.angular.module(moduleProperties.moduleName, [_calculatePercentage2.default.moduleName]);
 
-_module.directive('calculatePercentage', [_api2.default.componentName, _calculatePercentage2.default.componentName, function (API, CalculateCompletion) {
+_module.directive('calculatePercentage', [_calculatePercentage2.default.componentName, function (CalculateCompletion) {
     return {
         restrict: 'A',
         scope: {
@@ -51,7 +47,7 @@ _module.directive('calculatePercentage', [_api2.default.componentName, _calculat
 
 exports.default = moduleProperties;
 
-},{"./../libraries.js":5,"./../services/api.js":8,"./../services/calculate-percentage.js":10}],2:[function(require,module,exports){
+},{"./../libraries.js":5,"./../services/calculate-percentage.js":10}],2:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
