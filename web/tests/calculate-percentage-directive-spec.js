@@ -43,13 +43,20 @@ describe('calculatePercentage directive', function() {
             this.elm = this.$compile(tpl)(this.scope);
             this.scope.$digest();
         };
+        spyOn(this.calculateCompletionPercent, 'countQuestionsTotal').and.returnValue(questionSet);
+        spyOn(this.calculateCompletionPercent, 'countNumberOfAnsweredQuestions').and.returnValue(answers);
     });
 
     it('should call this.calculateCompletionPercent.countQuestionsTotal with the questionSet', function() {
-        spyOn(this.calculateCompletionPercent, 'countQuestionsTotal').and.returnValue(questionSet);
+        this.scope.fields = questionSet;
+        this.scope.getResponse = getResponse;
+        this.compileDirective(this.tpl);
+        expect(this.calculateCompletionPercent.countQuestionsTotal).toHaveBeenCalledWith(this.scope.fields)
     });
 
     it('should call this.calculateCompletionPercent.countNumberOfAnsweredQuestions with the answer set', function() {
-        spyOn(this.calculateCompletionPercent, 'countNumberOfAnsweredQuestions').and.returnValue(answers);
+        this.scope.getResponse = answers;
+        this.compileDirective(this.tpl);
+        expect(this.calculateCompletionPercent.countNumberOfAnsweredQuestions).toHaveBeenCalledWith(this.scope.getResponse)
     });
 });
