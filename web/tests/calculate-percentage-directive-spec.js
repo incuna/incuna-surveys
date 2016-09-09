@@ -48,16 +48,15 @@ describe('calculatePercentage directive', function() {
     });
 
     it('should call this.calculateCompletionPercent.countQuestionsTotal with the questionSet', function() {
-        this.scope.field = questionSet;
+        this.scope.fields = questionSet;
         this.scope.getResponse = getResponse;
         this.compileDirective(this.tpl);
-        expect(this.calculateCompletionPercent.countQuestionsTotal).toHaveBeenCalled()
+        expect(this.calculateCompletionPercent.countQuestionsTotal).toHaveBeenCalledWith(this.scope.fields)
     });
 
     it('should call this.calculateCompletionPercent.countNumberOfAnsweredQuestions with the answer set', function() {
-        this.scope.field = questionSet;
-        this.scope.getResponse = getResponse;
+        this.scope.getResponse = answers;
         this.compileDirective(this.tpl);
-        expect(this.calculateCompletionPercent.countNumberOfAnsweredQuestions).toHaveBeenCalled()
+        expect(this.calculateCompletionPercent.countNumberOfAnsweredQuestions).toHaveBeenCalledWith(this.scope.getResponse)
     });
 });
