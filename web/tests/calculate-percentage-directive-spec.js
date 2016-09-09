@@ -1,9 +1,33 @@
 describe('calculatePercentage directive', function() {
-    const fields = {thing: 'Thing'}; 
+    const questionSet = {
+        1 : {
+            fieldGroup : [
+                1,
+                2,
+                3
+            ]
+        },
+        2 : {
+            fieldGroup : [
+                1,
+                2,
+                3
+            ]
+        }
+    }; 
     const getResponse = {any: 'Any'};
+    const answers = {
+        1: {
+            2: 9,
+            3: 0
+        },
+        2: {
+            4: 3,
+            5: 6,
+        }
+    }
 
     beforeEach(function () {
-
         angular.mock.module('incuna-surveys-form.templates');
         angular.mock.module('incuna-surveys.calculate-percentage-directive');
 
@@ -21,9 +45,11 @@ describe('calculatePercentage directive', function() {
         };
     });
 
-    it('should call this.calculateCompletionPercent.countQuestionsTotal with the fields', function() {
-        expect(this.calculateCompletionPercent.countQuestionsTotal).toHaveBeenCalledWith(fields);
+    it('should call this.calculateCompletionPercent.countQuestionsTotal with the questionSet', function() {
+        spyOn(this.calculateCompletionPercent, 'countQuestionsTotal').and.returnValue(questionSet);
     });
 
-
+    it('should call this.calculateCompletionPercent.countNumberOfAnsweredQuestions with the answer set', function() {
+        spyOn(this.calculateCompletionPercent, 'countNumberOfAnsweredQuestions').and.returnValue(answers);
+    });
 });
