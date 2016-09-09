@@ -2,7 +2,7 @@
 
 This project uses Semantic Versioning (2.0).
 
-## Upcoming
+## 0.8.0
 * New feature: Calculate and display the survey completion percentage.
 
 ### 0.7.0
