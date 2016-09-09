@@ -1,5 +1,5 @@
 <form class="question-form" ng-submit="submit()">
-    <div ng-bind="percentageComplete"> </div>
+    <div calculate-percentage question-set="fields" model="model"></div>
     <header class="form-header">
         <h1 ng-bind="form.name" class="form-name"></h1>
         <h2 ng-bind="form.description" class="form-desc"></h2>

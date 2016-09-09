@@ -20,12 +20,13 @@ describe('surveysForm directive', function() {
         angular.mock.module('incuna-surveys-form.templates');
         angular.mock.module('incuna-surveys.form-directive');
 
-        inject(function(_$rootScope_, _$compile_, _$q_, _API_, _FieldsParser_) {
+        inject(function(_$rootScope_, _$compile_, _$q_, _API_, _FieldsParser_, _calculateCompletionPercent_) {
             const $rootScope = _$rootScope_;
             this.$compile = _$compile_;
             this.$q = _$q_;
             this.API = _API_;
             this.FieldsParser = _FieldsParser_;
+            this.calculateCompletionPercent = _calculateCompletionPercent_;
             this.scope = $rootScope.$new();
             this.scope.formUrl = formUrl;
             this.scope.responseUrl = responseUrl;
@@ -93,17 +94,27 @@ describe('surveysForm directive', function() {
             const isolated = this.elm.isolateScope()
             expect(isolated.fields).toBe(fields);
         });
+
+        it('should call countQuestionsTotal.countQuestionsTotal with fieldset', function() {
+            const isolated = this.elm.isolateScope()
+            spyOn(this.calculateCompletionPercent, 'countQuestionsTotal').and.returnValue(isolated.fields);
+            expect(this.calculateCompletionPercent.countQuestionsTotal).toHaveBeenCalledWith(isolated.fields);
+        });
     });
 
     describe('submit', function() {
         beforeEach(function() {
             this.compileDirective(this.tpl);
+            spyOn(this.FieldsParser, 'parseModelToResponse').and.returnValue(postData);
             spyOn(this.API, 'post').and.returnValue(this.$q.defer().promise);
 
             this.elm.isolateScope().submit();
         });
+        it('should call FieldsetParser.parseModelToResponse with the scope.model', function() {
+            expect(this.FieldsParser.parseModelToResponse).toHaveBeenCalledWith(getResponse);
+        });
         it('should API.post with the responseUrl and the post data', function() {
-            expect(this.API.post).toHaveBeenCalledWith(responseUrl, getResponse)
+            expect(this.API.post).toHaveBeenCalledWith(responseUrl, postData)
         });
     });
 
@@ -114,6 +125,8 @@ describe('surveysForm directive', function() {
             const tpl = '<div surveys-form form-url="formUrl" response-url="responseUrl" on-success="mySubmit()" on-failure="myFailure()"></div>';
             this.compileDirective(tpl);
 
+            spyOn(this.FieldsParser, 'parseModelToResponse').and.returnValue(postData);
+
             this.isolated = this.elm.isolateScope()
         });
         it('should be defiend', function() {
@@ -121,10 +134,10 @@ describe('surveysForm directive', function() {
         });
         it('should call the success callback if the post succeeds', function() {
             const responseDefer = this.$q.defer();
-            responseDefer.resolve(getResponse);
+            responseDefer.resolve(postData);
             spyOn(this.API, 'post').and.returnValue(responseDefer.promise);
             this.isolated.submit();
-            expect(this.API.post).toHaveBeenCalledWith(responseUrl, getResponse)
+            expect(this.API.post).toHaveBeenCalledWith(responseUrl, postData)
             this.scope.$digest();
             expect(this.scope.mySubmit).toHaveBeenCalledWith();
         });
@@ -133,7 +146,7 @@ describe('surveysForm directive', function() {
             responseDefer.reject();
             spyOn(this.API, 'post').and.returnValue(responseDefer.promise);
             this.isolated.submit();
-            expect(this.API.post).toHaveBeenCalledWith(responseUrl, getResponse)
+            expect(this.API.post).toHaveBeenCalledWith(responseUrl, postData)
             this.scope.$digest();
             expect(this.scope.myFailure).toHaveBeenCalledWith();
         });

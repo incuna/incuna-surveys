@@ -2,7 +2,6 @@ import { angular } from '../libraries';
 
 import API from '../services/api';
 import FieldsetParser from '../services/fieldsets-parser';
-import CalculateCompletion from '../services/calculate-percentage-complete';
 
 export const moduleProperties = {
     moduleName: 'incuna-surveys.form-directive'
@@ -10,18 +9,15 @@ export const moduleProperties = {
 
 const module = angular.module(moduleProperties.moduleName, [
     API.moduleName,
-    FieldsetParser.moduleName,
-    CalculateCompletion.moduleName
+    FieldsetParser.moduleName
 ]);
 
 module.directive('surveysForm', [
     API.componentName,
     FieldsetParser.componentName,
-    CalculateCompletion.componentName,
     function (
         API,
-        FieldsetParser,
-        CalculateCompletion
+        FieldsetParser
     ) {
         return {
             restrict: 'A',
@@ -34,9 +30,6 @@ module.directive('surveysForm', [
             templateUrl: 'templates/incuna-surveys/form/survey-form.html',
             link: function (scope) {
                 scope.model = {};
-                scope.percentageComplete = 0 + '%';
-                let totalQuestionCount = 0;
-
                 scope.$watch('formUrl', (url) => {
                     if (url) {
                         API.getForm(url).then(function (structure) {
@@ -46,18 +39,10 @@ module.directive('surveysForm', [
                             // been set.
                             if (Object.keys(scope.model).length === 0) {
                                 scope.model = FieldsetParser.parseFormToModel(structure);
-                                totalQuestionCount = CalculateCompletion.countQuestionsTotal(scope.form.fieldsets);
-                                console.log('hi', totalQuestionCount)
                             }
                         });
                     }
                 });
-
-                // Using true to compare the sub-elements.
-                scope.$watch('model', (answers) => {
-                    const numberOfCompletedQuestions = CalculateCompletion.countNumberOfAnsweredQuestions(answers);
-                    scope.percentageComplete = CalculateCompletion.calculatePercentageComplete(numberOfCompletedQuestions, totalQuestionCount);
-                }, true);
 
                 scope.$watch('responseUrl', (url) => {
                     if (url) {

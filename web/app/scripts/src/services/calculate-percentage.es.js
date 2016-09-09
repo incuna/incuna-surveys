@@ -19,8 +19,8 @@ module.service(moduleProperties.componentName, [
             const questions = form;
             let totalQuestionCount = 0;
 
-            questions.forEach((question) => {
-                totalQuestionCount = totalQuestionCount + question.fields.length;
+            angular.forEach(questions, function(question) {
+                totalQuestionCount = totalQuestionCount + question.fieldGroup.length;
             });
 
             return totalQuestionCount;
