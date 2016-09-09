@@ -1,12 +1,24 @@
 from django.core import validators
 from rest_framework import serializers
 
-from .generators import BaseFieldGenerator
+from .generators import BaseFieldGenerator as BaseBaseFieldGenerator
+
+
+class BaseFieldGenerator(BaseBaseFieldGenerator):
+    def get_field_kwargs(self, instance):
+        kwargs = super().get_field_kwargs(instance)
+        kwargs['allow_null'] = not instance.required,
+        return kwargs
 
 
 class CharFieldGenerator(BaseFieldGenerator):
     """A class for generating a dynamic CharField."""
     field_class = serializers.CharField
+
+    def get_field_kwargs(self, instance):
+        kwargs = super().get_field_kwargs(instance)
+        kwargs['allow_blank'] = not instance.required,
+        return kwargs
 
 
 class NumberFieldGenerator(BaseFieldGenerator):
@@ -31,6 +43,7 @@ class ChoiceFieldGenerator(BaseFieldGenerator):
 
     def get_field_kwargs(self, instance):
         kwargs = super().get_field_kwargs(instance)
+        kwargs['allow_blank'] = not instance.required,
         kwargs['choices'] = list(enumerate(instance.answers))
         return kwargs
 
@@ -38,4 +51,3 @@ class ChoiceFieldGenerator(BaseFieldGenerator):
 class MultipleChoiceFieldGenerator(ChoiceFieldGenerator):
     """A class for generating a MultipleChoiceField."""
     field_class = serializers.MultipleChoiceField
-    required = False
