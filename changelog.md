@@ -2,6 +2,9 @@
 
 This project uses Semantic Versioning (2.0).
 
+### Upcoming
+* Amend HTML structure of calculate-percentage to provide class and wrapper
+
 ### 0.9.0
 * Allow null responses to survey fields.
 
