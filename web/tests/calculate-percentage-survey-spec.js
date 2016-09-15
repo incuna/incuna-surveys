@@ -33,19 +33,35 @@ describe('FieldsetParserService', function () {
     });
 
     describe('countNumberOfAnsweredQuestions function', function () {
-        it('should not count null or undefined question answers', function () {
+
+        it('should not count null question answers', function () {
             const emptyAnswerSet = {
                 1: {
-                    2: null,
-                    3: null
-                },
-                2: {
-                    4: undefined,
-                    5: null
+                    2: null
                 }
             };
             const noQuestionsAnswered = this.Parser.countNumberOfAnsweredQuestions(emptyAnswerSet);
             expect(noQuestionsAnswered).toBe(0);
+        });
+
+        it('should not count undefined question answers', function () {
+            const emptyAnswerSet = {
+                1: {
+                    2: undefined
+                }
+            };
+            const noQuestionsAnswered = this.Parser.countNumberOfAnsweredQuestions(emptyAnswerSet);
+            expect(noQuestionsAnswered).toBe(0);
+        });
+
+        it('should count empty string answers', function () {
+            const emptyAnswerSet = {
+                1: {
+                    2: ''
+                }
+            };
+            const noQuestionsAnswered = this.Parser.countNumberOfAnsweredQuestions(emptyAnswerSet);
+            expect(noQuestionsAnswered).toBe(1);
         });
 
         it('should count the correct number of mixed questions answered', function () {
@@ -56,11 +72,12 @@ describe('FieldsetParserService', function () {
                 },
                 2: {
                     4: null,
-                    5: 6
+                    5: 6,
+                    6: ''
                 }
             };
             const partialQuestionsAnswered = this.Parser.countNumberOfAnsweredQuestions(partialAnswerSet);
-            expect(partialQuestionsAnswered).toBe(3);
+            expect(partialQuestionsAnswered).toBe(4);
         });
 
         it('should count the correct number when all questions answered', function () {
