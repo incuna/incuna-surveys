@@ -162,7 +162,7 @@ angular.module('incuna-surveys-form.templates', []).run(['$templateCache', funct
   'use strict';
 
   $templateCache.put('templates/incuna-surveys/form/calculate-percentage.html',
-    "<div ng-bind=percentageComplete></div>"
+    "<div class=percentage-complete-area><p class=percentage ng-bind=percentageComplete></p><span class=complete translate>complete</span></div>"
   );
 
 
@@ -344,7 +344,7 @@ _module.service(moduleProperties.componentName, [function () {
             var answerGroup = answers[groupKey];
             for (var answerKey in answerGroup) {
                 var answer = answerGroup[answerKey];
-                if (answer > 0 || answer.length > 0) {
+                if (_libraries.angular.isDefined(answer) && answer !== null) {
                     answered++;
                 }
             }

@@ -2,7 +2,7 @@ angular.module('incuna-surveys-form.templates', []).run(['$templateCache', funct
   'use strict';
 
   $templateCache.put('templates/incuna-surveys/form/calculate-percentage.html',
-    "<div ng-bind=percentageComplete></div>"
+    "<div class=percentage-complete-area><p class=percentage ng-bind=percentageComplete></p><span class=complete translate>complete</span></div>"
   );
 
 

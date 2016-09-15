@@ -41,7 +41,7 @@ module.service(moduleProperties.componentName, [
                 const answerGroup = answers[groupKey];
                 for (const answerKey in answerGroup) {
                     const answer = answerGroup[answerKey];
-                    if (answer > 0 || answer.length > 0) {
+                    if (angular.isDefined(answer) && answer !== null) {
                         answered++;
                     }
                 }
