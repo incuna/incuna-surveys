@@ -1,21 +1,23 @@
-describe('calculatePercentage directive', function() {
+describe('calculatePercentage directive', function () {
     const questionSet = {
-        1 : {
-            fieldGroup : [
+        1: {
+            fieldGroup: [
                 1,
                 2,
                 3
             ]
         },
-        2 : {
-            fieldGroup : [
+        2: {
+            fieldGroup: [
                 1,
                 2,
                 3
             ]
         }
-    }; 
-    const getResponse = {any: 'Any'};
+    };
+    const getResponse = {
+        any: 'Any'
+    };
     const answers = {
         1: {
             2: 9,
@@ -23,7 +25,7 @@ describe('calculatePercentage directive', function() {
         },
         2: {
             4: 3,
-            5: 6,
+            5: 6
         }
     }
 
@@ -31,7 +33,7 @@ describe('calculatePercentage directive', function() {
         angular.mock.module('incuna-surveys-form.templates');
         angular.mock.module('incuna-surveys.calculate-percentage-directive');
 
-        inject(function(_$rootScope_, _$compile_, _$q_, _calculateCompletionPercent_) {
+        inject(function (_$rootScope_, _$compile_, _$q_, _calculateCompletionPercent_) {
             const $rootScope = _$rootScope_;
             this.$compile = _$compile_;
             this.$q = _$q_;
@@ -47,14 +49,14 @@ describe('calculatePercentage directive', function() {
         spyOn(this.calculateCompletionPercent, 'countNumberOfAnsweredQuestions').and.returnValue(answers);
     });
 
-    it('should call this.calculateCompletionPercent.countQuestionsTotal with the questionSet', function() {
+    it('should call this.calculateCompletionPercent.countQuestionsTotal with the questionSet', function () {
         this.scope.fields = questionSet;
         this.scope.getResponse = getResponse;
         this.compileDirective(this.tpl);
         expect(this.calculateCompletionPercent.countQuestionsTotal).toHaveBeenCalledWith(this.scope.fields)
     });
 
-    it('should call this.calculateCompletionPercent.countNumberOfAnsweredQuestions with the answer set', function() {
+    it('should call this.calculateCompletionPercent.countNumberOfAnsweredQuestions with the answer set', function () {
         this.scope.getResponse = answers;
         this.compileDirective(this.tpl);
         expect(this.calculateCompletionPercent.countNumberOfAnsweredQuestions).toHaveBeenCalledWith(this.scope.getResponse)

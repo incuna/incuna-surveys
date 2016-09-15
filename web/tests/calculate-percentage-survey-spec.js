@@ -1,30 +1,20 @@
 describe('FieldsetParserService', function () {
     const questionSet = {
-        1 : {
-            fieldGroup : [
+        1: {
+            fieldGroup: [
                 1,
                 2,
                 3
             ]
         },
-        2 : {
-            fieldGroup : [
+        2: {
+            fieldGroup: [
                 1,
                 2,
                 3
             ]
         }
     };
-    const answerSet = {
-        1: {
-            2: 9,
-            3: 0
-        },
-        2: {
-            4: 0,
-            5: 6,
-        }
-    }
 
     beforeEach(function () {
         angular.mock.module('incuna-surveys.calculate-completion-percent');
@@ -34,7 +24,6 @@ describe('FieldsetParserService', function () {
         });
 
         this.totalQuestions = this.Parser.countQuestionsTotal(questionSet);
-        this.totalQuestionsAnswered = this.Parser.countNumberOfAnsweredQuestions(answerSet);
     });
 
     describe('countQuestionsTotal function', function () {
@@ -44,8 +33,51 @@ describe('FieldsetParserService', function () {
     });
 
     describe('countNumberOfAnsweredQuestions function', function () {
-        it('should return the total number of questions answered', function () {
-            expect(this.totalQuestionsAnswered).toBe(2);
+        it('should not count null or undefined question answers', function () {
+            const emptyAnswerSet = {
+                1: {
+                    2: null,
+                    3: null
+                },
+                2: {
+                    4: undefined,
+                    5: null
+                }
+            };
+            const noQuestionsAnswered = this.Parser.countNumberOfAnsweredQuestions(emptyAnswerSet);
+            expect(noQuestionsAnswered).toBe(0);
+        });
+
+        it('should count the correct number of mixed questions answered', function () {
+            const partialAnswerSet = {
+                1: {
+                    2: 9,
+                    3: 0
+                },
+                2: {
+                    4: null,
+                    5: 6
+                }
+            };
+            const partialQuestionsAnswered = this.Parser.countNumberOfAnsweredQuestions(partialAnswerSet);
+            expect(partialQuestionsAnswered).toBe(3);
+        });
+
+        it('should count the correct number when all questions answered', function () {
+            const allAnswerSet = {
+                1: {
+                    1: 1,
+                    2: 9,
+                    3: 0
+                },
+                2: {
+                    4: 1,
+                    5: 6,
+                    6: 5
+                }
+            }
+            const allQuestionsAnswered = this.Parser.countNumberOfAnsweredQuestions(allAnswerSet);
+            expect(allQuestionsAnswered).toBe(6);
         });
     });
 
@@ -55,9 +87,14 @@ describe('FieldsetParserService', function () {
             expect(this.percentage).toBe(0 + '%');
         });
 
-        it('should return the percentage', function () {
-            this.percentage = this.Parser.calculatePercentageComplete(this.totalQuestionsAnswered, this.totalQuestions);
+        it('should return 33% when 2/6 questions answered', function () {
+            this.percentage = this.Parser.calculatePercentageComplete(2, this.totalQuestions);
             expect(this.percentage).toBe(33 + '%');
+        });
+
+        it('should return 50% when 3/6 questions answered', function () {
+            this.percentage = this.Parser.calculatePercentageComplete(3, this.totalQuestions);
+            expect(this.percentage).toBe(50 + '%');
         });
 
         it('should return the 100 percentage when all answered', function () {
