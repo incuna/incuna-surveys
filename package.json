@@ -20,6 +20,7 @@
     "grunt-incuna-plugins": "git://github.com/incuna/grunt-incuna-plugins.git#1.2.0",
     "grunt-jscs": "3.0.1",
     "grunt-karma": "2.0.0",
+    "grunt-swig-templates": "0.1.4",
     "jasmine": "2.4.1",
     "jit-grunt": "0.10.0",
     "karma": "1.1.2",
