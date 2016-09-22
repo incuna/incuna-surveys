@@ -43,7 +43,7 @@ class SurveyCreateView(SurveyCreateMixin, generics.CreateAPIView):
 
 class SurveyGetLatestCreateView(
         SurveyCreateMixin,
-        generics.RetrieveAPIView,
+        generics.RetrieveUpdateAPIView,
         generics.CreateAPIView):
     serializer_class = SurveyResponseSerializer
     queryset = UserResponse.objects.all()
@@ -67,6 +67,22 @@ class SurveyGetLatestCreateView(
             data[str(fieldset.pk)] = answers
 
         return data
+
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+        instance_data = self.get_data()
+        serializer = self.get_serializer(
+            instance=instance_data,
+            data=request.data,
+            partial=partial,
+        )
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+
+        return Response(serializer.data)
+
+    def perform_update(self, serializer):
+        serializer.save(survey=self.survey, user_id=self.user_id)
 
     def retrieve(self, request, *args, **kwargs):
         data = self.get_data()
