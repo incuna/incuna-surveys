@@ -41,6 +41,10 @@ class SurveyConfig(AppConfig):
             'form_field_factory': form_fields.MultipleChoiceFieldGenerator,
             'serializer_field_factory': serializer_fields.MultipleChoiceFieldGenerator,
         }),
+        ('proportion', {
+            'display_text': _('Proportions of one or more numbers'),
+            'serializer_field_factory': serializer_fields.MultipleIntegerFieldGenerator,
+        }),
     ))
 
     def __init__(self, *args, **kwargs):
@@ -55,5 +59,5 @@ class SurveyConfig(AppConfig):
         self.serializer_field_factories = {}
         for k, v in field_data_items:
             self.field_type_choices.append((k, v['display_text']))
-            self.form_field_factories[k] = v['form_field_factory']
-            self.serializer_field_factories[k] = v['serializer_field_factory']
+            self.form_field_factories[k] = v.get('form_field_factory', None)
+            self.serializer_field_factories[k] = v.get('serializer_field_factory', None)
