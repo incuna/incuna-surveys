@@ -49,6 +49,11 @@ module.run([
             templateUrl: `${templatesBase}/radio.html`
         });
 
+        formlyConfig.setType({
+            name: 'proportion',
+            templateUrl: `${templatesBase}/proportion.html`
+        });
+
         formlyConfig.setWrapper([{
             name: 'panel',
             templateUrl: `${templatesBase}/wrapper.html`
