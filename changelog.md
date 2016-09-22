@@ -2,6 +2,9 @@
 
 This project uses Semantic Versioning (2.0).
 
+### UPCOMING
+* Compile templates with swig.
+
 ### 0.10.0
 * Amend percentage calculation to include value of 0
 * Amend HTML structure of calculate-percentage to provide class and wrapper

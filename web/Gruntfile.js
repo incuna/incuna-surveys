@@ -10,6 +10,7 @@ module.exports = function (grunt) {
     } else {
         // Use jit-grunt to only load necessary tasks for each invocation of grunt.
         require('jit-grunt')(grunt, {
+            swig: 'grunt-swig-templates',
             ngtemplates: 'grunt-angular-templates'
         });
     }
@@ -29,6 +30,13 @@ module.exports = function (grunt) {
             scriptsDir: '<%= config.baseDir %>/scripts',
             srcScriptsDir: '<%= config.scriptsDir %>/src',
             compiledScriptsDir: '<%= config.scriptsDir %>/compiled-es5',
+
+            templates: {
+                sourceDir: 'templates/twig-source',
+                sourceFiles: '<%= config.templates.sourceDir %>/**/*.html',
+                generatedDir: 'templates/generated',
+                generatedFiles: '<%= config.templates.generatedDir %>/**/*.html'
+            },
 
             lintFiles: {
                 node: ['Gruntfile.js'],
@@ -50,8 +58,16 @@ module.exports = function (grunt) {
                     'uglify'
                 ]
             },
+            swig: {
+                files: [
+                    '<%= config.templates.sourceFiles %>'
+                ],
+                tasks: [
+                    'orderedSwig'
+                ]
+            },
             ngtemplates: {
-                files: ['app/templates/**/*.html'],
+                files: ['<%= config.templates.generatedFiles %>'],
                 tasks: ['ngtemplates']
             }
         },
@@ -96,7 +112,25 @@ module.exports = function (grunt) {
                 files: ['<%= config.lintFiles %>']
             }
         },
-        clean: ['<%= config.compiledScriptsDir %>', '<%= config.distDir %>'],
+        swig: {
+            all: {
+                expand: true,
+                cwd: '<%= config.templates.sourceDir %>',
+                src: [
+                    '**/*.html'
+                ],
+                dest: '<%= config.templates.generatedDir %>'
+            }
+        },
+        clean: {
+            js: [
+                '<%= config.compiledScriptsDir %>',
+                '<%= config.distDir %>'
+            ],
+            swig: [
+                '<%= config.templates.generatedDir %>'
+            ]
+        },
         connect: {
             dev: {
                 options: {
@@ -136,6 +170,16 @@ module.exports = function (grunt) {
         ]);
     });
 
+    grunt.registerTask('orderedSwig', [
+        'clean:swig',
+        'swig:all'
+    ]);
+
+    grunt.registerTask('compileTemplates', [
+        'orderedSwig',
+        'ngtemplates'
+    ]);
+
     grunt.registerTask('test', function () {
         grunt.task.run([
             'eslint',
@@ -149,7 +193,7 @@ module.exports = function (grunt) {
     grunt.registerTask('build', function () {
         var tasks = [
             'clean',
-            'ngtemplates',
+            'compileTemplates',
             'compilejs',
             'uglify'
         ];
