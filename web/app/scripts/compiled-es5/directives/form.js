@@ -37,7 +37,7 @@ _module.directive('surveysForm', [_api2.default.componentName, _fieldsetsParser2
             scope.model = {};
             scope.$watch('formUrl', function (url) {
                 if (url) {
-                    API.getForm(url).then(function (structure) {
+                    API.get(url).then(function (structure) {
                         scope.form = structure;
                         scope.fields = FieldsetParser.parseFields(structure);
                         // Only set the empty model if the model has not
