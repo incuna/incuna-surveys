@@ -1,8 +1,1 @@
-<div drf-form-field="to.fieldOptions" class="proportion">
-    <div ng-repeat="choice in to.choices">
-        
-        <label class="proportion-label" for="{{ to.autoId }}-{{ $index }}" ng-bind="choice"></label>
-        <input class="proportion-input" id="{{ to.autoId }}-{{ $index }}" type="text" ng-model="model[to.fieldSetId][options.key][$index]" 
-        
-    </div>
-</div>
+<div proportion-field="to" model="model[to.fieldSetId][options.key]"></div>

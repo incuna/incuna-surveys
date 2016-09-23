@@ -1,0 +1,8 @@
+<div class="proportion">
+    <h4 ng-bind="title"></h4>
+    <div ng-repeat="field in choiceOptions">
+        <div drf-form-field="field" class="proportion">
+            <input class="proportion-input" id=" {{ field.id }}" type="text" ng-model="model[$index]">
+        </div>
+    </div>
+</div>

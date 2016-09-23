@@ -47,7 +47,7 @@ _module.directive('calculatePercentage', [_calculatePercentage2.default.componen
 
 exports.default = moduleProperties;
 
-},{"./../libraries.js":5,"./../services/calculate-percentage.js":9}],2:[function(require,module,exports){
+},{"./../libraries.js":6,"./../services/calculate-percentage.js":10}],2:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -122,7 +122,61 @@ _module.directive('surveysForm', [_api2.default.componentName, _fieldsetsParser2
 
 exports.default = moduleProperties;
 
-},{"./../libraries.js":5,"./../services/api.js":8,"./../services/fieldsets-parser.js":11}],3:[function(require,module,exports){
+},{"./../libraries.js":6,"./../services/api.js":9,"./../services/fieldsets-parser.js":12}],3:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.moduleProperties = undefined;
+
+var _libraries = require('./../libraries.js');
+
+var moduleProperties = exports.moduleProperties = {
+    moduleName: 'incuna-surveys.proportion-field-directive'
+};
+
+var _module = _libraries.angular.module(moduleProperties.moduleName, []);
+
+_module.directive('proportionField', [function () {
+    return {
+        restrict: 'A',
+        scope: {
+            model: '=',
+            options: '=proportionField'
+        },
+        templateUrl: 'templates/incuna-surveys/form/proportion-field.html',
+        link: function link(scope) {
+            scope.choiceOptions = [];
+            scope.$watch('options', function (options, oldValue) {
+                if (options.fieldOptions) {
+                    scope.title = options.fieldOptions.label;
+                }
+                if (options.choices) {
+                    options.choices.forEach(function (choice, index) {
+                        scope.choiceOptions[index] = Object.assign({}, options.fieldOptions, {
+                            label: choice,
+                            id: options.autoId + '-' + index
+                        });
+                    });
+                }
+            });
+
+            scope.$watch('options.fieldOptions.errors', function (errors, oldValue) {
+                console.log(errors, oldValue);
+                if (errors) {
+                    scope.choiceOptions.forEach(function (options, index) {
+                        options.errors = errors[index];
+                    });
+                }
+            });
+        }
+    };
+}]);
+
+exports.default = moduleProperties;
+
+},{"./../libraries.js":6}],4:[function(require,module,exports){
 angular.module('incuna-surveys-fields.templates', []).run(['$templateCache', function($templateCache) {
   'use strict';
 
@@ -147,14 +201,7 @@ angular.module('incuna-surveys-fields.templates', []).run(['$templateCache', fun
 
 
   $templateCache.put('templates/incuna-surveys/fields/proportion.html',
-    "<div drf-form-field=\"to.fieldOptions\" class=\"proportion\">\n" +
-    "    <div ng-repeat=\"choice in to.choices\">\n" +
-    "        \n" +
-    "        <label class=\"proportion-label\" for=\"{{ to.autoId }}-{{ $index }}\" ng-bind=\"choice\"></label>\n" +
-    "        <input class=\"proportion-input\" id=\"{{ to.autoId }}-{{ $index }}\" type=\"text\" ng-model=\"model[to.fieldSetId][options.key][$index]\" \n" +
-    "        \n" +
-    "    </div>\n" +
-    "</div>\n"
+    "<div proportion-field=to model=model[to.fieldSetId][options.key]></div>"
   );
 
 
@@ -169,12 +216,17 @@ angular.module('incuna-surveys-fields.templates', []).run(['$templateCache', fun
 
 }]);
 
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 angular.module('incuna-surveys-form.templates', []).run(['$templateCache', function($templateCache) {
   'use strict';
 
   $templateCache.put('templates/incuna-surveys/form/calculate-percentage.html',
     "<div class=percentage-complete-area><p class=percentage ng-bind=percentageComplete></p><span class=complete translate>complete</span></div>"
+  );
+
+
+  $templateCache.put('templates/incuna-surveys/form/proportion-field.html',
+    "<div class=proportion><h4 ng-bind=title></h4><div ng-repeat=\"field in choiceOptions\"><div drf-form-field=field class=proportion><input class=proportion-input id=\" {{ field.id }}\" type=text ng-model=model[$index]></div></div></div>"
   );
 
 
@@ -184,7 +236,7 @@ angular.module('incuna-surveys-form.templates', []).run(['$templateCache', funct
 
 }]);
 
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -192,7 +244,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 var angular = exports.angular = window.angular;
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 'use strict';
 
 var _libraries = require('./libraries.js');
@@ -213,11 +265,15 @@ var _calculatePercentage = require('./directives/calculate-percentage.js');
 
 var _calculatePercentage2 = _interopRequireDefault(_calculatePercentage);
 
+var _proportionField = require('./directives/proportion-field.js');
+
+var _proportionField2 = _interopRequireDefault(_proportionField);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-_libraries.angular.module('incuna-surveys', ['drf-form-field', 'aif-slider-input', 'checklist-model', _fieldsConfig2.default.moduleName, _api2.default.moduleName, _form2.default.moduleName, _calculatePercentage2.default.moduleName]);
+_libraries.angular.module('incuna-surveys', ['drf-form-field', 'aif-slider-input', 'checklist-model', _fieldsConfig2.default.moduleName, _api2.default.moduleName, _form2.default.moduleName, _calculatePercentage2.default.moduleName, _proportionField2.default.moduleName]);
 
-},{"./directives/calculate-percentage.js":1,"./directives/form.js":2,"./libraries.js":5,"./services/api.js":8,"./services/fields-config.js":10}],7:[function(require,module,exports){
+},{"./directives/calculate-percentage.js":1,"./directives/form.js":2,"./directives/proportion-field.js":3,"./libraries.js":6,"./services/api.js":9,"./services/fields-config.js":11}],8:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -251,7 +307,7 @@ _module.provider(moduleProperties.componentName, [function () {
 
 exports.default = moduleProperties;
 
-},{"./../libraries.js":5}],8:[function(require,module,exports){
+},{"./../libraries.js":6}],9:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -308,7 +364,7 @@ _module.service(moduleProperties.componentName, ['$http', _projectConfig2.defaul
 
 exports.default = moduleProperties;
 
-},{"./../libraries.js":5,"./../providers/project-config.js":7}],9:[function(require,module,exports){
+},{"./../libraries.js":6,"./../providers/project-config.js":8}],10:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -377,7 +433,7 @@ _module.service(moduleProperties.componentName, [function () {
 
 exports.default = moduleProperties;
 
-},{"./../libraries.js":5}],10:[function(require,module,exports){
+},{"./../libraries.js":6}],11:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -439,7 +495,7 @@ _module.run(['formlyConfig', moduleProperties.componentName, function (formlyCon
 
 exports.default = moduleProperties;
 
-},{"./../libraries.js":5}],11:[function(require,module,exports){
+},{"./../libraries.js":6}],12:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -512,4 +568,4 @@ _module.service(moduleProperties.componentName, [function () {
 
 exports.default = moduleProperties;
 
-},{"./../libraries.js":5}]},{},[1,2,3,4,5,6,7,8,9,10,11]);
+},{"./../libraries.js":6}]},{},[1,2,3,4,5,6,7,8,9,10,11,12]);
