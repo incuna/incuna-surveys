@@ -20,6 +20,7 @@ DATABASES = {
 DEFAULT_FILE_STORAGE = 'inmemorystorage.InMemoryStorage'
 
 INSTALLED_APPS = (
+    'test_project',
     'surveys',
     'surveys.tests',
 

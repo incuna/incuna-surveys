@@ -14,7 +14,7 @@ class SurveyFieldAdmin(admin.ModelAdmin):
 class SurveyFieldOrderingInline(OrderableTabularInline):
     model = models.SurveyFieldOrdering
     raw_id_fields = ('field',)
-    extra = 0
+    extra = 1
     min_num = 1
 
 
@@ -31,7 +31,7 @@ class SurveyFieldOrderingAdmin(OrderableAdmin):
 
 class SurveyFieldsetOrderingInline(OrderableTabularInline):
     model = models.SurveyFieldsetOrdering
-    extra = 0
+    extra = 1
     min_num = 1
 
 
