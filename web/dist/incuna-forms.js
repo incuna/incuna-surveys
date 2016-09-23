@@ -128,11 +128,10 @@ exports.default = moduleProperties;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-exports.moduleProperties = undefined;
 
 var _libraries = require('./../libraries.js');
 
-var moduleProperties = exports.moduleProperties = {
+var moduleProperties = {
     moduleName: 'incuna-surveys.proportion-field-directive'
 };
 
@@ -147,29 +146,41 @@ _module.directive('proportionField', [function () {
         },
         templateUrl: 'templates/incuna-surveys/form/proportion-field.html',
         link: function link(scope) {
-            scope.choiceOptions = [];
+            scope.fields = [];
             scope.$watch('options', function (options, oldValue) {
                 if (options.fieldOptions) {
                     scope.title = options.fieldOptions.label;
                 }
                 if (options.choices) {
                     options.choices.forEach(function (choice, index) {
-                        scope.choiceOptions[index] = Object.assign({}, options.fieldOptions, {
+                        scope.fields[index] = Object.assign({}, options.fieldOptions, {
                             label: choice,
-                            id: options.autoId + '-' + index
+                            id: options.autoId + '-' + index,
+                            hex: Math.floor(Math.random(index) * 16777215).toString(16)
                         });
                     });
                 }
             });
 
             scope.$watch('options.fieldOptions.errors', function (errors, oldValue) {
-                console.log(errors, oldValue);
                 if (errors) {
-                    scope.choiceOptions.forEach(function (options, index) {
+                    scope.fields.forEach(function (options, index) {
                         options.errors = errors[index];
                     });
                 }
             });
+
+            scope.$watch('model', function (values, oldValue) {
+                scope.total = Object.keys(values).reduce(function (value, key) {
+                    return value + (values[key] ? parseInt(values[key], 10) : 0);
+                }, 0);
+                if (values) {
+                    scope.fields.forEach(function (options, key) {
+                        var value = parseInt(values[key], 10) || 0;
+                        options.percentage = value ? value / scope.total * 100 : 0;
+                    });
+                }
+            }, true);
         }
     };
 }]);
@@ -226,7 +237,7 @@ angular.module('incuna-surveys-form.templates', []).run(['$templateCache', funct
 
 
   $templateCache.put('templates/incuna-surveys/form/proportion-field.html',
-    "<div class=proportion><h4 ng-bind=title></h4><div ng-repeat=\"field in choiceOptions\"><div drf-form-field=field class=proportion><input class=proportion-input id=\" {{ field.id }}\" type=text ng-model=model[$index]></div></div></div>"
+    "<div class=proportion><h4 ng-bind=title></h4><div class=bar style=\"width: 600px\"><span ng-repeat=\"field in fields\" style=\"width:{{ field.percentage }}%; display: inline-block; background-color: #{{field.hex}}; height:30px\"></span></div>Total: <span class=total ng-bind=total></span><div ng-repeat=\"field in fields\"><div drf-form-field=field class=proportion><input class=proportion-input id=\" {{ field.id }}\" type=text ng-model=model[$index]> <span class=percentage ng-bind=field.percentage|number:0></span>%</div></div></div>"
   );
 
 
