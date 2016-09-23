@@ -7,7 +7,7 @@ angular.module('incuna-surveys-form.templates', []).run(['$templateCache', funct
 
 
   $templateCache.put('templates/incuna-surveys/form/proportion-field.html',
-    "<div class=proportion><h4 ng-bind=title></h4><div class=bar style=\"width: 600px\"><span ng-repeat=\"field in fields\" style=\"width:{{ field.percentage }}%; display: inline-block; background-color: #{{field.hex}}; height:30px\"></span></div>Total: <span class=total ng-bind=total></span><div ng-repeat=\"field in fields\"><div drf-form-field=field class=proportion><input class=proportion-input id=\" {{ field.id }}\" type=text ng-model=model[$index]> <span class=percentage ng-bind=field.percentage|number:0></span>%</div></div></div>"
+    "<div class=proportion><h4 ng-bind=title></h4>Total: <span class=total ng-bind=total></span><div ng-repeat=\"field in fields\"><div drf-form-field=field class=proportion><input class=proportion-input id=\"{{ field.id }}\" type=text ng-model=model[$index]> <span class=percentage ng-bind=field.percentage|number:0></span>%</div></div></div>"
   );
 
 

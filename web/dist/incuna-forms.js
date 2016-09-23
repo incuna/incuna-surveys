@@ -147,7 +147,7 @@ _module.directive('proportionField', [function () {
         templateUrl: 'templates/incuna-surveys/form/proportion-field.html',
         link: function link(scope) {
             scope.fields = [];
-            scope.$watch('options', function (options, oldValue) {
+            scope.$watch('options', function (options) {
                 if (options.fieldOptions) {
                     scope.title = options.fieldOptions.label;
                 }
@@ -155,14 +155,13 @@ _module.directive('proportionField', [function () {
                     options.choices.forEach(function (choice, index) {
                         scope.fields[index] = Object.assign({}, options.fieldOptions, {
                             label: choice,
-                            id: options.autoId + '-' + index,
-                            hex: Math.floor(Math.random(index) * 16777215).toString(16)
+                            id: options.autoId + '-' + index
                         });
                     });
                 }
             });
 
-            scope.$watch('options.fieldOptions.errors', function (errors, oldValue) {
+            scope.$watch('options.fieldOptions.errors', function (errors) {
                 if (errors) {
                     scope.fields.forEach(function (options, index) {
                         options.errors = errors[index];
@@ -170,7 +169,7 @@ _module.directive('proportionField', [function () {
                 }
             });
 
-            scope.$watch('model', function (values, oldValue) {
+            scope.$watch('model', function (values) {
                 scope.total = Object.keys(values).reduce(function (value, key) {
                     return value + (values[key] ? parseInt(values[key], 10) : 0);
                 }, 0);
@@ -237,7 +236,7 @@ angular.module('incuna-surveys-form.templates', []).run(['$templateCache', funct
 
 
   $templateCache.put('templates/incuna-surveys/form/proportion-field.html',
-    "<div class=proportion><h4 ng-bind=title></h4><div class=bar style=\"width: 600px\"><span ng-repeat=\"field in fields\" style=\"width:{{ field.percentage }}%; display: inline-block; background-color: #{{field.hex}}; height:30px\"></span></div>Total: <span class=total ng-bind=total></span><div ng-repeat=\"field in fields\"><div drf-form-field=field class=proportion><input class=proportion-input id=\" {{ field.id }}\" type=text ng-model=model[$index]> <span class=percentage ng-bind=field.percentage|number:0></span>%</div></div></div>"
+    "<div class=proportion><h4 ng-bind=title></h4>Total: <span class=total ng-bind=total></span><div ng-repeat=\"field in fields\"><div drf-form-field=field class=proportion><input class=proportion-input id=\"{{ field.id }}\" type=text ng-model=model[$index]> <span class=percentage ng-bind=field.percentage|number:0></span>%</div></div></div>"
   );
 
 

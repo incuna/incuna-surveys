@@ -4,6 +4,7 @@ This project uses Semantic Versioning (2.0).
 
 ### UPCOMING
 * Compile templates with swig.
+* Add proportion / field.
 
 ### 0.10.0
 * Amend percentage calculation to include value of 0
