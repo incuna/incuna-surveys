@@ -131,13 +131,19 @@ Object.defineProperty(exports, "__esModule", {
 
 var _libraries = require('./../libraries.js');
 
+var _proportionField = require('./../services/proportion-field.js');
+
+var _proportionField2 = _interopRequireDefault(_proportionField);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 var moduleProperties = {
     moduleName: 'incuna-surveys.proportion-field-directive'
 };
 
-var _module = _libraries.angular.module(moduleProperties.moduleName, []);
+var _module = _libraries.angular.module(moduleProperties.moduleName, [_proportionField2.default.moduleName]);
 
-_module.directive('proportionField', [function () {
+_module.directive('proportionField', [_proportionField2.default.componentName, function (ProportionField) {
     return {
         restrict: 'A',
         scope: {
@@ -152,32 +158,20 @@ _module.directive('proportionField', [function () {
                     scope.title = options.fieldOptions.label;
                 }
                 if (options.choices) {
-                    options.choices.forEach(function (choice, index) {
-                        scope.fields[index] = Object.assign({}, options.fieldOptions, {
-                            label: choice,
-                            id: options.autoId + '-' + index
-                        });
-                    });
+                    scope.fields = ProportionField.buildFields(options.choices, options.fieldOptions, options.autoId);
                 }
             });
 
             scope.$watch('options.fieldOptions.errors', function (errors) {
                 if (errors) {
-                    scope.fields.forEach(function (options, index) {
-                        options.errors = errors[index];
-                    });
+                    ProportionField.addErrors(scope.fields, errors);
                 }
             });
 
             scope.$watch('model', function (values) {
-                scope.total = Object.keys(values).reduce(function (value, key) {
-                    return value + (values[key] ? parseInt(values[key], 10) : 0);
-                }, 0);
+                scope.total = ProportionField.calculateTotal(values);
                 if (values) {
-                    scope.fields.forEach(function (options, key) {
-                        var value = parseInt(values[key], 10) || 0;
-                        options.percentage = value ? value / scope.total * 100 : 0;
-                    });
+                    ProportionField.addPercentages(scope.fields, values, scope.total);
                 }
             }, true);
         }
@@ -186,7 +180,7 @@ _module.directive('proportionField', [function () {
 
 exports.default = moduleProperties;
 
-},{"./../libraries.js":6}],4:[function(require,module,exports){
+},{"./../libraries.js":6,"./../services/proportion-field.js":13}],4:[function(require,module,exports){
 angular.module('incuna-surveys-fields.templates', []).run(['$templateCache', function($templateCache) {
   'use strict';
 
@@ -578,4 +572,62 @@ _module.service(moduleProperties.componentName, [function () {
 
 exports.default = moduleProperties;
 
-},{"./../libraries.js":6}]},{},[1,2,3,4,5,6,7,8,9,10,11,12]);
+},{"./../libraries.js":6}],13:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+exports.moduleProperties = undefined;
+
+var _libraries = require('./../libraries.js');
+
+var moduleProperties = exports.moduleProperties = {
+    moduleName: 'incuna-surveys.proportion-field',
+    componentName: 'proportionField'
+}; /*
+    *
+    * This module calculates the survey completion percentage/
+    *
+    */
+
+var _module = _libraries.angular.module(moduleProperties.moduleName, []);
+
+_module.service(moduleProperties.componentName, [function () {
+
+    this.buildFields = function (choices, defaults, autoId) {
+        return choices.map(function (choice, index) {
+            return Object.assign({}, defaults, {
+                label: choice,
+                id: autoId + '-' + index
+            });
+        });
+    };
+
+    this.calculateTotal = function (values) {
+        return Object.keys(values).reduce(function (value, key) {
+            var current = 0;
+            if (_libraries.angular.isNumber(values[key])) {
+                current = parseInt(values[key], 10);
+            }
+            return value + current;
+        }, 0);
+    };
+
+    this.addPercentages = function (fields, values, total) {
+        fields.forEach(function (options, key) {
+            var value = parseInt(values[key], 10) || 0;
+            options.percentage = value ? value / total * 100 : 0;
+        });
+    };
+
+    this.addErrors = function (fields, errors) {
+        fields.forEach(function (options, index) {
+            options.errors = errors[index];
+        });
+    };
+}]);
+
+exports.default = moduleProperties;
+
+},{"./../libraries.js":6}]},{},[1,2,3,4,5,6,7,8,9,10,11,12,13]);

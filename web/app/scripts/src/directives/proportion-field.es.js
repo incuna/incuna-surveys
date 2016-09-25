@@ -1,13 +1,18 @@
 import { angular } from '../libraries';
 
+import ProportionField from '../services/proportion-field';
+
 const moduleProperties = {
     moduleName: 'incuna-surveys.proportion-field-directive'
 };
 
-const module = angular.module(moduleProperties.moduleName, []);
+const module = angular.module(moduleProperties.moduleName, [
+    ProportionField.moduleName
+]);
 
 module.directive('proportionField', [
-    function () {
+    ProportionField.componentName,
+    function (ProportionField) {
         return {
             restrict: 'A',
             scope: {
@@ -22,37 +27,24 @@ module.directive('proportionField', [
                         scope.title = options.fieldOptions.label;
                     }
                     if (options.choices) {
-                        options.choices.forEach((choice, index) => {
-                            scope.fields[index] = Object.assign(
-                                {},
-                                options.fieldOptions,
-                                {
-                                    label: choice,
-                                    id: `${options.autoId}-${index}`
-                                }
-                            );
-                        });
+                        scope.fields = ProportionField.buildFields(
+                            options.choices,
+                            options.fieldOptions,
+                            options.autoId
+                        );
                     }
                 });
 
                 scope.$watch('options.fieldOptions.errors', (errors) => {
                     if (errors) {
-                        scope.fields.forEach((options, index) => {
-                            options.errors = errors[index];
-                        });
+                        ProportionField.addErrors(scope.fields, errors);
                     }
                 });
 
                 scope.$watch('model', (values) => {
-                    scope.total = Object.keys(values).reduce(
-                        ( value, key ) => value + (values[key] ? parseInt(values[key], 10) : 0),
-                        0
-                    );
+                    scope.total = ProportionField.calculateTotal(values);
                     if (values) {
-                        scope.fields.forEach((options, key) => {
-                            const value = parseInt(values[key], 10) || 0;
-                            options.percentage = value ? value / scope.total * 100 : 0;
-                        })
+                        ProportionField.addPercentages(scope.fields, values, scope.total);
                     }
                 }, true);
             }
