@@ -32,11 +32,10 @@ class SurveyField(models.Model):
         choices=FIELD_TYPE_CHOICES,
     )
     answers = ArrayField(
-        verbose_name=_('choices'),
         base_field=models.CharField(max_length=255),
         default=[],
         help_text=_(
-            'For choice fields only. Enter one or more choices, separated by newlines.'
+            'For choice fields only. Enter one or more answers, separated by newlines.'
         ),
         blank=True,
     )
