@@ -5,6 +5,7 @@ from .generators import BaseFieldGenerator as BaseBaseFieldGenerator
 
 
 class MultipleIntegerSerializer(serializers.Serializer):
+    """Dynamically generate a serializer with IntegerField based on the choices"""
     def __init__(self, choices, *args, **kwargs):
         self.choices = choices
         super().__init__(*args, **kwargs)
