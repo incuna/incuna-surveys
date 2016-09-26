@@ -28,19 +28,21 @@ _module.directive('proportionField', [_proportionField2.default.componentName, f
         templateUrl: 'templates/incuna-surveys/form/proportion-field.html',
         link: function link(scope) {
             scope.fields = [];
-            scope.$watch('options', function (options) {
+            var deregisterOptionsWatcher = scope.$watch('options', function (options) {
+                if (!options) {
+                    return;
+                }
                 if (options.fieldOptions) {
                     scope.title = options.fieldOptions.label;
                 }
                 if (options.choices) {
                     scope.fields = ProportionField.buildFields(options.choices, options.fieldOptions, options.autoId);
                 }
+                deregisterOptionsWatcher();
             });
 
             scope.$watch('options.fieldOptions.errors', function (errors) {
-                if (errors) {
-                    ProportionField.addErrors(scope.fields, errors);
-                }
+                ProportionField.addErrors(scope.fields, errors || {});
             });
 
             scope.$watch('model', function (values) {

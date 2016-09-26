@@ -22,7 +22,10 @@ module.directive('proportionField', [
             templateUrl: 'templates/incuna-surveys/form/proportion-field.html',
             link: function (scope) {
                 scope.fields = [];
-                scope.$watch('options', (options) => {
+                const deregisterOptionsWatcher = scope.$watch('options', (options) => {
+                    if (!options) {
+                        return;
+                    }
                     if (options.fieldOptions) {
                         scope.title = options.fieldOptions.label;
                     }
@@ -33,12 +36,11 @@ module.directive('proportionField', [
                             options.autoId
                         );
                     }
+                    deregisterOptionsWatcher();
                 });
 
                 scope.$watch('options.fieldOptions.errors', (errors) => {
-                    if (errors) {
-                        ProportionField.addErrors(scope.fields, errors);
-                    }
+                    ProportionField.addErrors(scope.fields, errors || {});
                 });
 
                 scope.$watch('model', (values) => {

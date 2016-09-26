@@ -117,6 +117,18 @@ describe('proportion-field service', function() {
             ]
             expect(this.fields).toEqual(expected);
         });
+
+        it('should clear old errors from fields', function() {
+            const errors = ["A valid integer is required."];
+            const fields = [
+                {label: 'One', required: false, id: '1-0', errors: undefined},
+                {label: 'Two', required: false, id: '1-1', errors: errors},
+                {label: 'Three', required: false, id: '1-2', errors: undefined},
+                {label: 'Four', required: false, id: '1-3', errors: errors}
+            ]
+            this.proportionField.addErrors(fields, []);
+            expect(this.fields).toEqual(this.fields);
+        });
     });
 
 });

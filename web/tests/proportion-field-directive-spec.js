@@ -68,14 +68,28 @@ describe('proportion-field directive', function() {
             )
         });
 
-        it('should call addErrors', function() {
-            spyOn(this.proportionField, 'addErrors');
-            this.scope.options.fieldOptions.errors = this.errors;
-            this.scope.$digest();
-            expect(this.proportionField.addErrors).toHaveBeenCalledWith(
-                this.isolated.fields,
-                this.errors
-            )
+        describe('should call addErrors', function() {
+            it('with erros', function() {
+                spyOn(this.proportionField, 'addErrors');
+                this.scope.options.fieldOptions.errors = this.errors;
+                this.scope.$digest();
+                expect(this.proportionField.addErrors).toHaveBeenCalledWith(
+                    this.isolated.fields,
+                    this.errors
+                )
+            });
+
+            it('to clear errors', function() {
+                this.scope.options.fieldOptions.errors = this.errors;
+                this.scope.$digest();
+                spyOn(this.proportionField, 'addErrors');
+                this.scope.options.fieldOptions.errors = undefined;
+                this.scope.$digest();
+                expect(this.proportionField.addErrors).toHaveBeenCalledWith(
+                    this.isolated.fields,
+                    {}
+                )
+            });
         });
 
     });

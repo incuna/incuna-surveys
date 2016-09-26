@@ -109,7 +109,10 @@ _module.directive('surveysForm', [_api2.default.componentName, _fieldsetsParser2
 
             scope.submit = function () {
                 if (scope.responseUrl) {
-                    API.post(scope.responseUrl, scope.model).then(scope.onSuccess).catch(function (response) {
+                    API.post(scope.responseUrl, scope.model).then(function () {
+                        FieldsetParser.addFieldErrors(scope.fields, {});
+                        scope.onSuccess();
+                    }).catch(function (response) {
                         var errors = response && response.data;
                         FieldsetParser.addFieldErrors(scope.fields, errors);
                         scope.onFailure();
@@ -153,19 +156,21 @@ _module.directive('proportionField', [_proportionField2.default.componentName, f
         templateUrl: 'templates/incuna-surveys/form/proportion-field.html',
         link: function link(scope) {
             scope.fields = [];
-            scope.$watch('options', function (options) {
+            var deregisterOptionsWatcher = scope.$watch('options', function (options) {
+                if (!options) {
+                    return;
+                }
                 if (options.fieldOptions) {
                     scope.title = options.fieldOptions.label;
                 }
                 if (options.choices) {
                     scope.fields = ProportionField.buildFields(options.choices, options.fieldOptions, options.autoId);
                 }
+                deregisterOptionsWatcher();
             });
 
             scope.$watch('options.fieldOptions.errors', function (errors) {
-                if (errors) {
-                    ProportionField.addErrors(scope.fields, errors);
-                }
+                ProportionField.addErrors(scope.fields, errors || {});
             });
 
             scope.$watch('model', function (values) {
@@ -605,12 +610,15 @@ _module.service(moduleProperties.componentName, [function () {
     };
 
     this.calculateTotal = function (values) {
-        return Object.keys(values).reduce(function (value, key) {
-            var current = 0;
-            if (_libraries.angular.isNumber(values[key])) {
-                current = parseInt(values[key], 10);
+        return Object.keys(values).reduce(function (total, key) {
+            if (!values[key]) {
+                return total;
             }
-            return value + current;
+            var value = values[key] && parseInt(values[key], 10);
+            if (Number.isNaN(value)) {
+                return total;
+            }
+            return total + value;
         }, 0);
     };
 

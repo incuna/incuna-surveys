@@ -30,12 +30,15 @@ _module.service(moduleProperties.componentName, [function () {
     };
 
     this.calculateTotal = function (values) {
-        return Object.keys(values).reduce(function (value, key) {
-            var current = 0;
-            if (_libraries.angular.isNumber(values[key])) {
-                current = parseInt(values[key], 10);
+        return Object.keys(values).reduce(function (total, key) {
+            if (!values[key]) {
+                return total;
             }
-            return value + current;
+            var value = values[key] && parseInt(values[key], 10);
+            if (Number.isNaN(value)) {
+                return total;
+            }
+            return total + value;
         }, 0);
     };
 
