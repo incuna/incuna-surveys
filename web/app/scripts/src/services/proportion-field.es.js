@@ -31,14 +31,12 @@ module.service(moduleProperties.componentName, [
 
         this.calculateTotal = function (values) {
             return Object.keys(values).reduce((value, key) => {
-                    let current = 0;
-                    if (angular.isNumber(values[key])) {
-                       current = parseInt(values[key], 10)
-                    }
-                    return value + current
-                },
-                0
-            );
+                let current = 0;
+                if (angular.isNumber(values[key])) {
+                    current = parseInt(values[key], 10)
+                }
+                return value + current
+            }, 0);
         };
 
         this.addPercentages = function (fields, values, total) {
