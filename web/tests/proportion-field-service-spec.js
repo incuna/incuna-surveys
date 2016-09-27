@@ -93,6 +93,16 @@ describe('proportion-field service', function () {
             expect(total).toEqual(0);
         });
 
+        it('should handle undefined', function () {
+            const total = this.proportionField.calculateTotal(undefined);
+            expect(total).toEqual(0);
+        });
+
+        it('should handle null', function () {
+            const total = this.proportionField.calculateTotal(null);
+            expect(total).toEqual(0);
+        });
+
     });
 
     describe('addPercentages', function () {

@@ -44,6 +44,9 @@ module.directive('proportionField', [
                 });
 
                 scope.$watch('model', (values) => {
+                    if (values === null) {
+                        scope.model = {};
+                    }
                     scope.total = ProportionField.calculateTotal(values);
                     if (values) {
                         ProportionField.addPercentages(scope.fields, values, scope.total);

@@ -118,6 +118,12 @@ describe('proportion-field directive', function () {
                 this.total
             )
         });
+
+        it('should create an empty opbject if the model is null', function () {
+            this.scope.model = null;
+            this.scope.$digest();
+            expect(this.isolated.model).toEqual({});
+        });
     });
 });
 

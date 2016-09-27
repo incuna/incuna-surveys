@@ -91,3 +91,12 @@ class TestSerializerFieldGenerators(TestCase):
                 field = fields[key]
                 self.assertIsInstance(field, serializers.IntegerField)
                 self.assertEqual(field.label, label)
+
+    def test_blank_integer_field_allow_null(self):
+        field = serializer_field_generators.BlankIntegerField(allow_null=True)
+        self.assertEqual(field.to_internal_value(''), None)
+
+    def test_blank_integer_field_not_allow_null(self):
+        field = serializer_field_generators.BlankIntegerField(allow_null=False)
+        with self.assertRaises(serializers.ValidationError):
+            field.to_internal_value('')

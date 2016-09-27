@@ -174,6 +174,9 @@ _module.directive('proportionField', [_proportionField2.default.componentName, f
             });
 
             scope.$watch('model', function (values) {
+                if (values === null) {
+                    scope.model = {};
+                }
                 scope.total = ProportionField.calculateTotal(values);
                 if (values) {
                     ProportionField.addPercentages(scope.fields, values, scope.total);
@@ -612,6 +615,9 @@ _module.service(moduleProperties.componentName, [function () {
     };
 
     this.calculateTotal = function (values) {
+        if (!values) {
+            return 0;
+        }
         return Object.keys(values).reduce(function (total, key) {
             var value = parseInt(values[key], 10);
             if (Number.isNaN(value)) {

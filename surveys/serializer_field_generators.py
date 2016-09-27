@@ -4,6 +4,14 @@ from rest_framework import serializers
 from .generators import BaseFieldGenerator as BaseBaseFieldGenerator
 
 
+class BlankIntegerField(serializers.IntegerField):
+    """IntegerField that allows empty strings if allow_null=True"""
+    def to_internal_value(self, data):
+        if data == '' and self.allow_null:
+            return None
+        return super().to_internal_value(data)
+
+
 class MultipleIntegerSerializer(serializers.Serializer):
     """Dynamically generate a serializer with IntegerField based on the choices"""
     def __init__(self, choices, *args, **kwargs):
@@ -16,7 +24,7 @@ class MultipleIntegerSerializer(serializers.Serializer):
         Returns a dictionary of {key: IntegerField(label=choice)}.
         """
         return {
-            str(key): serializers.IntegerField(label=label, required=False)
+            str(key): BlankIntegerField(label=label, required=False, allow_null=True)
             for key, label in self.choices
         }
 
