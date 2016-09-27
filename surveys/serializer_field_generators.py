@@ -4,6 +4,31 @@ from rest_framework import serializers
 from .generators import BaseFieldGenerator as BaseBaseFieldGenerator
 
 
+class BlankIntegerField(serializers.IntegerField):
+    """IntegerField that allows empty strings if allow_null=True"""
+    def to_internal_value(self, data):
+        if data == '' and self.allow_null:
+            return None
+        return super().to_internal_value(data)
+
+
+class MultipleIntegerSerializer(serializers.Serializer):
+    """Dynamically generate a serializer with IntegerField based on the choices"""
+    def __init__(self, choices, *args, **kwargs):
+        self.choices = choices
+        super().__init__(*args, **kwargs)
+
+    def get_fields(self):
+        """
+        Dynamically generate the fields from the choices ((key, label), ...).
+        Returns a dictionary of {key: IntegerField(label=choice)}.
+        """
+        return {
+            str(key): BlankIntegerField(label=label, required=False, allow_null=True)
+            for key, label in self.choices
+        }
+
+
 class BaseFieldGenerator(BaseBaseFieldGenerator):
     def get_field_kwargs(self, instance):
         kwargs = super().get_field_kwargs(instance)
@@ -37,17 +62,28 @@ class PercentageFieldGenerator(NumberFieldGenerator):
         return kwargs
 
 
-class ChoiceFieldGenerator(BaseFieldGenerator):
+class BaseChoiceFieldGenerator(BaseFieldGenerator):
+    def get_field_kwargs(self, instance):
+        kwargs = super().get_field_kwargs(instance)
+        kwargs['choices'] = list(enumerate(instance.answers))
+        return kwargs
+
+
+class ChoiceFieldGenerator(BaseChoiceFieldGenerator):
     """A class for generating a ChoiceField."""
     field_class = serializers.ChoiceField
 
     def get_field_kwargs(self, instance):
         kwargs = super().get_field_kwargs(instance)
         kwargs['allow_blank'] = not instance.required
-        kwargs['choices'] = list(enumerate(instance.answers))
         return kwargs
 
 
 class MultipleChoiceFieldGenerator(ChoiceFieldGenerator):
     """A class for generating a MultipleChoiceField."""
     field_class = serializers.MultipleChoiceField
+
+
+class MultipleIntegerFieldGenerator(BaseChoiceFieldGenerator):
+    """A class for generating a MultipleIntegerSerializer."""
+    field_class = MultipleIntegerSerializer

@@ -6,6 +6,7 @@ This project uses Semantic Versioning (2.0).
 * bugfix: Remove getForm() api method and dry with api.get
 * bugfix: Avoid fatal error when api promise fails but there are no errors
 * Compile templates with swig.
+* Add proportion / field.
 
 ### 0.10.0
 * Amend percentage calculation to include value of 0

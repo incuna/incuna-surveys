@@ -55,7 +55,10 @@ module.directive('surveysForm', [
                 scope.submit = function () {
                     if (scope.responseUrl) {
                         API.post(scope.responseUrl, scope.model)
-                            .then(scope.onSuccess)
+                            .then(() => {
+                                FieldsetParser.addFieldErrors(scope.fields, {})
+                                scope.onSuccess();
+                            })
                             .catch((response) => {
                                 const errors = response && response.data;
                                 FieldsetParser.addFieldErrors(scope.fields, errors)
