@@ -31,9 +31,6 @@ _module.service(moduleProperties.componentName, [function () {
 
     this.calculateTotal = function (values) {
         return Object.keys(values).reduce(function (total, key) {
-            if (!values[key]) {
-                return total;
-            }
             var value = parseInt(values[key], 10);
             if (Number.isNaN(value)) {
                 return total;
