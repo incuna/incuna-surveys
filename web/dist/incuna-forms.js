@@ -614,7 +614,7 @@ _module.service(moduleProperties.componentName, [function () {
             if (!values[key]) {
                 return total;
             }
-            var value = values[key] && parseInt(values[key], 10);
+            var value = parseInt(values[key], 10);
             if (Number.isNaN(value)) {
                 return total;
             }

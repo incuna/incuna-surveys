@@ -125,9 +125,15 @@ describe('proportion-field service', function() {
                 {label: 'Two', required: false, id: '1-1', errors: errors},
                 {label: 'Three', required: false, id: '1-2', errors: undefined},
                 {label: 'Four', required: false, id: '1-3', errors: errors}
-            ]
+            ];
+            const expected = [
+                {label: 'One', required: false, id: '1-0', errors: undefined},
+                {label: 'Two', required: false, id: '1-1', errors: undefined},
+                {label: 'Three', required: false, id: '1-2', errors: undefined},
+                {label: 'Four', required: false, id: '1-3', errors: undefined}
+            ];
             this.proportionField.addErrors(fields, []);
-            expect(this.fields).toEqual(this.fields);
+            expect(fields).toEqual(expected);
         });
     });
 
