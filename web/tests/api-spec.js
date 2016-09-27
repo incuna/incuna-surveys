@@ -22,29 +22,29 @@ describe('api service', function () {
 
         this.$httpBackend.when('GET', this.get.url)
             .respond(this.get.OK.response_data);
-        
+
         this.$httpBackend.when('POST', this.post.url)
             .respond(this.post.OK.response_data);
-        
+
     });
 
-    afterEach(function() {
+    afterEach(function () {
         this.$httpBackend.verifyNoOutstandingExpectation();
         this.$httpBackend.verifyNoOutstandingRequest();
     });
 
     describe('getList method', function () {
-        
+
         it('should return a promise with the data of available forms', function () {
             this.api.getList().then((data) => {
                 expect(data[0].name).toBe('How have you been using the site?');
                 expect(data[0].url).toBe('http://localhost:8000/forms/1');
             });
-            
+
             this.$rootScope.$digest();
             this.$httpBackend.flush();
         });
-        
+
     });
 
     describe('getForm', function () {
@@ -60,7 +60,7 @@ describe('api service', function () {
             this.$rootScope.$digest();
             this.$httpBackend.flush();
         });
-        
+
     });
 
     describe('get', function () {
@@ -84,5 +84,5 @@ describe('api service', function () {
             this.$httpBackend.flush();
         });
     });
-    
+
 });
