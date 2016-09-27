@@ -18,10 +18,41 @@ var moduleProperties = {
 
 var _module = _libraries.angular.module(moduleProperties.moduleName, [_proportionField2.default.moduleName]);
 
+_module.directive('ensureInteger', [function () {
+    return {
+        require: 'ngModel',
+        restrict: 'A',
+        link: function link(scope, element, attr, ctrl) {
+            ctrl.$parsers.push(function (val) {
+                if (val) {
+                    var value = parseInt(val, 10);
+                    if (Number.isNaN(value)) {
+                        return undefined;
+                    }
+                    return value;
+                }
+                return null;
+            });
+        }
+    };
+}]);
+
+_module.directive('integerField', [function () {
+    return {
+        templateUrl: 'templates/incuna-surveys/form/integer-field.html',
+        scope: {
+            form: '=',
+            model: '=',
+            id: '='
+        }
+    };
+}]);
+
 _module.directive('proportionField', [_proportionField2.default.componentName, function (ProportionField) {
     return {
         restrict: 'A',
         scope: {
+            form: '=',
             model: '=',
             options: '=proportionField'
         },

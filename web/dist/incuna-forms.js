@@ -146,10 +146,41 @@ var moduleProperties = {
 
 var _module = _libraries.angular.module(moduleProperties.moduleName, [_proportionField2.default.moduleName]);
 
+_module.directive('ensureInteger', [function () {
+    return {
+        require: 'ngModel',
+        restrict: 'A',
+        link: function link(scope, element, attr, ctrl) {
+            ctrl.$parsers.push(function (val) {
+                if (val) {
+                    var value = parseInt(val, 10);
+                    if (Number.isNaN(value)) {
+                        return undefined;
+                    }
+                    return value;
+                }
+                return null;
+            });
+        }
+    };
+}]);
+
+_module.directive('integerField', [function () {
+    return {
+        templateUrl: 'templates/incuna-surveys/form/integer-field.html',
+        scope: {
+            form: '=',
+            model: '=',
+            id: '='
+        }
+    };
+}]);
+
 _module.directive('proportionField', [_proportionField2.default.componentName, function (ProportionField) {
     return {
         restrict: 'A',
         scope: {
+            form: '=',
             model: '=',
             options: '=proportionField'
         },
@@ -203,7 +234,7 @@ angular.module('incuna-surveys-fields.templates', []).run(['$templateCache', fun
 
 
   $templateCache.put('templates/incuna-surveys/fields/number.html',
-    "<div drf-form-field=to.fieldOptions class=\"number {{ model[to.fieldSetId][options.key] ? 'not-empty' : '' }}\" field-id=to.autoId><input type=text class=number-input id=\"{{ to.autoId }}\" ng-model=model[to.fieldSetId][options.key]></div>"
+    "<div drf-form-field=to.fieldOptions class=\"number {{ model[to.fieldSetId][options.key] ? 'not-empty' : '' }}\" field-id=to.autoId><span integer-field model=model[to.fieldSetId][options.key] id=to.autoId form=form></span></div>"
   );
 
 
@@ -213,7 +244,7 @@ angular.module('incuna-surveys-fields.templates', []).run(['$templateCache', fun
 
 
   $templateCache.put('templates/incuna-surveys/fields/proportion.html',
-    "<div proportion-field=to model=model[to.fieldSetId][options.key]></div>"
+    "<div proportion-field=to form=form model=model[to.fieldSetId][options.key]></div>"
   );
 
 
@@ -237,8 +268,13 @@ angular.module('incuna-surveys-form.templates', []).run(['$templateCache', funct
   );
 
 
+  $templateCache.put('templates/incuna-surveys/form/integer-field.html',
+    "<input class=integer-input id=\"{{ id }}\" name=\"{{ id }}\" type=text ng-model=model ensure-integer><div class=\"error-block field-error ng-scope\" ng-show=form[id].$invalid><p class=error><span class=ng-scope>A valid integer is required.</span></p></div>"
+  );
+
+
   $templateCache.put('templates/incuna-surveys/form/proportion-field.html',
-    "<div class=proportion><h4 ng-bind=title></h4>Total: <span class=total ng-bind=total></span><div ng-repeat=\"field in fields\"><div drf-form-field=field class=proportion><input class=proportion-input id=\"{{ field.id }}\" type=text ng-model=model[$index]> <span class=percentage ng-bind=field.percentage|number:0></span>%</div></div></div>"
+    "<div class=proportion><h4 ng-bind=title></h4>Total: <span class=total ng-bind=total></span><div ng-repeat=\"field in fields\"><div drf-form-field=field class=proportion><span integer-field model=model[$index] id=field.id form=form></span> <span class=percentage ng-bind=field.percentage|number:0></span>%</div></div></div>"
   );
 
 

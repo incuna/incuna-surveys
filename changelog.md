@@ -7,6 +7,7 @@ This project uses Semantic Versioning (2.0).
 * bugfix: Avoid fatal error when api promise fails but there are no errors
 * Compile templates with swig.
 * Add proportion / field.
+* Handle blank and invalid integers.
 
 ### 0.10.0
 * Amend percentage calculation to include value of 0
