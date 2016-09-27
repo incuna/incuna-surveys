@@ -7,7 +7,7 @@ angular.module('incuna-surveys-form.templates', []).run(['$templateCache', funct
 
 
   $templateCache.put('templates/incuna-surveys/form/integer-field.html',
-    "<input class=integer-input id=\"{{ id }}\" name=\"{{ id }}\" type=text ng-model=model ensure-integer><div class=\"error-block field-error ng-scope\" ng-show=form[id].$invalid><p class=error><span class=ng-scope>A valid integer is required.</span></p></div>"
+    "<input class=integer-input id=\"{{ id }}\" name=\"{{ id }}\" type=text ng-model=model ensure-integer><div class=\"error-block field-error\" ng-show=form[id].$invalid><p class=error><span translate>A valid integer is required.</span></p></div>"
   );
 
 
