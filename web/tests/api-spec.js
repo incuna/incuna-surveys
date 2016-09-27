@@ -11,6 +11,8 @@ describe('api service', function () {
             this.api = API;
         });
 
+        this.getForm = fixture.load('forms/pk/get.json')
+
         this.post = fixture.load('forms/pk/respond/user_id/post.json')
         this.get = fixture.load('forms/pk/respond/user_id/get.json')
 
@@ -47,12 +49,10 @@ describe('api service', function () {
 
     });
 
-    describe('getForm', function () {
+    describe('get() method', function () {
 
-        it('should return a promise with the data of a form', function () {
-            const url = 'http://localhost:8000/forms/1';
-
-            this.api.getForm(url).then((data) => {
+        it('should return the data content of a form', function () {
+            this.api.get(this.getForm.url).then((data) => {
                 expect(data.name).toBe('How have you been using the site?');
                 expect(data.fieldsets[0].name).toBe('Free text field');
             });
@@ -61,11 +61,8 @@ describe('api service', function () {
             this.$httpBackend.flush();
         });
 
-    });
-
-    describe('get', function () {
         it('should return a promise with the data from the api', function () {
-            this.api.getForm(this.get.url).then((data) => {
+            this.api.get(this.get.url).then((data) => {
                 expect(data).toEqual(this.get.OK.response_data);
             });
 

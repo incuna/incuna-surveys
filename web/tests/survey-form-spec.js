@@ -1,13 +1,11 @@
 describe('surveysForm directive', function () {
-    const getResponse = {
-        any: 'Any'
-    };
     const postErrors = {
         some: 'Error'
     };
     const fields = {
         thing: 'Thing'
     };
+
     const formUrl = 'http://from-url';
     const responseUrl = 'http://response-url';
 
@@ -44,11 +42,7 @@ describe('surveysForm directive', function () {
         const formDefer = this.$q.defer();
         this.formResponse = fixture.load('forms/pk/get.json').OK.response_data;
         formDefer.resolve(this.formResponse);
-        spyOn(this.API, 'getForm').and.returnValue(formDefer.promise);
-
-        const responseDefer = this.$q.defer();
-        responseDefer.resolve(getResponse);
-        spyOn(this.API, 'get').and.returnValue(responseDefer.promise);
+        spyOn(this.API, 'get').and.returnValue(formDefer.promise);
 
         spyOn(this.FieldsParser, 'parseFields').and.returnValue(fields);
     });
@@ -69,11 +63,11 @@ describe('surveysForm directive', function () {
             expect(isolated.responseUrl).toBe(responseUrl);
         });
 
-        it('should call API.getForm with the formUrl', function () {
-            expect(this.API.getForm).toHaveBeenCalledWith(formUrl);
+        it('should call API.get with the formUrl', function () {
+            expect(this.API.get).toHaveBeenCalledWith(formUrl);
         });
 
-        it('should add the getForm response to the scope', function () {
+        it('should add the get response to the scope', function () {
             const isolated = this.elm.isolateScope()
             expect(isolated.form).toBe(this.formResponse);
         });
@@ -84,10 +78,10 @@ describe('surveysForm directive', function () {
 
         it('should add the API.get response to scope.model', function () {
             const isolated = this.elm.isolateScope()
-            expect(isolated.model).toBe(getResponse);
+            expect(isolated.model).toBe(this.formResponse);
         });
 
-        it('should call FieldsetParser.parseFields with API.getForm response', function () {
+        it('should call FieldsetParser.parseFields with API.get response', function () {
             expect(this.FieldsParser.parseFields).toHaveBeenCalledWith(this.formResponse);
         });
 
@@ -106,7 +100,7 @@ describe('surveysForm directive', function () {
         });
 
         it('should API.post with the responseUrl and the post data', function () {
-            expect(this.API.post).toHaveBeenCalledWith(responseUrl, getResponse)
+            expect(this.API.post).toHaveBeenCalledWith(responseUrl, this.formResponse)
         });
     });
     describe('submit', function () {
@@ -129,10 +123,10 @@ describe('surveysForm directive', function () {
 
             it('should be called if the post succeeds', function () {
                 const responseDefer = this.$q.defer();
-                responseDefer.resolve(getResponse);
+                responseDefer.resolve(this.formResponse);
                 spyOn(this.API, 'post').and.returnValue(responseDefer.promise);
                 this.isolated.submit();
-                expect(this.API.post).toHaveBeenCalledWith(responseUrl, getResponse)
+                expect(this.API.post).toHaveBeenCalledWith(responseUrl, this.formResponse)
                 this.scope.$digest();
                 expect(this.scope.mySubmit).toHaveBeenCalledWith();
             });

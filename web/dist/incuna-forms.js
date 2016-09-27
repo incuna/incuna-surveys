@@ -87,7 +87,7 @@ _module.directive('surveysForm', [_api2.default.componentName, _fieldsetsParser2
             scope.model = {};
             scope.$watch('formUrl', function (url) {
                 if (url) {
-                    API.getForm(url).then(function (structure) {
+                    API.get(url).then(function (structure) {
                         scope.form = structure;
                         scope.fields = FieldsetParser.parseFields(structure);
                         // Only set the empty model if the model has not
@@ -272,11 +272,6 @@ _module.service(moduleProperties.componentName, ['$http', _projectConfig2.defaul
         getList: function getList() {
             var url = this.getBaseUrl();
 
-            return $http.get(url).then(function (response) {
-                return response.data;
-            });
-        },
-        getForm: function getForm(url) {
             return $http.get(url).then(function (response) {
                 return response.data;
             });
