@@ -32,7 +32,7 @@ module.directive('surveysForm', [
                 scope.model = {};
                 scope.$watch('formUrl', (url) => {
                     if (url) {
-                        API.getForm(url).then(function (structure) {
+                        API.get(url).then(function (structure) {
                             scope.form = structure;
                             scope.fields = FieldsetParser.parseFields(structure);
                             // Only set the empty model if the model has not

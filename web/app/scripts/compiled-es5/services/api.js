@@ -34,11 +34,6 @@ _module.service(moduleProperties.componentName, ['$http', _projectConfig2.defaul
                 return response.data;
             });
         },
-        getForm: function getForm(url) {
-            return $http.get(url).then(function (response) {
-                return response.data;
-            });
-        },
         get: function get(url) {
             return $http.get(url).then(function (response) {
                 return response.data;
