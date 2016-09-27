@@ -1,9 +1,9 @@
-describe('proportion-field directive', function() {
+describe('proportion-field directive', function () {
     beforeEach(function () {
 
         angular.mock.module('incuna-surveys-form.templates');
         angular.mock.module('incuna-surveys.proportion-field-directive');
-        inject(function($rootScope, $compile, proportionField) {
+        inject(function ($rootScope, $compile, proportionField) {
             this.$rootScope = $rootScope;
             this.$compile = $compile;
             this.proportionField = proportionField;
@@ -11,7 +11,7 @@ describe('proportion-field directive', function() {
 
         this.options = {
             fieldOptions: {
-                label: 'Field Title',
+                label: 'Field Title'
             },
             autoId: '1',
             choices: ['One', 'Two']
@@ -21,7 +21,7 @@ describe('proportion-field directive', function() {
             3: 30
         };
         this.errors = {
-            "2": ["A valid integer is required."]
+            2: ['A valid integer is required.']
         };
         this.tpl = '<div proportion-field="options" model="model"></div>';
         this.scope = this.$rootScope.$new();
@@ -33,34 +33,34 @@ describe('proportion-field directive', function() {
         };
     });
 
-    describe('initialisation', function() {
-        beforeEach(function() {
+    describe('initialisation', function () {
+        beforeEach(function () {
             this.compileDirective();
         });
 
-        it('should render a h4', function() {
+        it('should render a h4', function () {
             expect(this.elm.find('h4').length).toEqual(1);
         });
 
-        it('should include empty fields in the scope', function() {
+        it('should include empty fields in the scope', function () {
             const isolated = this.elm.isolateScope()
             expect(isolated.fields).toEqual([]);
         });
     });
 
-    describe('setting options', function() {
-        beforeEach(function() {
+    describe('setting options', function () {
+        beforeEach(function () {
             spyOn(this.proportionField, 'buildFields').and.callThrough();
             this.scope.options = this.options;
             this.compileDirective();
             this.isolated = this.elm.isolateScope()
         });
 
-        it('should add title to the scope based on the options.fieldOptions.label', function() {
+        it('should add title to the scope based on the options.fieldOptions.label', function () {
             expect(this.isolated.title).toEqual('Field Title');
         });
 
-        it('should call buildFields', function() {
+        it('should call buildFields', function () {
             expect(this.proportionField.buildFields).toHaveBeenCalledWith(
                 this.isolated.options.choices,
                 this.isolated.options.fieldOptions,
@@ -68,8 +68,8 @@ describe('proportion-field directive', function() {
             )
         });
 
-        describe('should call addErrors', function() {
-            it('with erros', function() {
+        describe('should call addErrors', function () {
+            it('with erros', function () {
                 spyOn(this.proportionField, 'addErrors');
                 this.scope.options.fieldOptions.errors = this.errors;
                 this.scope.$digest();
@@ -79,7 +79,7 @@ describe('proportion-field directive', function() {
                 )
             });
 
-            it('to clear errors', function() {
+            it('to clear errors', function () {
                 this.scope.options.fieldOptions.errors = this.errors;
                 this.scope.$digest();
                 spyOn(this.proportionField, 'addErrors');
@@ -94,8 +94,8 @@ describe('proportion-field directive', function() {
 
     });
 
-    describe('setting model', function() {
-        beforeEach(function() {
+    describe('setting model', function () {
+        beforeEach(function () {
             this.total = 100;
             spyOn(this.proportionField, 'calculateTotal').and.returnValue(this.total);
             spyOn(this.proportionField, 'addPercentages');
@@ -106,12 +106,12 @@ describe('proportion-field directive', function() {
             this.scope.$digest();
         });
 
-        it('should call proportionField.calculateTotal and set scope.total', function() {
+        it('should call proportionField.calculateTotal and set scope.total', function () {
             expect(this.proportionField.calculateTotal).toHaveBeenCalledWith(this.model)
             expect(this.isolated.total).toBe(this.total);
         });
 
-        it('should call addPercentages', function() {
+        it('should call addPercentages', function () {
             expect(this.proportionField.addPercentages).toHaveBeenCalledWith(
                 this.isolated.fields,
                 this.model,

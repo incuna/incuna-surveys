@@ -119,8 +119,8 @@ describe('surveysForm directive', function () {
 
         });
 
-        describe('success callback', function() {
-            beforeEach(function() {
+        describe('success callback', function () {
+            beforeEach(function () {
                 const responseDefer = this.$q.defer();
                 responseDefer.resolve(getResponse);
                 spyOn(this.API, 'post').and.returnValue(responseDefer.promise);
@@ -134,13 +134,12 @@ describe('surveysForm directive', function () {
             it('should be called if the post succeeds', function () {
                 const responseDefer = this.$q.defer();
                 responseDefer.resolve(getResponse);
-                spyOn(this.API, 'post').and.returnValue(responseDefer.promise);
                 this.isolated.submit();
                 this.scope.$digest();
                 expect(this.scope.mySubmit).toHaveBeenCalledWith();
             });
 
-            it('should call addFieldErrors if the post succeeds', function() {
+            it('should call addFieldErrors if the post succeeds', function () {
                 this.isolated.submit();
                 this.scope.$digest();
                 expect(this.FieldsParser.addFieldErrors).toHaveBeenCalledWith(fields, {});
