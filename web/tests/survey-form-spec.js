@@ -67,7 +67,7 @@ describe('surveysForm directive', function () {
             expect(this.API.get).toHaveBeenCalledWith(formUrl);
         });
 
-        it('should add the get response to the scope', function() {
+        it('should add the get response to the scope', function () {
             const isolated = this.elm.isolateScope()
             expect(isolated.form).toBe(this.formResponse);
         });
