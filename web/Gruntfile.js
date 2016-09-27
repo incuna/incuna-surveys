@@ -40,7 +40,8 @@ module.exports = function (grunt) {
 
             lintFiles: {
                 node: ['Gruntfile.js'],
-                es: ['<%= config.srcScriptsDir %>']
+                es: ['<%= config.srcScriptsDir %>'],
+                tests: ['<%= config.testsDir %>']
             }
         }
 
@@ -105,6 +106,12 @@ module.exports = function (grunt) {
                     configFile: '.eslintrc.es'
                 },
                 src: '<%= config.lintFiles.es %>'
+            },
+            tests: {
+                options: {
+                    configFile: '.eslintrc.es'
+                },
+                src: '<%= config.lintFiles.tests %>'
             }
         },
         jscs: {

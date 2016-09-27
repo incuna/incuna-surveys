@@ -1,5 +1,9 @@
 describe('FieldsetParserService', function () {
-    const fieldErrors = {'1': {'1': ['This is an error']}};
+    const fieldErrors = {
+        1: {
+            1: ['This is an error']
+        }
+    };
 
     beforeEach(function () {
         fixture.setBase('tests/api-description');
@@ -33,11 +37,11 @@ describe('FieldsetParserService', function () {
         describe('field groups', function () {
             it('should be as many as there are field sets', function () {
                 // The api description has 3 fieldsets, the extra element is the header
-                expect(this.result.length).toBe(3); 
+                expect(this.result.length).toBe(3);
             });
 
             describe('each element', function () {
-                
+
                 it('should have a name and description', function () {
                     const fieldGroup = this.result[0];
 
@@ -45,7 +49,7 @@ describe('FieldsetParserService', function () {
                     expect(fieldGroup.templateOptions.name).toBe('Free text field');
                     expect(fieldGroup.templateOptions.description).toBe('Field group description');
                 });
-                
+
                 it('should have a list of fields', function () {
                     expect(this.result[1].fieldGroup.length).toBe(2);
                 });
@@ -74,11 +78,11 @@ describe('FieldsetParserService', function () {
 
                         expect(field.templateOptions.choices).toEqual(['One time', 'Two times', 'Three times or more']);
                     });
-                    
+
                 });
-                
+
             });
-            
+
         });
 
     });
@@ -97,7 +101,7 @@ describe('FieldsetParserService', function () {
             }
             expect(this.emptyModel).toEqual(expected);
         });
-        
+
     });
 
     describe('addFieldErrors object', function () {
