@@ -40,10 +40,6 @@ describe('surveysForm directive', function() {
         formDefer.resolve(this.formResponse);
         spyOn(this.API, 'get').and.returnValue(formDefer.promise);
 
-        // const responseDefer = this.$q.defer();
-        // responseDefer.resolve(getResponse);
-        // spyOn(this.API, 'get').and.returnValue(responseDefer.promise);
-
         spyOn(this.FieldsParser, 'parseFields').and.returnValue(fields);
     });
 
