@@ -3,6 +3,7 @@
 This project uses Semantic Versioning (2.0).
 
 ### UPCOMING
+* Avoid fatal error when api promise fails but there are no errors
 * Compile templates with swig.
 * Add proportion / field.
 
