@@ -3,7 +3,7 @@
     {% block total-bar %}
         <span class="total-bar">
             {% raw %}
-                <span class="bar-portion color-{{ $index }}" ng-repeat="field in fields" style="width: {{ field.percentage }}%"></span>
+                <span class="bar-portion neutral-{{ $index }}" ng-repeat="field in fields" style="width: {{ field.percentage }}%"></span>
             {% endraw %}
         </span>
     {% endblock %}
@@ -16,7 +16,7 @@
     <div class="fields-wrapper">
         <div class="proportion-field" ng-repeat="field in fields">
             {% block field %}
-            <div drf-form-field="field" class="proportion-field-inner {% raw %}color-{{ $index }}{% endraw %}">
+            <div drf-form-field="field" class="proportion-field-inner {% raw %}neutral-{{ $index }}{% endraw %}">
                 {% block input %}
                     <input
                         class="proportion-input"
