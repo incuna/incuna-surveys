@@ -1,0 +1,3 @@
+<div drf-form-field="to.fieldOptions" class="text {% raw %}{{ model[to.fieldSetId][options.key] ? 'not-empty' : '' }}{% endraw %}" field-id="to.autoId">
+    <input type="text" class="text-input" id="{% raw %}{{ to.autoId }}{% endraw %}" ng-model="model[to.fieldSetId][options.key]" ng-required="to.fieldOptions.required">
+</div>

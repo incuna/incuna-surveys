@@ -1,0 +1,15 @@
+{% block input %}
+    <input 
+        class="integer-input"
+        id="{% raw %}{{ id }}{% endraw %}"
+        name="{% raw %}{{ id }}{% endraw %}"
+        type="text"
+        ng-model="model"
+        ensure-integer
+    >
+{% endblock %}
+{% block errors %}
+    <div class="error-block field-error" ng-show="form[id].$invalid">
+        <p class="error" ><span translate>A valid integer is required.</span></p>
+    </div>
+{% endblock %}

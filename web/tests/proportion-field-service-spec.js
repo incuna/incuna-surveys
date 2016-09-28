@@ -1,17 +1,25 @@
-describe('proportion-field service', function() {
+describe('proportion-field service', function () {
     beforeEach(function () {
 
         angular.mock.module('incuna-surveys.proportion-field');
 
-        inject(function(proportionField) {
+        inject(function (proportionField) {
             this.proportionField = proportionField;
         });
 
         this.fields = [
-            {label: 'One', required: false, id: '1-0'},
-            {label: 'Two', required: false, id: '1-1'},
-            {label: 'Three', required: false, id: '1-2'},
-            {label: 'Four', required: false, id: '1-3'}
+            {
+                label: 'One', required: false, id: '1-0'
+            },
+            {
+                label: 'Two', required: false, id: '1-1'
+            },
+            {
+                label: 'Three', required: false, id: '1-2'
+            },
+            {
+                label: 'Four', required: false, id: '1-3'
+            }
         ];
 
         this.values = {
@@ -23,8 +31,8 @@ describe('proportion-field service', function() {
 
     });
 
-    describe('buildFields', function() {
-        it('should return fields', function() {
+    describe('buildFields', function () {
+        it('should return fields', function () {
             const choices = ['One', 'Two', 'Three', 'Four'];
             const defaults = {
                 required: false
@@ -32,17 +40,17 @@ describe('proportion-field service', function() {
             const autoId = 1;
             const fields = this.proportionField.buildFields(choices, defaults, autoId);
             expect(fields).toEqual(this.fields);
-        }); 
+        });
     });
 
-    describe('calculateTotal', function() {
+    describe('calculateTotal', function () {
 
-        it('should sum the values', function() {
+        it('should sum the values', function () {
             const total = this.proportionField.calculateTotal(this.values);
             expect(total).toEqual(100);
         });
 
-        it('should handle non integers', function() {
+        it('should handle non integers', function () {
             const values = {
                 0: 'not a number',
                 1: 20,
@@ -54,7 +62,7 @@ describe('proportion-field service', function() {
             expect(total).toEqual(90);
         });
 
-        it('should handle null and undefined', function() {
+        it('should handle null and undefined', function () {
             const values = {
                 0: 10,
                 1: undefined,
@@ -66,7 +74,7 @@ describe('proportion-field service', function() {
             expect(total).toEqual(50);
         });
 
-        it('should handle no integers', function() {
+        it('should handle no integers', function () {
             const values = {
                 0: 'not a number',
                 1: 'not a number',
@@ -77,57 +85,104 @@ describe('proportion-field service', function() {
             const total = this.proportionField.calculateTotal(values);
             expect(total).toEqual(0);
         });
-        
 
-        it('should handle empty values', function() {
+        it('should handle empty values', function () {
             const values = {};
 
             const total = this.proportionField.calculateTotal(values);
             expect(total).toEqual(0);
         });
 
+        it('should handle undefined', function () {
+            const total = this.proportionField.calculateTotal(undefined);
+            expect(total).toEqual(0);
+        });
+
+        it('should handle null', function () {
+            const total = this.proportionField.calculateTotal(null);
+            expect(total).toEqual(0);
+        });
+
     });
 
-    describe('addPercentages', function() {
-        it('should add percentages to the fields based on the values and total', function() {
+    describe('addPercentages', function () {
+        it('should add percentages to the fields based on the values and total', function () {
             this.proportionField.addPercentages(this.fields, this.values, 100);
             const expected = [
-                {label: 'One', required: false, id: '1-0', percentage: 10},
-                {label: 'Two', required: false, id: '1-1', percentage: 20},
-                {label: 'Three', required: false, id: '1-2', percentage: 40},
-                {label: 'Four', required: false, id: '1-3', percentage: 30}
+                {
+                    label: 'One', required: false, id: '1-0', percentage: 10
+                },
+                {
+                    label: 'Two', required: false, id: '1-1', percentage: 20
+                },
+                {
+                    label: 'Three', required: false, id: '1-2', percentage: 40
+                },
+                {
+                    label: 'Four', required: false, id: '1-3', percentage: 30
+                }
             ]
             expect(this.fields).toEqual(expected);
         });
     });
 
-    describe('addErrors', function() {
-        it('should add errors to the fields based on the errors', function() {
+    describe('addErrors', function () {
+        it('should add errors to the fields based on the errors', function () {
             const errors = {
-                "1": ["A valid integer is required."],
-                "3": ["A valid integer is required."]
+                1: ['A valid integer is required.'],
+                3: ['A valid integer is required.']
             };
-            
+
             this.proportionField.addErrors(this.fields, errors);
             const expected = [
-                {label: 'One', required: false, id: '1-0', errors: undefined},
-                {label: 'Two', required: false, id: '1-1', errors: errors['1']},
-                {label: 'Three', required: false, id: '1-2', errors: undefined},
-                {label: 'Four', required: false, id: '1-3', errors: errors['3']}
+                {
+                    label: 'One', required: false, id: '1-0', errors: undefined
+                },
+                {
+                    label: 'Two', required: false, id: '1-1', errors: errors['1']
+                },
+                {
+                    label: 'Three', required: false, id: '1-2', errors: undefined
+                },
+                {
+                    label: 'Four', required: false, id: '1-3', errors: errors['3']
+                }
             ]
             expect(this.fields).toEqual(expected);
         });
 
-        it('should clear old errors from fields', function() {
-            const errors = ["A valid integer is required."];
+        it('should clear old errors from fields', function () {
+            const errors = ['A valid integer is required.'];
             const fields = [
-                {label: 'One', required: false, id: '1-0', errors: undefined},
-                {label: 'Two', required: false, id: '1-1', errors: errors},
-                {label: 'Three', required: false, id: '1-2', errors: undefined},
-                {label: 'Four', required: false, id: '1-3', errors: errors}
-            ]
+                {
+                    label: 'One', required: false, id: '1-0', errors: undefined
+                },
+                {
+                    label: 'Two', required: false, id: '1-1', errors: errors
+                },
+                {
+                    label: 'Three', required: false, id: '1-2', errors: undefined
+                },
+                {
+                    label: 'Four', required: false, id: '1-3', errors: errors
+                }
+            ];
+            const expected = [
+                {
+                    label: 'One', required: false, id: '1-0', errors: undefined
+                },
+                {
+                    label: 'Two', required: false, id: '1-1', errors: undefined
+                },
+                {
+                    label: 'Three', required: false, id: '1-2', errors: undefined
+                },
+                {
+                    label: 'Four', required: false, id: '1-3', errors: undefined
+                }
+            ];
             this.proportionField.addErrors(fields, []);
-            expect(this.fields).toEqual(this.fields);
+            expect(fields).toEqual(expected);
         });
     });
 

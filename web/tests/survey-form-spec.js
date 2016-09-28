@@ -1,8 +1,11 @@
-describe('surveysForm directive', function() {
-    const getResponse = {any: 'Any'};
-    const postData = {other: 'Other'};
-    const postErrors = {some: 'Error'};
-    const fields = {thing: 'Thing'}; 
+describe('surveysForm directive', function () {
+    const postErrors = {
+        some: 'Error'
+    };
+    const fields = {
+        thing: 'Thing'
+    };
+
     const formUrl = 'http://from-url';
     const responseUrl = 'http://response-url';
 
@@ -20,7 +23,7 @@ describe('surveysForm directive', function() {
         angular.mock.module('incuna-surveys-form.templates');
         angular.mock.module('incuna-surveys.form-directive');
 
-        inject(function(_$rootScope_, _$compile_, _$q_, _API_, _FieldsParser_) {
+        inject(function (_$rootScope_, _$compile_, _$q_, _API_, _FieldsParser_) {
             const $rootScope = _$rootScope_;
             this.$compile = _$compile_;
             this.$q = _$q_;
@@ -39,74 +42,69 @@ describe('surveysForm directive', function() {
         const formDefer = this.$q.defer();
         this.formResponse = fixture.load('forms/pk/get.json').OK.response_data;
         formDefer.resolve(this.formResponse);
-        spyOn(this.API, 'getForm').and.returnValue(formDefer.promise);
+        spyOn(this.API, 'get').and.returnValue(formDefer.promise);
 
-        const responseDefer = this.$q.defer();
-        responseDefer.resolve(getResponse);
-        spyOn(this.API, 'get').and.returnValue(responseDefer.promise);
-
-      
         spyOn(this.FieldsParser, 'parseFields').and.returnValue(fields);
     });
 
-    describe('initialisation', function() {
-        beforeEach(function() {
+    describe('initialisation', function () {
+        beforeEach(function () {
             this.compileDirective(this.tpl);
         });
 
-        it('should produce 1 form and a button', function() {
+        it('should produce 1 form and a button', function () {
             expect(this.elm.find('form').length).toEqual(1);
             expect(this.elm.find('button').length).toEqual(1);
         });
 
-        it('should include the formUrl and responseUrl in the scope', function() {
+        it('should include the formUrl and responseUrl in the scope', function () {
             const isolated = this.elm.isolateScope()
             expect(isolated.formUrl).toBe(formUrl);
             expect(isolated.responseUrl).toBe(responseUrl);
         });
 
-        it('should call API.getForm with the formUrl', function() {
-            expect(this.API.getForm).toHaveBeenCalledWith(formUrl);
+        it('should call API.get with the formUrl', function () {
+            expect(this.API.get).toHaveBeenCalledWith(formUrl);
         });
 
-        it('should add the getForm response to the scope', function() {
+        it('should add the get response to the scope', function () {
             const isolated = this.elm.isolateScope()
             expect(isolated.form).toBe(this.formResponse);
         });
 
-        it('should call API.get with the responseUrl', function() {
+        it('should call API.get with the responseUrl', function () {
             expect(this.API.get).toHaveBeenCalledWith(responseUrl);
         });
 
-        it('should add the API.get response to scope.model', function() {
+        it('should add the API.get response to scope.model', function () {
             const isolated = this.elm.isolateScope()
-            expect(isolated.model).toBe(getResponse);
+            expect(isolated.model).toBe(this.formResponse);
         });
 
-        it('should call FieldsetParser.parseFields with API.getForm response', function() {
+        it('should call FieldsetParser.parseFields with API.get response', function () {
             expect(this.FieldsParser.parseFields).toHaveBeenCalledWith(this.formResponse);
         });
 
-        it('should add the FieldsetParser.parseFields response to scope.fields', function() {
+        it('should add the FieldsetParser.parseFields response to scope.fields', function () {
             const isolated = this.elm.isolateScope()
             expect(isolated.fields).toBe(fields);
         });
     });
 
-    describe('submit', function() {
-        beforeEach(function() {
+    describe('submit', function () {
+        beforeEach(function () {
             this.compileDirective(this.tpl);
             spyOn(this.API, 'post').and.returnValue(this.$q.defer().promise);
 
             this.elm.isolateScope().submit();
         });
 
-        it('should API.post with the responseUrl and the post data', function() {
-            expect(this.API.post).toHaveBeenCalledWith(responseUrl, getResponse)
+        it('should API.post with the responseUrl and the post data', function () {
+            expect(this.API.post).toHaveBeenCalledWith(responseUrl, this.formResponse)
         });
     });
-    describe('submit', function() {
-        beforeEach(function() {
+    describe('submit', function () {
+        beforeEach(function () {
             const tpl = '<div surveys-form form-url="formUrl" response-url="responseUrl" on-success="mySubmit()" on-failure="myFailure()"></div>';
             this.scope.myFailure = jasmine.createSpy('myFailure');
             this.scope.mySubmit = jasmine.createSpy('mySubmit');
@@ -115,50 +113,53 @@ describe('surveysForm directive', function() {
 
         });
 
-        describe('success callback', function() {
-            beforeEach(function() {
+        describe('success callback', function () {
+            beforeEach(function () {
                 const responseDefer = this.$q.defer();
-                responseDefer.resolve(getResponse);
+                responseDefer.resolve(this.formResponse);
                 spyOn(this.API, 'post').and.returnValue(responseDefer.promise);
                 spyOn(this.FieldsParser, 'addFieldErrors');
             });
 
-            it('should be defiend', function() {
+            it('should be defiend', function () {
                 expect(this.isolated.onSuccess).toBeDefined();
             });
 
-            it('should be called if the post succeeds', function() {
+            it('should be called if the post succeeds', function () {
                 this.isolated.submit();
+                expect(this.API.post).toHaveBeenCalledWith(responseUrl, this.formResponse)
                 this.scope.$digest();
                 expect(this.scope.mySubmit).toHaveBeenCalledWith();
             });
 
-            it('should call addFieldErrors if the post succeeds', function() {
+            it('should call addFieldErrors if the post succeeds', function () {
                 this.isolated.submit();
                 this.scope.$digest();
                 expect(this.FieldsParser.addFieldErrors).toHaveBeenCalledWith(fields, {});
             });
         });
 
-        describe('failure', function() {
-            beforeEach(function() {
+        describe('failure', function () {
+            beforeEach(function () {
                 const responseDefer = this.$q.defer();
-                responseDefer.reject({data: postErrors});
+                responseDefer.reject({
+                    data: postErrors
+                });
                 spyOn(this.API, 'post').and.returnValue(responseDefer.promise);
                 spyOn(this.FieldsParser, 'addFieldErrors');
             });
 
-            it('callback should be defiend', function() {
+            it('callback should be defiend', function () {
                 expect(this.isolated.onFailure).toBeDefined();
             });
 
-            it('should call addFieldErrors if the post fails', function() {
+            it('should call addFieldErrors if the post fails', function () {
                 this.isolated.submit();
                 this.scope.$digest();
                 expect(this.FieldsParser.addFieldErrors).toHaveBeenCalledWith(fields, postErrors);
             });
 
-            it('callback be called if the post fails', function() {
+            it('callback be called if the post fails', function () {
                 this.isolated.submit();
                 this.scope.$digest();
                 expect(this.scope.myFailure).toHaveBeenCalledWith();
@@ -166,5 +167,5 @@ describe('surveysForm directive', function() {
         });
 
     });
-    
+
 });

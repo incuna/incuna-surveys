@@ -1,0 +1,38 @@
+<div class="proportion">
+    {% block title %}<h4 class="title" ng-bind="title"></h4>{% endblock %}
+    {% block total-bar %}
+        <span class="total-bar">
+            {% raw %}
+                <span class="bar-portion neutral-{{ $index }}" ng-repeat="field in fields" style="width: {{ field.percentage }}%"></span>
+            {% endraw %}
+        </span>
+    {% endblock %}
+    {% block total %}
+        <span class="total">
+            Total: <span class="total-figure" ng-bind="total"></span>
+        </span>
+    {% endblock %}
+    {% block fields %}
+    <div class="fields-wrapper">
+        <div class="proportion-field" ng-repeat="field in fields">
+            {% block field %}
+            <div drf-form-field="field" class="proportion-field-inner {% raw %}neutral-{{ $index }}{% endraw %}">
+                {% block input %}
+                    <input
+                        class="proportion-input"
+                        id="{% raw %}{{ field.id }}{% endraw %}"
+                        type="text"
+                        ng-model="model[$index]"
+                        >
+                {% endblock %}
+                {% block percentage %}
+                <span class="percentage" ng-class="{ filled: field.percentage > 0 }">
+                    <span class="number" ng-bind="field.percentage|number:0"></span>%
+                </span>
+                {% endblock %}
+            </div>
+            {% endblock %}
+        </div>
+    </div>
+    {% endblock %}
+</div>

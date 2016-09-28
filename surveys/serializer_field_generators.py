@@ -1,3 +1,5 @@
+from functools import partial
+
 from django.core import validators
 from rest_framework import serializers
 
@@ -15,8 +17,9 @@ class MultipleIntegerSerializer(serializers.Serializer):
         Dynamically generate the fields from the choices ((key, label), ...).
         Returns a dictionary of {key: IntegerField(label=choice)}.
         """
+        IntegerField = partial(serializers.IntegerField, required=False, allow_null=True)
         return {
-            str(key): serializers.IntegerField(label=label, required=False)
+            str(key): IntegerField(label=label)
             for key, label in self.choices
         }
 

@@ -1,0 +1,8 @@
+<div drf-form-field="to.fieldOptions" class="radio">
+    <div ng-repeat="choice in to.choices" class="checkable radio">
+        {% raw %}
+        <input class="radio-input" type="radio" id="{{ to.autoId }}-{{ $index }}" ng-value="$index" ng-model="model[to.fieldSetId][options.key]" ng-required="to.fieldOptions.required">
+        <label class="radio-label" for="{{ to.autoId }}-{{ $index }}" ng-bind="choice"></label>
+        {% endraw %}
+    </div>
+</div>

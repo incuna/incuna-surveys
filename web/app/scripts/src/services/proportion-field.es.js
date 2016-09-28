@@ -30,11 +30,11 @@ module.service(moduleProperties.componentName, [
         };
 
         this.calculateTotal = function (values) {
+            if (!values) {
+                return 0;
+            }
             return Object.keys(values).reduce((total, key) => {
-                if (!values[key]) {
-                    return total;
-                }
-                let value = values[key] && parseInt(values[key], 10);
+                const value = parseInt(values[key], 10);
                 if (Number.isNaN(value)) {
                     return total;
                 }
@@ -46,7 +46,7 @@ module.service(moduleProperties.componentName, [
             fields.forEach((options, key) => {
                 const value = parseInt(values[key], 10) || 0;
                 options.percentage = value ? value / total * 100 : 0;
-            })
+            });
         };
 
         this.addErrors = function (fields, errors) {

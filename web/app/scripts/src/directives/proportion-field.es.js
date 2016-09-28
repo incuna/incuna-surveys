@@ -1,13 +1,15 @@
 import { angular } from '../libraries';
 
 import ProportionField from '../services/proportion-field';
+import IntegerFielddDirective from 'integer-field';
 
 const moduleProperties = {
     moduleName: 'incuna-surveys.proportion-field-directive'
 };
 
 const module = angular.module(moduleProperties.moduleName, [
-    ProportionField.moduleName
+    ProportionField.moduleName,
+    IntegerFielddDirective.moduleName
 ]);
 
 module.directive('proportionField', [
@@ -16,6 +18,7 @@ module.directive('proportionField', [
         return {
             restrict: 'A',
             scope: {
+                form: '=',
                 model: '=',
                 options: '=proportionField'
             },
@@ -44,6 +47,9 @@ module.directive('proportionField', [
                 });
 
                 scope.$watch('model', (values) => {
+                    if (values === null) {
+                        scope.model = {};
+                    }
                     scope.total = ProportionField.calculateTotal(values);
                     if (values) {
                         ProportionField.addPercentages(scope.fields, values, scope.total);

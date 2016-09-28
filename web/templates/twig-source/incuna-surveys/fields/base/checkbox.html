@@ -1,0 +1,8 @@
+<div drf-form-field="to.fieldOptions" class="checkbox">
+    <div ng-repeat="choice in to.choices" class="checkable checkbox">
+        {% raw %}
+        <input class="checkbox-input" id="{{ to.autoId }}-{{ $index }}" type="checkbox" checklist-model="model[to.fieldSetId][options.key]" checklist-value="$index">
+        <label class="checkbox-label" for="{{ to.autoId }}-{{ $index }}" ng-bind="choice"></label>
+        {% endraw %}
+    </div>
+</div>

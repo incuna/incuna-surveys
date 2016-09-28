@@ -57,14 +57,16 @@ _module.service(moduleProperties.componentName, [function () {
     };
 
     this.addFieldErrors = function (fields, errors) {
-        fields.forEach(function (fieldset) {
-            var key = fieldset.templateOptions.id;
-            var fieldsetErrors = errors[key];
-            fieldset.fieldGroup.forEach(function (field) {
-                var fieldError = fieldsetErrors && fieldsetErrors[field.key];
-                field.templateOptions.fieldOptions.errors = fieldError;
+        if (fields && errors) {
+            fields.forEach(function (fieldset) {
+                var key = fieldset.templateOptions.id;
+                var fieldsetErrors = errors[key];
+                fieldset.fieldGroup.forEach(function (field) {
+                    var fieldError = fieldsetErrors && fieldsetErrors[field.key];
+                    field.templateOptions.fieldOptions.errors = fieldError;
+                });
             });
-        });
+        }
     };
 }]);
 
