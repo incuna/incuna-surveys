@@ -9,6 +9,7 @@ This project uses Semantic Versioning (2.0).
 * Add proportion / field.
 * Handle blank and invalid integers.
 * Set up base templates that can be extended locally so blocks can be overwritten
+* Modify proportion templates for styling
 
 ### 0.10.0
 * Amend percentage calculation to include value of 0
