@@ -12,7 +12,7 @@ angular.module('incuna-surveys-fields.templates', []).run(['$templateCache', fun
 
 
   $templateCache.put('templates/incuna-surveys/fields/number.html',
-    "<div drf-form-field=to.fieldOptions class=\"number {{ model[to.fieldSetId][options.key] ? 'not-empty' : '' }}\" field-id=to.autoId><input type=text class=number-input id=\"{{ to.autoId }}\" ng-model=model[to.fieldSetId][options.key]></div>"
+    "<div drf-form-field=to.fieldOptions class=\"number {{ model[to.fieldSetId][options.key] ? 'not-empty' : '' }}\" field-id=to.autoId><span integer-field model=model[to.fieldSetId][options.key] id=to.autoId form=form></span></div>"
   );
 
 
@@ -22,7 +22,7 @@ angular.module('incuna-surveys-fields.templates', []).run(['$templateCache', fun
 
 
   $templateCache.put('templates/incuna-surveys/fields/proportion.html',
-    "<div proportion-field=to model=model[to.fieldSetId][options.key]></div>"
+    "<div proportion-field=to form=form model=model[to.fieldSetId][options.key]></div>"
   );
 
 

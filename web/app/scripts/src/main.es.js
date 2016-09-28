@@ -5,6 +5,7 @@ import FieldsConfig from 'services/fields-config';
 import SurveysFormDirective from 'directives/form';
 import CalculatePercentageDirective from 'directives/calculate-percentage';
 import ProportionFieldDirective from 'directives/proportion-field';
+import IntegerFielddDirective from 'directives/integer-field';
 
 angular.module('incuna-surveys', [
     'drf-form-field',
@@ -14,5 +15,6 @@ angular.module('incuna-surveys', [
     API.moduleName,
     SurveysFormDirective.moduleName,
     CalculatePercentageDirective.moduleName,
-    ProportionFieldDirective.moduleName
+    ProportionFieldDirective.moduleName,
+    IntegerFielddDirective.moduleName
 ]);

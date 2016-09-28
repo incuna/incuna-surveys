@@ -5,7 +5,9 @@
     <div ng-repeat="field in fields">
         
         <div drf-form-field="field" class="proportion">
-            <input class="proportion-input" id="{{ field.id }}" type="text" ng-model="model[$index]">
+            
+                <span integer-field model="model[$index]" id="field.id" form="form"></span>
+            
             <span class="percentage" ng-bind="field.percentage|number:0"></span>%
         </div>
         

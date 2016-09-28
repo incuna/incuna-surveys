@@ -5,7 +5,9 @@
     <div ng-repeat="field in fields">
         {% block field %}
         <div drf-form-field="field" class="proportion">
-            {% block input %}<input class="proportion-input" id="{% raw %}{{ field.id }}{% endraw %}" type="text" ng-model="model[$index]">{% endblock %}
+            {% block input %}
+                <span integer-field model="model[$index]" id="field.id" form="form"></span>
+            {% endblock %}
             {% block percentage %}<span class="percentage" ng-bind="field.percentage|number:0"></span>%{% endblock %}
         </div>
         {% endblock %}

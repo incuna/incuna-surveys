@@ -1,0 +1,15 @@
+
+    <input 
+        class="integer-input"
+        id="{{ id }}"
+        name="{{ id }}"
+        type="text"
+        ng-model="model"
+        ensure-integer
+    >
+
+
+    <div class="error-block field-error" ng-show="form[id].$invalid">
+        <p class="error" ><span translate>A valid integer is required.</span></p>
+    </div>
+
