@@ -1,0 +1,16 @@
+<div class="proportion">
+    {% block title %}<h4 ng-bind="title"></h4>{% endblock %}
+    {% block total %}Total: <span class="total" ng-bind="total"></span>{% endblock %}
+    {% block fields %}
+    <div ng-repeat="field in fields">
+        {% block field %}
+        <div drf-form-field="field" class="proportion">
+            {% block input %}
+                <span integer-field model="model[$index]" id="field.id" form="form"></span>
+            {% endblock %}
+            {% block percentage %}<span class="percentage" ng-bind="field.percentage|number:0"></span>%{% endblock %}
+        </div>
+        {% endblock %}
+    </div>
+    {% endblock %}
+</div>
