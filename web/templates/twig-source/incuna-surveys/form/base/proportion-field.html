@@ -1,16 +1,35 @@
-<div class="proportion">
-    {% block title %}<h4 ng-bind="title"></h4>{% endblock %}
-    {% block total %}Total: <span class="total" ng-bind="total"></span>{% endblock %}
-    {% block fields %}
-    <div ng-repeat="field in fields">
-        {% block field %}
-        <div drf-form-field="field" class="proportion">
-            {% block input %}
-                <span integer-field model="model[$index]" id="field.id" form="form"></span>
+{% block title %}<h4 class="title" ng-bind="title"></h4>{% endblock %}
+{% block total-bar %}
+    <span class="total-bar">
+        <span class="bar-portion {% block bar-portion-class %}{% endblock %}" ng-repeat="field in fields" style="width: {% raw %}{{ field.percentage }}%{% endraw %}"></span>
+    </span>
+{% endblock %}
+{% block total %}
+    <span class="total">
+        Total: <span class="total-figure" ng-bind="total"></span>
+    </span>
+{% endblock %}
+{% block fields %}
+    <div class="fields-wrapper">
+        <div class="proportion-field" ng-repeat="field in fields">
+            {% block field %}
+                <div
+                    drf-form-field="field"
+                    class="
+                        proportion-field-inner
+                        {% block field-class %}{% endblock %}
+                        {% raw %}{{ form[id].$invalid ? 'has-error' : '' }}{% endraw %}"
+                        >
+                    {% block input %}
+                        <div class="proportion-input" integer-field model="model[$index]" id="field.id" form="form"></div>
+                    {% endblock %}
+                    {% block percentage %}
+                        <span class="percentage" ng-class="{ filled: field.percentage > 0 }">
+                            <span class="number" ng-bind="field.percentage|number:0"></span>%
+                        </span>
+                    {% endblock %}
+                </div>
             {% endblock %}
-            {% block percentage %}<span class="percentage" ng-bind="field.percentage|number:0"></span>%{% endblock %}
         </div>
-        {% endblock %}
     </div>
-    {% endblock %}
-</div>
+{% endblock %}
