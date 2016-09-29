@@ -13,14 +13,15 @@
     <div class="fields-wrapper">
         <div class="proportion-field" ng-repeat="field in fields">
             {% block field %}
-                <div drf-form-field="field" class="proportion-field-inner {% block field-class %}{% endblock %}">
+                <div
+                    drf-form-field="field"
+                    class="
+                        proportion-field-inner
+                        {% block field-class %}{% endblock %}
+                        {% raw %}{{ form[id].$invalid ? 'has-error' : '' }}{% endraw %}"
+                        >
                     {% block input %}
-                        <input
-                            class="proportion-input"
-                            id="{% raw %}{{ field.id }}{% endraw %}"
-                            type="text"
-                            ng-model="model[$index]"
-                            >
+                        <div class="proportion-input" integer-field model="model[$index]" id="field.id" form="form"></div>
                     {% endblock %}
                     {% block percentage %}
                         <span class="percentage" ng-class="{ filled: field.percentage > 0 }">
