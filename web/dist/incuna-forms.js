@@ -330,7 +330,7 @@ angular.module('incuna-surveys-form.templates', []).run(['$templateCache', funct
 
 
   $templateCache.put('templates/incuna-surveys/form/base/proportion-field.html',
-    "<h4 class=title ng-bind=title></h4><span class=total-bar><span class=bar-portion ng-repeat=\"field in fields\" style=\"width: {{ field.percentage }}%\"></span> </span><span class=total>Total: <span class=total-figure ng-bind=total></span></span><div class=fields-wrapper><div class=proportion-field ng-repeat=\"field in fields\"><div drf-form-field=field class=proportion-field-inner><div class=proportion-input integer-field model=model[$index] id=field.id form=form></div><span class=percentage ng-class=\"{ filled: field.percentage > 0 }\"><span class=number ng-bind=field.percentage|number:0></span>%</span></div></div></div>"
+    "<h4 class=title ng-bind=title></h4><span class=total-bar><span class=bar-portion ng-repeat=\"field in fields\" style=\"width: {{ field.percentage }}%\"></span> </span><span class=total>Total: <span class=total-figure ng-bind=total></span></span><div class=fields-wrapper><div class=proportion-field ng-repeat=\"field in fields\"><div drf-form-field=field class=\"proportion-field-inner {{ form[id].$invalid ? 'has-error' : '' }}\"><div class=proportion-input integer-field model=model[$index] id=field.id form=form></div><span class=percentage ng-class=\"{ filled: field.percentage > 0 }\"><span class=number ng-bind=field.percentage|number:0></span>%</span></div></div></div>"
   );
 
 
@@ -350,7 +350,7 @@ angular.module('incuna-surveys-form.templates', []).run(['$templateCache', funct
 
 
   $templateCache.put('templates/incuna-surveys/form/proportion-field.html',
-    "<h4 class=title ng-bind=title></h4><span class=total-bar><span class=bar-portion ng-repeat=\"field in fields\" style=\"width: {{ field.percentage }}%\"></span> </span><span class=total>Total: <span class=total-figure ng-bind=total></span></span><div class=fields-wrapper><div class=proportion-field ng-repeat=\"field in fields\"><div drf-form-field=field class=proportion-field-inner><div class=proportion-input integer-field model=model[$index] id=field.id form=form></div><span class=percentage ng-class=\"{ filled: field.percentage > 0 }\"><span class=number ng-bind=field.percentage|number:0></span>%</span></div></div></div>"
+    "<h4 class=title ng-bind=title></h4><span class=total-bar><span class=bar-portion ng-repeat=\"field in fields\" style=\"width: {{ field.percentage }}%\"></span> </span><span class=total>Total: <span class=total-figure ng-bind=total></span></span><div class=fields-wrapper><div class=proportion-field ng-repeat=\"field in fields\"><div drf-form-field=field class=\"proportion-field-inner {{ form[id].$invalid ? 'has-error' : '' }}\"><div class=proportion-input integer-field model=model[$index] id=field.id form=form></div><span class=percentage ng-class=\"{ filled: field.percentage > 0 }\"><span class=number ng-bind=field.percentage|number:0></span>%</span></div></div></div>"
   );
 
 

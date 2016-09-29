@@ -13,7 +13,13 @@
     <div class="fields-wrapper">
         <div class="proportion-field" ng-repeat="field in fields">
             
-                <div drf-form-field="field" class="proportion-field-inner ">
+                <div
+                    drf-form-field="field"
+                    class="
+                        proportion-field-inner
+                        
+                        {{ form[id].$invalid ? 'has-error' : '' }}"
+                        >
                     
                         <div class="proportion-input" integer-field model="model[$index]" id="field.id" form="form"></div>
                     
