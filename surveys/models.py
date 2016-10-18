@@ -6,12 +6,13 @@ from django.db import models
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from orderable.models import Orderable
+from parler.models import TranslatedFields, TranslatableModelMixin
 from rest_framework.reverse import reverse as drf_reverse
 
 survey_config = apps.get_app_config('surveys')
 
 
-class SurveyField(models.Model):
+class SurveyField(TranslatableModelMixin, models.Model):
     """
     A single question that will appear as part of a form displayed to the user.
 
@@ -24,21 +25,26 @@ class SurveyField(models.Model):
     """
     FIELD_TYPE_CHOICES = survey_config.field_type_choices
 
-    name = models.CharField(max_length=255, unique=True)
-    help_text = models.CharField(max_length=255, blank=True)
+    translations = TranslatedFields(
+        name=models.CharField(max_length=255, unique=True),
+        answers=ArrayField(
+            base_field=models.CharField(max_length=255),
+            default=[],
+            help_text=_(
+                'For choice fields only. Enter one or more answers, '
+                'separated by newlines.'
+            ),
+            blank=True,
+        ),
+        help_text=models.CharField(max_length=255, blank=True)
+    )
+
     field_type = models.CharField(
         max_length=255,
         default=FIELD_TYPE_CHOICES[0][0],
         choices=FIELD_TYPE_CHOICES,
     )
-    answers = ArrayField(
-        base_field=models.CharField(max_length=255),
-        default=[],
-        help_text=_(
-            'For choice fields only. Enter one or more answers, separated by newlines.'
-        ),
-        blank=True,
-    )
+
     required = models.BooleanField(default=False)
 
     def __str__(self):
@@ -58,10 +64,12 @@ class SurveyField(models.Model):
         return generator_class().generate_field(self)
 
 
-class SurveyFieldset(models.Model):
+class SurveyFieldset(TranslatableModelMixin, models.Model):
     """A group of questions that make up a complete form."""
-    name = models.CharField(max_length=255, unique=True)
-    description = models.TextField(blank=True)
+    translations = TranslatedFields(
+        name=models.CharField(max_length=255, unique=True),
+        description=models.TextField(blank=True),
+    )
     fields = models.ManyToManyField(
         SurveyField,
         related_name='fieldsets',
@@ -75,10 +83,12 @@ class SurveyFieldset(models.Model):
         return self.fields.order_by('surveyfieldordering__sort_order')
 
 
-class Survey(models.Model):
+class Survey(TranslatableModelMixin, models.Model):
     """An entire survey form.  Contains one or more ordered fieldsets."""
-    name = models.CharField(max_length=255, unique=True)
-    description = models.TextField(blank=True)
+    translations = TranslatedFields(
+        name=models.CharField(max_length=255, unique=True),
+        description=models.TextField(blank=True),
+    )
     fieldsets = models.ManyToManyField(
         SurveyFieldset,
         related_name='surveys',
