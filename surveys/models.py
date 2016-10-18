@@ -6,13 +6,13 @@ from django.db import models
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from orderable.models import Orderable
-from parler.models import TranslatedFields, TranslatableModelMixin
+from parler.models import TranslatableModel, TranslatedFields
 from rest_framework.reverse import reverse as drf_reverse
 
 survey_config = apps.get_app_config('surveys')
 
 
-class SurveyField(TranslatableModelMixin, models.Model):
+class SurveyField(TranslatableModel):
     """
     A single question that will appear as part of a form displayed to the user.
 
@@ -64,7 +64,7 @@ class SurveyField(TranslatableModelMixin, models.Model):
         return generator_class().generate_field(self)
 
 
-class SurveyFieldset(TranslatableModelMixin, models.Model):
+class SurveyFieldset(TranslatableModel):
     """A group of questions that make up a complete form."""
     translations = TranslatedFields(
         name=models.CharField(max_length=255, unique=True),
@@ -83,7 +83,7 @@ class SurveyFieldset(TranslatableModelMixin, models.Model):
         return self.fields.order_by('surveyfieldordering__sort_order')
 
 
-class Survey(TranslatableModelMixin, models.Model):
+class Survey(TranslatableModel):
     """An entire survey form.  Contains one or more ordered fieldsets."""
     translations = TranslatedFields(
         name=models.CharField(max_length=255, unique=True),
