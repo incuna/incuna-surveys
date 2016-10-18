@@ -2,6 +2,20 @@
 
 This project uses Semantic Versioning (2.0).
 
+### Upcoming changes
+
+* Added translation to the following model fields:
+    - Survey
+        - name
+        - description        
+    - SurveyField
+        - name
+        - help_text
+        - answers
+    - SurveyFieldset
+        - name
+        - description
+
 ### 0.12.0
 
 * Add missing translate

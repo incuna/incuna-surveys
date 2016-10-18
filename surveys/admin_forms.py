@@ -1,10 +1,10 @@
-from django.forms import ModelForm
+from parler.forms import TranslatableModelForm
 
 from .fields import ArrayFieldTextarea
 from .models import SurveyField
 
 
-class SurveyFieldForm(ModelForm):
+class SurveyFieldForm(TranslatableModelForm):
     class Meta:
         model = SurveyField
         fields = (

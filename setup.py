@@ -8,6 +8,7 @@ setup(
     include_package_data=True,
     install_requires=[
         'django-orderable==4.0.4',
+        'django-parler==1.6.5',
     ],
     description=(
         'Allows the creation of custom questionnaires and surveys via the Django admin.'

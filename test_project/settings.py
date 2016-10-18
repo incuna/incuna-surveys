@@ -1,7 +1,7 @@
 import os
 
 import dj_database_url
-
+from django.utils.translation import ugettext_lazy as _
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 API_DESCRIPTION_DIR = os.path.join(BASE_DIR, 'api-description')
@@ -25,6 +25,7 @@ INSTALLED_APPS = (
     'surveys.tests',
 
     'orderable',
+    'parler',
     'rest_framework',
 
     'corsheaders',
@@ -45,6 +46,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
 )
 
 TEMPLATES = [
@@ -70,3 +72,19 @@ TEST_RUNNER = 'test_project.test_runner.Runner'
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
+
+LANGUAGE_CODE = 'en'
+
+LANGUAGES = (
+    ('en', _("English")),
+    ('fr', _("French")),
+    ('es', _("Spanish")),
+)
+
+PARLER_LANGUAGES = {
+    None: (
+        {'code': 'en'},
+        {'code': 'fr'},
+        {'code': 'es'},
+    ),
+}

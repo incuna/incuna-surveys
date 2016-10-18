@@ -1,11 +1,11 @@
-from django.contrib import admin
 from orderable.admin import OrderableAdmin, OrderableTabularInline
+from parler.admin import TranslatableAdmin
 
 from . import models
 from .admin_forms import SurveyFieldForm
 
 
-class SurveyFieldAdmin(admin.ModelAdmin):
+class SurveyFieldAdmin(TranslatableAdmin):
     list_display = ('name',)
     form = SurveyFieldForm
     list_filter = ('fieldsets',)
@@ -18,7 +18,7 @@ class SurveyFieldOrderingInline(OrderableTabularInline):
     min_num = 1
 
 
-class SurveyFieldsetAdmin(admin.ModelAdmin):
+class SurveyFieldsetAdmin(TranslatableAdmin):
     inlines = [SurveyFieldOrderingInline]
     list_display = ('name',)
     list_filter = ('surveys',)
@@ -35,7 +35,7 @@ class SurveyFieldsetOrderingInline(OrderableTabularInline):
     min_num = 1
 
 
-class SurveyAdmin(admin.ModelAdmin):
+class SurveyAdmin(TranslatableAdmin):
     inlines = [SurveyFieldsetOrderingInline]
     list_display = ('name',)
 
