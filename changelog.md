@@ -2,6 +2,11 @@
 
 This project uses Semantic Versioning (2.0).
 
+### 0.12.0
+
+* Add missing translate
+* Hide submit button until form is set
+
 ### 0.11.0
 * bugfix: Remove getForm() api method and dry with api.get
 * bugfix: Avoid fatal error when api promise fails but there are no errors
