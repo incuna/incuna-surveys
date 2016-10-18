@@ -5,5 +5,5 @@
         <h2 ng-bind="form.description" class="form-desc"></h2>
     </header>
     <formly-form class="form-body" model="model" fields="fields"></formly-form>
-    <button class="button-submit" type="submit">Submit</button>
+    <button ng-show="form" class="button-submit" type="submit" translate>Submit</button>
 </form>
