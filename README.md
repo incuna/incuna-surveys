@@ -40,6 +40,9 @@ admin.site.register(models.SurveyFieldsetOrdering, SurveyFieldsetOrderingAdmin)
 admin.site.register(models.UserResponse, UserResponseAdmin)
 ```
 
+Please follow the instructions for adding languages to the projects using the parler documentation
+parler: https://github.com/django-parler/django-parler
+
 # Development
 
 ## Frontend
