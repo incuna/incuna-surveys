@@ -2,7 +2,7 @@
 
 This project uses Semantic Versioning (2.0).
 
-### Upcoming changes
+### 0.13.0
 
 * Added translation to the following model fields:
     - Survey
