@@ -1,2 +1,2 @@
 include README.md
-recursive-include * *.html *.txt
+recursive-include surveys *.html *.txt

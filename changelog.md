@@ -2,6 +2,10 @@
 
 This project uses Semantic Versioning (2.0).
 
+### 0.13.1
+
+* Exclude test_project and web folders from distribution.
+
 ### 0.13.0
 
 * Added translation to the following model fields:

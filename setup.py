@@ -2,9 +2,9 @@ from setuptools import find_packages, setup
 
 
 setup(
-    version='0.13.0',
+    version='0.13.1',
     name='incuna-surveys',
-    packages=find_packages(),
+    packages=find_packages(exclude=('test_project', 'web')),
     include_package_data=True,
     install_requires=[
         'django-orderable==4.0.4',
