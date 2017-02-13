@@ -1,9 +1,20 @@
+import collections
 import json
 
 from rest_framework import serializers
 from rest_framework.utils.encoders import JSONEncoder
 
 from . import models
+
+
+def update_nested(d, u):
+    for k, v in u.items():
+        if isinstance(v, collections.Mapping):
+            r = update_nested(d.get(k, {}), v)
+            d[k] = r
+        else:
+            d[k] = u[k]
+    return d
 
 
 def json_decode(answers):
@@ -44,11 +55,17 @@ class SurveyResponseSerializer(serializers.Serializer):
         Dynamically generate the fields from the survey fieldsets.
         Returns a dictionary of {field_name: field_instance}.
         """
+
         survey = self.context['survey']
         return {
             str(fs.pk): FieldsetResponseSerializer(fieldset=fs, context=self.context)
             for fs in survey.get_ordered_fieldsets()
         }
+
+    def update(self, instance, validated_data):
+        if self.partial:
+            update_nested(instance, validated_data)
+        return self.create(validated_data)
 
     def create(self, validated_data):
         """
@@ -61,7 +78,6 @@ class SurveyResponseSerializer(serializers.Serializer):
         We also need to fill in the survey, which isn't supplied explicitly for each of
         the individual user response objects.
         """
-
         survey = validated_data.pop('survey')
         user_id = validated_data.pop('user_id')
         for fieldset_pk, answers in validated_data.items():
