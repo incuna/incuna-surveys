@@ -39,6 +39,9 @@ class SurveySerializer(serializers.HyperlinkedModelSerializer):
 
 
 class SurveyResponseSerializer(serializers.Serializer):
+    def to_representation(self, instance):
+        return {response.survey_id: response.answers for response in instance}
+
     def get_fields(self):
         """
         Dynamically generate the fields from the survey fieldsets.
