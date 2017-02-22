@@ -2,7 +2,7 @@
 
 This project uses Semantic Versioning (2.0).
 
-### Upcoming
+### 0.14.0
 
 * The response create serializer will now correctly return the instance created
 
