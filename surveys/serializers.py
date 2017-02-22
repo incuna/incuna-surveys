@@ -39,6 +39,11 @@ class SurveySerializer(serializers.HyperlinkedModelSerializer):
 
 
 class SurveyResponseSerializer(serializers.Serializer):
+    def to_representation(self, instance):
+        if isinstance(instance, dict):
+            return super(SurveyResponseSerializer, self).to_representation(instance)
+        return {response.survey_id: response.answers for response in instance}
+
     def get_fields(self):
         """
         Dynamically generate the fields from the survey fieldsets.
@@ -61,19 +66,21 @@ class SurveyResponseSerializer(serializers.Serializer):
         We also need to fill in the survey, which isn't supplied explicitly for each of
         the individual user response objects.
         """
-
+        responses = list()
         survey = validated_data.pop('survey')
         user_id = validated_data.pop('user_id')
         for fieldset_pk, answers in validated_data.items():
             fieldset = survey.fieldsets.get(pk=fieldset_pk)
-            models.UserResponse.objects.create(
-                survey=survey,
-                user_id=user_id,
-                fieldset=fieldset,
-                answers=json_decode(answers),
+            responses.append(
+                models.UserResponse.objects.create(
+                    survey=survey,
+                    user_id=user_id,
+                    fieldset=fieldset,
+                    answers=json_decode(answers),
+                )
             )
 
-        return validated_data
+        return responses
 
 
 class FieldsetResponseSerializer(serializers.Serializer):

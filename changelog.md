@@ -2,6 +2,10 @@
 
 This project uses Semantic Versioning (2.0).
 
+### Upcoming
+
+* The response create serializer will now correctly return the instance created
+
 ### 0.13.1
 
 * Exclude test_project and web folders from distribution.
