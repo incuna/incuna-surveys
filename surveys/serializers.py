@@ -40,6 +40,8 @@ class SurveySerializer(serializers.HyperlinkedModelSerializer):
 
 class SurveyResponseSerializer(serializers.Serializer):
     def to_representation(self, instance):
+        if isinstance(instance, dict):
+            return super(SurveyResponseSerializer, self).to_representation(instance)
         return {response.survey_id: response.answers for response in instance}
 
     def get_fields(self):
