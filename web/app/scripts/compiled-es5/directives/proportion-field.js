@@ -33,6 +33,7 @@ _module.directive('proportionField', [_proportionField2.default.componentName, f
         templateUrl: 'templates/incuna-surveys/form/proportion-field.html',
         link: function link(scope) {
             scope.fields = [];
+            scope.amountLeft = 100;
             var deregisterOptionsWatcher = scope.$watch('options', function (options) {
                 if (!options) {
                     return;
@@ -51,9 +52,13 @@ _module.directive('proportionField', [_proportionField2.default.componentName, f
             });
 
             scope.$watch('model', function (values) {
-                if (values === null) {
+                console.log(values);
+                if (!values) {
                     scope.model = {};
                 }
+                scope.amountLeft = 100 - Object.values(scope.model).reduce(function (sum, item) {
+                    return sum += item || 0;
+                }, 0);
                 scope.total = ProportionField.calculateTotal(values);
                 if (values) {
                     ProportionField.addPercentages(scope.fields, values, scope.total);

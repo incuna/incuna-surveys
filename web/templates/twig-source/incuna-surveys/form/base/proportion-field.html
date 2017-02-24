@@ -9,6 +9,7 @@
 {% endblock %}
 {% block fields %}
     <div class="fields-wrapper">
+        SUM: {% raw %}{{ amountLeft }}{% endraw %}
         <div class="proportion-field" ng-repeat="field in fields">
             {% block field %}
                 <div
@@ -20,11 +21,15 @@
                         >
                     {% block input %}
                         <div class="proportion-input" integer-field model="model[$index]" id="field.id" form="form"></div>
+                        <div
+                            aif-slider-input
+                            model="model[$index]"
+                            ceiling="amountLeft"
+                            slider-low-label="0%"
+                            slider-high-label="100%"
+                        ></div>
                     {% endblock %}
                     {% block percentage %}
-                        <span class="percentage" ng-class="{ filled: field.percentage > 0 }">
-                            <span class="number" ng-bind="field.percentage|number:0"></span>%
-                        </span>
                     {% endblock %}
                 </div>
             {% endblock %}

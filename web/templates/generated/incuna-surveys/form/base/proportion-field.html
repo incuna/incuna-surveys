@@ -5,12 +5,11 @@
     </span>
 
 
-    <span class="total">
-        Total: <span class="total-figure" ng-bind="total"></span>
-    </span>
+    <span class="total" translate>Total: <span class="total-figure" ng-bind="total"></span></span>
 
 
     <div class="fields-wrapper">
+        SUM: {{ sum }}
         <div class="proportion-field" ng-repeat="field in fields">
             
                 <div
@@ -22,11 +21,15 @@
                         >
                     
                         <div class="proportion-input" integer-field model="model[$index]" id="field.id" form="form"></div>
+                        <div
+                            aif-slider-input
+                            model="model[$index]"
+                            ceiling="sum"
+                            slider-low-label="0%"
+                            slider-high-label="100%"
+                        ></div>
                     
                     
-                        <span class="percentage" ng-class="{ filled: field.percentage > 0 }">
-                            <span class="number" ng-bind="field.percentage|number:0"></span>%
-                        </span>
                     
                 </div>
             
