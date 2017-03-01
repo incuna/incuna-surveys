@@ -9,8 +9,9 @@
 
 
     <div class="fields-wrapper">
-        SUM: {{ sum }}
+        SUM: {{ amountLeft }}
         <div class="proportion-field" ng-repeat="field in fields">
+            {{ amountLeft + model[$index] }}
             
                 <div
                     drf-form-field="field"
@@ -24,7 +25,7 @@
                         <div
                             aif-slider-input
                             model="model[$index]"
-                            ceiling="sum"
+                            ceiling="100"
                             slider-low-label="0%"
                             slider-high-label="100%"
                         ></div>

@@ -226,17 +226,32 @@ _module.directive('proportionField', [_proportionField2.default.componentName, f
                 ProportionField.addErrors(scope.fields, errors || {});
             });
 
-            scope.$watch('model', function (values) {
-                console.log(values);
-                if (!values) {
+            scope.$watch('model', function (newModel, oldModel) {
+                if (!newModel || !oldModel) {
                     scope.model = {};
+                    return;
                 }
-                scope.amountLeft = 100 - Object.values(scope.model).reduce(function (sum, item) {
+
+                var newValues = Object.values(newModel);
+                var oldValues = Object.values(oldModel);
+
+                var changedIndex = newValues.reduce(function (sum, element, index) {
+                    return sum + (element !== oldValues[index] ? index : 0);
+                }, 0);
+
+                var newSum = Object.values(newModel).reduce(function (sum, item) {
                     return sum += item || 0;
                 }, 0);
-                scope.total = ProportionField.calculateTotal(values);
-                if (values) {
-                    ProportionField.addPercentages(scope.fields, values, scope.total);
+                var oldSUm = Object.values(oldModel).reduce(function (sum, item) {
+                    return sum += item || 0;
+                }, 0);
+
+                if (newSum > 100) {
+                    scope.model[changedIndex] -= newSum - 100;
+                }
+                scope.total = ProportionField.calculateTotal(newModel);
+                if (newModel) {
+                    ProportionField.addPercentages(scope.fields, newModel, scope.total);
                 }
             }, true);
         }
@@ -335,7 +350,7 @@ angular.module('incuna-surveys-form.templates', []).run(['$templateCache', funct
 
 
   $templateCache.put('templates/incuna-surveys/form/base/proportion-field.html',
-    "<h4 class=title ng-bind=title></h4><span class=total-bar><span class=bar-portion ng-repeat=\"field in fields\" style=\"width: {{ field.percentage }}%\"></span> </span><span class=total translate>Total: <span class=total-figure ng-bind=total></span></span><div class=fields-wrapper>SUM: {{ sum }}<div class=proportion-field ng-repeat=\"field in fields\"><div drf-form-field=field class=\"proportion-field-inner {{ form[id].$invalid ? 'has-error' : '' }}\"><div class=proportion-input integer-field model=model[$index] id=field.id form=form></div><div aif-slider-input model=model[$index] ceiling=sum slider-low-label=0% slider-high-label=100%></div></div></div></div>"
+    "<h4 class=title ng-bind=title></h4><span class=total-bar><span class=bar-portion ng-repeat=\"field in fields\" style=\"width: {{ field.percentage }}%\"></span> </span><span class=total translate>Total: <span class=total-figure ng-bind=total></span></span><div class=fields-wrapper>SUM: {{ amountLeft }}<div class=proportion-field ng-repeat=\"field in fields\">{{ amountLeft + model[$index] }}<div drf-form-field=field class=\"proportion-field-inner {{ form[id].$invalid ? 'has-error' : '' }}\"><div class=proportion-input integer-field model=model[$index] id=field.id form=form></div><div aif-slider-input model=model[$index] ceiling=100 slider-low-label=0% slider-high-label=100%></div></div></div></div>"
   );
 
 
@@ -355,7 +370,7 @@ angular.module('incuna-surveys-form.templates', []).run(['$templateCache', funct
 
 
   $templateCache.put('templates/incuna-surveys/form/proportion-field.html',
-    "<h4 class=title ng-bind=title></h4><span class=total-bar><span class=bar-portion ng-repeat=\"field in fields\" style=\"width: {{ field.percentage }}%\"></span> </span><span class=total translate>Total: <span class=total-figure ng-bind=total></span></span><div class=fields-wrapper>SUM: {{ sum }}<div class=proportion-field ng-repeat=\"field in fields\"><div drf-form-field=field class=\"proportion-field-inner {{ form[id].$invalid ? 'has-error' : '' }}\"><div class=proportion-input integer-field model=model[$index] id=field.id form=form></div><div aif-slider-input model=model[$index] ceiling=sum slider-low-label=0% slider-high-label=100%></div></div></div></div>"
+    "<h4 class=title ng-bind=title></h4><span class=total-bar><span class=bar-portion ng-repeat=\"field in fields\" style=\"width: {{ field.percentage }}%\"></span> </span><span class=total translate>Total: <span class=total-figure ng-bind=total></span></span><div class=fields-wrapper>SUM: {{ amountLeft }}<div class=proportion-field ng-repeat=\"field in fields\">{{ amountLeft + model[$index] }}<div drf-form-field=field class=\"proportion-field-inner {{ form[id].$invalid ? 'has-error' : '' }}\"><div class=proportion-input integer-field model=model[$index] id=field.id form=form></div><div aif-slider-input model=model[$index] ceiling=100 slider-low-label=0% slider-high-label=100%></div></div></div></div>"
   );
 
 

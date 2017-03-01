@@ -51,17 +51,32 @@ _module.directive('proportionField', [_proportionField2.default.componentName, f
                 ProportionField.addErrors(scope.fields, errors || {});
             });
 
-            scope.$watch('model', function (values) {
-                console.log(values);
-                if (!values) {
+            scope.$watch('model', function (newModel, oldModel) {
+                if (!newModel || !oldModel) {
                     scope.model = {};
+                    return;
                 }
-                scope.amountLeft = 100 - Object.values(scope.model).reduce(function (sum, item) {
+
+                var newValues = Object.values(newModel);
+                var oldValues = Object.values(oldModel);
+
+                var changedIndex = newValues.reduce(function (sum, element, index) {
+                    return sum + (element !== oldValues[index] ? index : 0);
+                }, 0);
+
+                var newSum = Object.values(newModel).reduce(function (sum, item) {
                     return sum += item || 0;
                 }, 0);
-                scope.total = ProportionField.calculateTotal(values);
-                if (values) {
-                    ProportionField.addPercentages(scope.fields, values, scope.total);
+                var oldSUm = Object.values(oldModel).reduce(function (sum, item) {
+                    return sum += item || 0;
+                }, 0);
+
+                if (newSum > 100) {
+                    scope.model[changedIndex] -= newSum - 100;
+                }
+                scope.total = ProportionField.calculateTotal(newModel);
+                if (newModel) {
+                    ProportionField.addPercentages(scope.fields, newModel, scope.total);
                 }
             }, true);
         }

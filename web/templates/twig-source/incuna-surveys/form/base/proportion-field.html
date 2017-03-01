@@ -11,6 +11,7 @@
     <div class="fields-wrapper">
         SUM: {% raw %}{{ amountLeft }}{% endraw %}
         <div class="proportion-field" ng-repeat="field in fields">
+            {% raw %}{{ amountLeft + model[$index] }}{% endraw %}
             {% block field %}
                 <div
                     drf-form-field="field"
@@ -24,7 +25,7 @@
                         <div
                             aif-slider-input
                             model="model[$index]"
-                            ceiling="amountLeft"
+                            ceiling="100"
                             slider-low-label="0%"
                             slider-high-label="100%"
                         ></div>
