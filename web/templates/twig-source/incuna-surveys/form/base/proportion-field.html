@@ -2,7 +2,6 @@
 {% block fields %}
     <div class="fields-wrapper">
         <div class="proportion-field" ng-repeat="field in fields">
-            {% raw %}{{ amountLeft + model[$index] }}{% endraw %}
             {% block field %}
                 <div
                     drf-form-field="field"
