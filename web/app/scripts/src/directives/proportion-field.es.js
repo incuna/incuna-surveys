@@ -1,4 +1,4 @@
-import { angular, _ } from '../libraries';
+import { angular } from '../libraries';
 
 import ProportionField from '../services/proportion-field';
 import IntegerFielddDirective from 'integer-field';

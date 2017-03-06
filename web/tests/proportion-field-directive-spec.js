@@ -111,12 +111,20 @@ describe('proportion-field directive', function () {
         });
 
         it('should not allow a field to have a value which will make the sum greater than 100', function () {
-            this.scope.model = {0: 5, 1: 20, 2: 0};
+            this.scope.model = {
+                0: 5,
+                1: 20,
+                2: 0
+            };
             this.scope.$digest();
-            this.scope.model = {0: 5, 1: 20, 2: 100};
+            this.scope.model = {
+                0: 5,
+                1: 20,
+                2: 100
+            };
             this.scope.$digest();
             expect(this.scope.model[2]).toBe(75);
         });
-        
+
     });
 });
