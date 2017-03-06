@@ -1,15 +1,6 @@
 <h4 class="title" ng-bind="title"></h4>
 
-    <span class="total-bar">
-        <span class="bar-portion " ng-repeat="field in fields" style="width: {{ field.percentage }}%"></span>
-    </span>
-
-
-    <span class="total" translate>Total: <span class="total-figure" ng-bind="total"></span></span>
-
-
     <div class="fields-wrapper">
-        SUM: {{ amountLeft }}
         <div class="proportion-field" ng-repeat="field in fields">
             {{ amountLeft + model[$index] }}
             

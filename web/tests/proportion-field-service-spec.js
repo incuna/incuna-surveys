@@ -105,27 +105,6 @@ describe('proportion-field service', function () {
 
     });
 
-    describe('addPercentages', function () {
-        it('should add percentages to the fields based on the values and total', function () {
-            this.proportionField.addPercentages(this.fields, this.values, 100);
-            const expected = [
-                {
-                    label: 'One', required: false, id: '1-0', percentage: 10
-                },
-                {
-                    label: 'Two', required: false, id: '1-1', percentage: 20
-                },
-                {
-                    label: 'Three', required: false, id: '1-2', percentage: 40
-                },
-                {
-                    label: 'Four', required: false, id: '1-3', percentage: 30
-                }
-            ]
-            expect(this.fields).toEqual(expected);
-        });
-    });
-
     describe('addErrors', function () {
         it('should add errors to the fields based on the errors', function () {
             const errors = {

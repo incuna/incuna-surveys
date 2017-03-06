@@ -1,15 +1,6 @@
 {% block title %}<h4 class="title" ng-bind="title"></h4>{% endblock %}
-{% block total-bar %}
-    <span class="total-bar">
-        <span class="bar-portion {% block bar-portion-class %}{% endblock %}" ng-repeat="field in fields" style="width: {% raw %}{{ field.percentage }}%{% endraw %}"></span>
-    </span>
-{% endblock %}
-{% block total %}
-    <span class="total" translate>Total: <span class="total-figure" ng-bind="total"></span></span>
-{% endblock %}
 {% block fields %}
     <div class="fields-wrapper">
-        SUM: {% raw %}{{ amountLeft }}{% endraw %}
         <div class="proportion-field" ng-repeat="field in fields">
             {% raw %}{{ amountLeft + model[$index] }}{% endraw %}
             {% block field %}

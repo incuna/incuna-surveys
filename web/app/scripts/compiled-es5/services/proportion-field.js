@@ -34,10 +34,7 @@ _module.service(moduleProperties.componentName, [function () {
             return 0;
         }
         return Object.keys(values).reduce(function (total, key) {
-            var value = parseInt(values[key], 10);
-            if (Number.isNaN(value)) {
-                return total;
-            }
+            var value = parseInt(values[key], 10) || 0;
             return total + value;
         }, 0);
     };
@@ -53,6 +50,15 @@ _module.service(moduleProperties.componentName, [function () {
         fields.forEach(function (options, index) {
             options.errors = errors[index];
         });
+    };
+
+    this.getChangedFieldIndex = function (newModel, oldModel) {
+        var newValues = Object.values(newModel);
+        var oldValues = Object.values(oldModel);
+
+        return newValues.reduce(function (sum, element, index) {
+            return sum + (element !== oldValues[index] ? index : 0);
+        }, 0);
     };
 }]);
 

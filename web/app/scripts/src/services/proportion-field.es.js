@@ -34,10 +34,7 @@ module.service(moduleProperties.componentName, [
                 return 0;
             }
             return Object.keys(values).reduce((total, key) => {
-                const value = parseInt(values[key], 10);
-                if (Number.isNaN(value)) {
-                    return total;
-                }
+                const value = parseInt(values[key], 10) || 0;
                 return total + value;
             }, 0);
         };
@@ -54,6 +51,16 @@ module.service(moduleProperties.componentName, [
                 options.errors = errors[index];
             });
         };
+
+        this.getChangedFieldIndex = function (newModel, oldModel) {
+            const newValues = Object.values(newModel);
+            const oldValues = Object.values(oldModel);
+
+            return newValues.reduce((sum, element, index) => {
+                return sum + (element !== oldValues[index] ? index : 0);
+            }, 0);
+
+        }
 
     }
 ]);
