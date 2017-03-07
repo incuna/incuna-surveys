@@ -2,7 +2,7 @@
 
 This project uses Semantic Versioning (2.0).
 
-# upcoming
+# 0.15.0
 
 * Change proportion field to a slider group
 
