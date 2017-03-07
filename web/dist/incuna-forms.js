@@ -742,13 +742,6 @@ _module.service(moduleProperties.componentName, [function () {
         }, 0);
     };
 
-    this.addPercentages = function (fields, values, total) {
-        fields.forEach(function (options, key) {
-            var value = parseInt(values[key], 10) || 0;
-            options.percentage = value ? value / total * 100 : 0;
-        });
-    };
-
     this.addErrors = function (fields, errors) {
         fields.forEach(function (options, index) {
             options.errors = errors[index];
