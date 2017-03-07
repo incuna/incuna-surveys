@@ -96,9 +96,6 @@ describe('proportion-field directive', function () {
 
     describe('setting model', function () {
         beforeEach(function () {
-            this.total = 100;
-            spyOn(this.proportionField, 'calculateTotal').and.returnValue(this.total);
-            spyOn(this.proportionField, 'addPercentages');
             this.scope.options = this.options;
             this.scope.model = this.model;
             this.compileDirective();
@@ -106,24 +103,38 @@ describe('proportion-field directive', function () {
             this.scope.$digest();
         });
 
-        it('should call proportionField.calculateTotal and set scope.total', function () {
-            expect(this.proportionField.calculateTotal).toHaveBeenCalledWith(this.model)
-            expect(this.isolated.total).toBe(this.total);
-        });
-
-        it('should call addPercentages', function () {
-            expect(this.proportionField.addPercentages).toHaveBeenCalledWith(
-                this.isolated.fields,
-                this.model,
-                this.total
-            )
-        });
-
         it('should create an empty opbject if the model is null', function () {
             this.scope.model = null;
             this.scope.$digest();
             expect(this.isolated.model).toEqual({});
         });
+
+        it('should call proportionField.calculateTotal and set scope.total', function () {
+            const total = 10;
+            spyOn(this.proportionField, 'calculateTotal').and.returnValue(total);
+            this.scope.model = {
+                0: 5
+            };
+            this.scope.$digest();
+            expect(this.proportionField.calculateTotal).toHaveBeenCalledWith(this.scope.model)
+            expect(this.isolated.total).toBe(total);
+        });
+
+        it('should not allow a field to have a value which will make the sum greater than 100', function () {
+            this.scope.model = {
+                0: 5,
+                1: 20,
+                2: 0
+            };
+            this.scope.$digest();
+            this.scope.model = {
+                0: 5,
+                1: 20,
+                2: 100
+            };
+            this.scope.$digest();
+            expect(this.scope.model[2]).toBe(75);
+        });
+
     });
 });
-

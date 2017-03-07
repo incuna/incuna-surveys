@@ -1,12 +1,4 @@
 {% block title %}<h4 class="title" ng-bind="title"></h4>{% endblock %}
-{% block total-bar %}
-    <span class="total-bar">
-        <span class="bar-portion {% block bar-portion-class %}{% endblock %}" ng-repeat="field in fields" style="width: {% raw %}{{ field.percentage }}%{% endraw %}"></span>
-    </span>
-{% endblock %}
-{% block total %}
-    <span class="total" translate>Total: <span class="total-figure" ng-bind="total"></span></span>
-{% endblock %}
 {% block fields %}
     <div class="fields-wrapper">
         <div class="proportion-field" ng-repeat="field in fields">
@@ -19,12 +11,17 @@
                         {% raw %}{{ form[id].$invalid ? 'has-error' : '' }}{% endraw %}"
                         >
                     {% block input %}
+                        AMOUNT ALLOCATED (use for css): {% raw %}{{ total - model[$index] }}{% endraw %}
                         <div class="proportion-input" integer-field model="model[$index]" id="field.id" form="form"></div>
+                        <div
+                            aif-slider-input
+                            model="model[$index]"
+                            ceiling="100"
+                            slider-low-label="0%"
+                            slider-high-label="100%"
+                        ></div>
                     {% endblock %}
                     {% block percentage %}
-                        <span class="percentage" ng-class="{ filled: field.percentage > 0 }">
-                            <span class="number" ng-bind="field.percentage|number:0"></span>%
-                        </span>
                     {% endblock %}
                 </div>
             {% endblock %}

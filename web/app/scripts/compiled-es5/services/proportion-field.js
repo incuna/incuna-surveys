@@ -34,24 +34,23 @@ _module.service(moduleProperties.componentName, [function () {
             return 0;
         }
         return Object.keys(values).reduce(function (total, key) {
-            var value = parseInt(values[key], 10);
-            if (Number.isNaN(value)) {
-                return total;
-            }
+            var value = parseInt(values[key], 10) || 0;
             return total + value;
         }, 0);
-    };
-
-    this.addPercentages = function (fields, values, total) {
-        fields.forEach(function (options, key) {
-            var value = parseInt(values[key], 10) || 0;
-            options.percentage = value ? value / total * 100 : 0;
-        });
     };
 
     this.addErrors = function (fields, errors) {
         fields.forEach(function (options, index) {
             options.errors = errors[index];
+        });
+    };
+
+    this.getChangedFieldIndex = function (newModel, oldModel) {
+        var newValues = Object.values(newModel);
+        var oldValues = Object.values(oldModel);
+
+        return newValues.findIndex(function (el, i) {
+            return el !== oldValues[i];
         });
     };
 }]);

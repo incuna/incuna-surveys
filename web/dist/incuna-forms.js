@@ -208,6 +208,7 @@ _module.directive('proportionField', [_proportionField2.default.componentName, f
         templateUrl: 'templates/incuna-surveys/form/proportion-field.html',
         link: function link(scope) {
             scope.fields = [];
+            scope.total = 0;
             var deregisterOptionsWatcher = scope.$watch('options', function (options) {
                 if (!options) {
                     return;
@@ -225,13 +226,19 @@ _module.directive('proportionField', [_proportionField2.default.componentName, f
                 ProportionField.addErrors(scope.fields, errors || {});
             });
 
-            scope.$watch('model', function (values) {
-                if (values === null) {
+            scope.$watch('model', function (newModel, oldModel) {
+                if (!newModel || !oldModel) {
                     scope.model = {};
+                    return;
                 }
-                scope.total = ProportionField.calculateTotal(values);
-                if (values) {
-                    ProportionField.addPercentages(scope.fields, values, scope.total);
+
+                var newSum = ProportionField.calculateTotal(newModel);
+                scope.total = newSum;
+
+                if (newSum > 100) {
+                    scope.total = 100;
+                    var changedIndex = ProportionField.getChangedFieldIndex(newModel, oldModel);
+                    scope.model[changedIndex] -= newSum - 100;
                 }
             }, true);
         }
@@ -330,12 +337,12 @@ angular.module('incuna-surveys-form.templates', []).run(['$templateCache', funct
 
 
   $templateCache.put('templates/incuna-surveys/form/base/proportion-field.html',
-    "<h4 class=title ng-bind=title></h4><span class=total-bar><span class=bar-portion ng-repeat=\"field in fields\" style=\"width: {{ field.percentage }}%\"></span> </span><span class=total>Total: <span class=total-figure ng-bind=total></span></span><div class=fields-wrapper><div class=proportion-field ng-repeat=\"field in fields\"><div drf-form-field=field class=\"proportion-field-inner {{ form[id].$invalid ? 'has-error' : '' }}\"><div class=proportion-input integer-field model=model[$index] id=field.id form=form></div><span class=percentage ng-class=\"{ filled: field.percentage > 0 }\"><span class=number ng-bind=field.percentage|number:0></span>%</span></div></div></div>"
+    "<h4 class=title ng-bind=title></h4><div class=fields-wrapper><div class=proportion-field ng-repeat=\"field in fields\"><div drf-form-field=field class=\"proportion-field-inner {{ form[id].$invalid ? 'has-error' : '' }}\">AMOUNT ALLOCATED (use for css): {{ total - model[$index] }}<div class=proportion-input integer-field model=model[$index] id=field.id form=form></div><div aif-slider-input model=model[$index] ceiling=100 slider-low-label=0% slider-high-label=100%></div></div></div></div>"
   );
 
 
   $templateCache.put('templates/incuna-surveys/form/base/survey-form.html',
-    "<form class=question-form ng-submit=submit()><div calculate-percentage question-set=fields model=model></div><header class=form-header><h1 ng-bind=form.name class=form-name></h1><h2 ng-bind=form.description class=form-desc></h2></header><formly-form class=form-body model=model fields=fields></formly-form><button class=button-submit type=submit>Submit</button></form>"
+    "<form class=question-form ng-submit=submit()><div calculate-percentage question-set=fields model=model></div><header class=form-header><h1 ng-bind=form.name class=form-name></h1><h2 ng-bind=form.description class=form-desc></h2></header><formly-form class=form-body model=model fields=fields></formly-form><button ng-show=form class=button-submit type=submit translate>Submit</button></form>"
   );
 
 
@@ -350,12 +357,12 @@ angular.module('incuna-surveys-form.templates', []).run(['$templateCache', funct
 
 
   $templateCache.put('templates/incuna-surveys/form/proportion-field.html',
-    "<h4 class=title ng-bind=title></h4><span class=total-bar><span class=bar-portion ng-repeat=\"field in fields\" style=\"width: {{ field.percentage }}%\"></span> </span><span class=total>Total: <span class=total-figure ng-bind=total></span></span><div class=fields-wrapper><div class=proportion-field ng-repeat=\"field in fields\"><div drf-form-field=field class=\"proportion-field-inner {{ form[id].$invalid ? 'has-error' : '' }}\"><div class=proportion-input integer-field model=model[$index] id=field.id form=form></div><span class=percentage ng-class=\"{ filled: field.percentage > 0 }\"><span class=number ng-bind=field.percentage|number:0></span>%</span></div></div></div>"
+    "<h4 class=title ng-bind=title></h4><div class=fields-wrapper><div class=proportion-field ng-repeat=\"field in fields\"><div drf-form-field=field class=\"proportion-field-inner {{ form[id].$invalid ? 'has-error' : '' }}\">AMOUNT ALLOCATED (use for css): {{ total - model[$index] }}<div class=proportion-input integer-field model=model[$index] id=field.id form=form></div><div aif-slider-input model=model[$index] ceiling=100 slider-low-label=0% slider-high-label=100%></div></div></div></div>"
   );
 
 
   $templateCache.put('templates/incuna-surveys/form/survey-form.html',
-    "<form class=question-form ng-submit=submit()><div calculate-percentage question-set=fields model=model></div><header class=form-header><h1 ng-bind=form.name class=form-name></h1><h2 ng-bind=form.description class=form-desc></h2></header><formly-form class=form-body model=model fields=fields></formly-form><button class=button-submit type=submit>Submit</button></form>"
+    "<form class=question-form ng-submit=submit()><div calculate-percentage question-set=fields model=model></div><header class=form-header><h1 ng-bind=form.name class=form-name></h1><h2 ng-bind=form.description class=form-desc></h2></header><formly-form class=form-body model=model fields=fields></formly-form><button ng-show=form class=button-submit type=submit translate>Submit</button></form>"
   );
 
 }]);
@@ -730,24 +737,23 @@ _module.service(moduleProperties.componentName, [function () {
             return 0;
         }
         return Object.keys(values).reduce(function (total, key) {
-            var value = parseInt(values[key], 10);
-            if (Number.isNaN(value)) {
-                return total;
-            }
+            var value = parseInt(values[key], 10) || 0;
             return total + value;
         }, 0);
-    };
-
-    this.addPercentages = function (fields, values, total) {
-        fields.forEach(function (options, key) {
-            var value = parseInt(values[key], 10) || 0;
-            options.percentage = value ? value / total * 100 : 0;
-        });
     };
 
     this.addErrors = function (fields, errors) {
         fields.forEach(function (options, index) {
             options.errors = errors[index];
+        });
+    };
+
+    this.getChangedFieldIndex = function (newModel, oldModel) {
+        var newValues = Object.values(newModel);
+        var oldValues = Object.values(oldModel);
+
+        return newValues.findIndex(function (el, i) {
+            return el !== oldValues[i];
         });
     };
 }]);

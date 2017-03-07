@@ -31,7 +31,7 @@ module.exports = function (grunt) {
                         '<%= config.compiledScriptsDir %>/**/*.js',
                         '<%= config.tests %>'
                     ],
-                    reporters: ['progress']
+                    reporters: ['dots']
                 },
                 dev: karmaTasksConfig,
                 ci: Object.assign(
