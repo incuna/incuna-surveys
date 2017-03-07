@@ -25,6 +25,7 @@ module.directive('proportionField', [
             templateUrl: 'templates/incuna-surveys/form/proportion-field.html',
             link: function (scope) {
                 scope.fields = [];
+                scope.total = 0;
                 const deregisterOptionsWatcher = scope.$watch('options', (options) => {
                     if (!options) {
                         return;
@@ -53,9 +54,11 @@ module.directive('proportionField', [
                     }
 
                     const newSum = ProportionField.calculateTotal(newModel)
-                    const changedIndex = ProportionField.getChangedFieldIndex(newModel, oldModel);
+                    scope.total = newSum
 
                     if (newSum > 100) {
+                        scope.total = 100
+                        const changedIndex = ProportionField.getChangedFieldIndex(newModel, oldModel);
                         scope.model[changedIndex] -= newSum - 100;
                     }
                 }, true);

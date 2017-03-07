@@ -208,6 +208,7 @@ _module.directive('proportionField', [_proportionField2.default.componentName, f
         templateUrl: 'templates/incuna-surveys/form/proportion-field.html',
         link: function link(scope) {
             scope.fields = [];
+            scope.total = 0;
             var deregisterOptionsWatcher = scope.$watch('options', function (options) {
                 if (!options) {
                     return;
@@ -232,9 +233,11 @@ _module.directive('proportionField', [_proportionField2.default.componentName, f
                 }
 
                 var newSum = ProportionField.calculateTotal(newModel);
-                var changedIndex = ProportionField.getChangedFieldIndex(newModel, oldModel);
+                scope.total = newSum;
 
                 if (newSum > 100) {
+                    scope.total = 100;
+                    var changedIndex = ProportionField.getChangedFieldIndex(newModel, oldModel);
                     scope.model[changedIndex] -= newSum - 100;
                 }
             }, true);
@@ -334,7 +337,7 @@ angular.module('incuna-surveys-form.templates', []).run(['$templateCache', funct
 
 
   $templateCache.put('templates/incuna-surveys/form/base/proportion-field.html',
-    "<h4 class=title ng-bind=title></h4><div class=fields-wrapper><div class=proportion-field ng-repeat=\"field in fields\"><div drf-form-field=field class=\"proportion-field-inner {{ form[id].$invalid ? 'has-error' : '' }}\"><div class=proportion-input integer-field model=model[$index] id=field.id form=form></div><div aif-slider-input model=model[$index] ceiling=100 slider-low-label=0% slider-high-label=100%></div></div></div></div>"
+    "<h4 class=title ng-bind=title></h4><div class=fields-wrapper><div class=proportion-field ng-repeat=\"field in fields\"><div drf-form-field=field class=\"proportion-field-inner {{ form[id].$invalid ? 'has-error' : '' }}\">AMOUNT ALLOCATED (use for css): {{ total - model[$index] }}<div class=proportion-input integer-field model=model[$index] id=field.id form=form></div><div aif-slider-input model=model[$index] ceiling=100 slider-low-label=0% slider-high-label=100%></div></div></div></div>"
   );
 
 
@@ -354,7 +357,7 @@ angular.module('incuna-surveys-form.templates', []).run(['$templateCache', funct
 
 
   $templateCache.put('templates/incuna-surveys/form/proportion-field.html',
-    "<h4 class=title ng-bind=title></h4><div class=fields-wrapper><div class=proportion-field ng-repeat=\"field in fields\"><div drf-form-field=field class=\"proportion-field-inner {{ form[id].$invalid ? 'has-error' : '' }}\"><div class=proportion-input integer-field model=model[$index] id=field.id form=form></div><div aif-slider-input model=model[$index] ceiling=100 slider-low-label=0% slider-high-label=100%></div></div></div></div>"
+    "<h4 class=title ng-bind=title></h4><div class=fields-wrapper><div class=proportion-field ng-repeat=\"field in fields\"><div drf-form-field=field class=\"proportion-field-inner {{ form[id].$invalid ? 'has-error' : '' }}\">AMOUNT ALLOCATED (use for css): {{ total - model[$index] }}<div class=proportion-input integer-field model=model[$index] id=field.id form=form></div><div aif-slider-input model=model[$index] ceiling=100 slider-low-label=0% slider-high-label=100%></div></div></div></div>"
   );
 
 
@@ -756,9 +759,9 @@ _module.service(moduleProperties.componentName, [function () {
         var newValues = Object.values(newModel);
         var oldValues = Object.values(oldModel);
 
-        return newValues.reduce(function (sum, element, index) {
-            return sum + (element !== oldValues[index] ? index : 0);
-        }, 0);
+        return newValues.findIndex(function (el, i) {
+            return el !== oldValues[i];
+        });
     };
 }]);
 

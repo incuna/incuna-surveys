@@ -56,10 +56,7 @@ module.service(moduleProperties.componentName, [
             const newValues = Object.values(newModel);
             const oldValues = Object.values(oldModel);
 
-            return newValues.reduce((sum, element, index) => {
-                return sum + (element !== oldValues[index] ? index : 0);
-            }, 0);
-
+            return newValues.findIndex((el, i) => el !== oldValues[i]);
         }
 
     }

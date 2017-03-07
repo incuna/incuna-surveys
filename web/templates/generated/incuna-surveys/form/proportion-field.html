@@ -11,6 +11,7 @@
                         {{ form[id].$invalid ? 'has-error' : '' }}"
                         >
                     
+                        AMOUNT ALLOCATED (use for css): {{ total - model[$index] }}
                         <div class="proportion-input" integer-field model="model[$index]" id="field.id" form="form"></div>
                         <div
                             aif-slider-input

@@ -56,9 +56,9 @@ _module.service(moduleProperties.componentName, [function () {
         var newValues = Object.values(newModel);
         var oldValues = Object.values(oldModel);
 
-        return newValues.reduce(function (sum, element, index) {
-            return sum + (element !== oldValues[index] ? index : 0);
-        }, 0);
+        return newValues.findIndex(function (el, i) {
+            return el !== oldValues[i];
+        });
     };
 }]);
 
