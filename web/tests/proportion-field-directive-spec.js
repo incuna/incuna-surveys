@@ -96,7 +96,6 @@ describe('proportion-field directive', function () {
 
     describe('setting model', function () {
         beforeEach(function () {
-            this.total = 100;
             this.scope.options = this.options;
             this.scope.model = this.model;
             this.compileDirective();
@@ -108,6 +107,16 @@ describe('proportion-field directive', function () {
             this.scope.model = null;
             this.scope.$digest();
             expect(this.isolated.model).toEqual({});
+        });
+
+        it('should call proportionField.calculateTotal and set scope.total', function () {
+            spyOn(this.proportionField, 'calculateTotal').and.returnValue(this.total);
+            this.scope.model = {
+                0: 5
+            };
+            this.scope.$digest();
+            expect(this.proportionField.calculateTotal).toHaveBeenCalledWith(this.scope.model)
+            expect(this.isolated.total).toBe(this.total);
         });
 
         it('should not allow a field to have a value which will make the sum greater than 100', function () {
