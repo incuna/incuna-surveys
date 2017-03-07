@@ -110,13 +110,14 @@ describe('proportion-field directive', function () {
         });
 
         it('should call proportionField.calculateTotal and set scope.total', function () {
-            spyOn(this.proportionField, 'calculateTotal').and.returnValue(this.total);
+            const total = 10;
+            spyOn(this.proportionField, 'calculateTotal').and.returnValue(total);
             this.scope.model = {
                 0: 5
             };
             this.scope.$digest();
             expect(this.proportionField.calculateTotal).toHaveBeenCalledWith(this.scope.model)
-            expect(this.isolated.total).toBe(this.total);
+            expect(this.isolated.total).toBe(total);
         });
 
         it('should not allow a field to have a value which will make the sum greater than 100', function () {
