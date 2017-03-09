@@ -13,13 +13,14 @@
                     
                         AMOUNT ALLOCATED (use for css): {{ total - model[$index] }}
                         <div class="proportion-input" integer-field model="model[$index]" id="field.id" form="form"></div>
-                        <div
-                            aif-slider-input
-                            model="model[$index]"
-                            ceiling="100"
-                            slider-low-label="0%"
-                            slider-high-label="100%"
-                        ></div>
+                            <div
+                                clearable-rz-slider
+                                model="model[$index]"
+                                rz-slider-options="optionsPerSlider[$index]"
+                                slider-low-label="0%"
+                                slider-high-label="100%"
+                                ceiling="100"
+                            ></div>
                     
                     
                     

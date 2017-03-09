@@ -32,6 +32,14 @@ _module.directive('proportionField', [_proportionField2.default.componentName, f
         },
         templateUrl: 'templates/incuna-surveys/form/proportion-field.html',
         link: function link(scope) {
+            var baseSliderOptions = {
+                maxLimit: 100,
+                floor: 0,
+                ceil: 100,
+                showSelectionBar: true,
+                hideLimitLabels: true
+            };
+            scope.optionsPerSlider = [];
             scope.fields = [];
             scope.total = 0;
             var deregisterOptionsWatcher = scope.$watch('options', function (options) {
@@ -44,6 +52,11 @@ _module.directive('proportionField', [_proportionField2.default.componentName, f
                 if (options.choices) {
                     scope.fields = ProportionField.buildFields(options.choices, options.fieldOptions, options.autoId);
                 }
+
+                scope.fields.forEach(function () {
+                    scope.optionsPerSlider.push(Object.assign({}, baseSliderOptions));
+                });
+
                 deregisterOptionsWatcher();
             });
 
@@ -65,6 +78,10 @@ _module.directive('proportionField', [_proportionField2.default.componentName, f
                     var changedIndex = ProportionField.getChangedFieldIndex(newModel, oldModel);
                     scope.model[changedIndex] -= newSum - 100;
                 }
+
+                scope.fields.forEach(function (val, i) {
+                    scope.optionsPerSlider[i].maxLimit = 100 - newSum + scope.model[i];
+                });
             }, true);
         }
     };
