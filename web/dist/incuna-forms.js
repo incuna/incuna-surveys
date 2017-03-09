@@ -354,7 +354,7 @@ angular.module('incuna-surveys-form.templates', []).run(['$templateCache', funct
 
 
   $templateCache.put('templates/incuna-surveys/form/base/proportion-field.html',
-    "<h4 class=title ng-bind=title></h4><div class=fields-wrapper><div class=proportion-field ng-repeat=\"field in fields\"><div drf-form-field=field class=\"proportion-field-inner {{ form[id].$invalid ? 'has-error' : '' }}\">AMOUNT ALLOCATED (use for css): {{ total - model[$index] }}<div class=proportion-input integer-field model=model[$index] id=field.id form=form></div><div clearable-rz-slider model=model[$index] rz-slider-options=optionsPerSlider[$index] slider-low-label=0% slider-high-label=100% ceiling=100></div></div></div></div>"
+    "<h4 class=title ng-bind=title></h4><div class=fields-wrapper><div class=proportion-field ng-repeat=\"field in fields\"><div drf-form-field=field class=\"proportion-field-inner {{ form[id].$invalid ? 'has-error' : '' }}\"><div class=proportion-input integer-field model=model[$index] id=field.id form=form></div><div class=proportion-slider><div clearable-rz-slider model=model[$index] rz-slider-options=optionsPerSlider[$index] slider-low-label=0% slider-high-label=100% ceiling=100></div><span class=allocated-bar style=\"width: {{ total - model[$index] }}%\"></span></div></div></div></div>"
   );
 
 
@@ -374,7 +374,7 @@ angular.module('incuna-surveys-form.templates', []).run(['$templateCache', funct
 
 
   $templateCache.put('templates/incuna-surveys/form/proportion-field.html',
-    "<h4 class=title ng-bind=title></h4><div class=fields-wrapper><div class=proportion-field ng-repeat=\"field in fields\"><div drf-form-field=field class=\"proportion-field-inner {{ form[id].$invalid ? 'has-error' : '' }}\">AMOUNT ALLOCATED (use for css): {{ total - model[$index] }}<div class=proportion-input integer-field model=model[$index] id=field.id form=form></div><div clearable-rz-slider model=model[$index] rz-slider-options=optionsPerSlider[$index] slider-low-label=0% slider-high-label=100% ceiling=100></div></div></div></div>"
+    "<h4 class=title ng-bind=title></h4><div class=fields-wrapper><div class=proportion-field ng-repeat=\"field in fields\"><div drf-form-field=field class=\"proportion-field-inner {{ form[id].$invalid ? 'has-error' : '' }}\"><div class=proportion-input integer-field model=model[$index] id=field.id form=form></div><div class=proportion-slider><div clearable-rz-slider model=model[$index] rz-slider-options=optionsPerSlider[$index] slider-low-label=0% slider-high-label=100% ceiling=100></div><span class=allocated-bar style=\"width: {{ total - model[$index] }}%\"></span></div></div></div></div>"
   );
 
 

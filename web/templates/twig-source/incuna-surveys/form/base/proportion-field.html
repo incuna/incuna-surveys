@@ -11,8 +11,8 @@
                         {% raw %}{{ form[id].$invalid ? 'has-error' : '' }}{% endraw %}"
                         >
                     {% block input %}
-                        AMOUNT ALLOCATED (use for css): {% raw %}{{ total - model[$index] }}{% endraw %}
                         <div class="proportion-input" integer-field model="model[$index]" id="field.id" form="form"></div>
+                        <div class="proportion-slider">
                             <div
                                 clearable-rz-slider
                                 model="model[$index]"
@@ -21,9 +21,11 @@
                                 slider-high-label="100%"
                                 ceiling="100"
                             ></div>
+
+                            <span class="allocated-bar" style="width: {% raw %}{{ total - model[$index] }}{% endraw %}%;"></span>
+                        </div>
                     {% endblock %}
-                    {% block percentage %}
-                    {% endblock %}
+                    {% block percentage %}{% endblock %}
                 </div>
             {% endblock %}
         </div>
