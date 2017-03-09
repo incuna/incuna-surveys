@@ -5,6 +5,7 @@ This project uses Semantic Versioning (2.0).
 # upcoming
 
 * Change proportion field to a slider group
+* Fix proportion field for rzSlider
 
 ### 0.14.0
 
