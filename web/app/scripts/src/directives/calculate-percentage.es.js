@@ -29,10 +29,12 @@ module.directive('calculatePercentage', [
                 });
 
                 // Using true to compare the sub-elements.
-                scope.$watch('model', (answers) => {
-                    const numberOfCompletedQuestions = CalculateCompletion.countNumberOfAnsweredQuestions(answers);
-                    scope.percentageComplete = CalculateCompletion.calculatePercentageComplete(numberOfCompletedQuestions, totalQuestionCount);
-                }, true);
+                if (totalQuestionCount > 0) {
+                    scope.$watch('model', (answers) => {
+                        const numberOfCompletedQuestions = CalculateCompletion.countNumberOfAnsweredQuestions(answers);
+                        scope.percentageComplete = CalculateCompletion.calculatePercentageComplete(numberOfCompletedQuestions, totalQuestionCount);
+                    }, true);
+                }
             }
         };
     }
