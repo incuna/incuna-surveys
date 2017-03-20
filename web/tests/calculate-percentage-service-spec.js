@@ -1,4 +1,4 @@
-describe('FieldsetParserService', function () {
+describe('calculateCompletionPercentService', function () {
     const questionSet = {
         1: {
             fieldGroup: [
