@@ -37,12 +37,13 @@ _module.directive('calculatePercentage', [_calculatePercentage2.default.componen
             });
 
             // Using true to compare the sub-elements.
-            if (totalQuestionCount > 0) {
-                scope.$watch('model', function (answers) {
-                    var numberOfCompletedQuestions = CalculateCompletion.countNumberOfAnsweredQuestions(answers);
-                    scope.percentageComplete = CalculateCompletion.calculatePercentageComplete(numberOfCompletedQuestions, totalQuestionCount);
-                }, true);
-            }
+            scope.$watch('model', function (answers) {
+                if (totalQuestionCount === 0) {
+                    return;
+                }
+                var numberOfCompletedQuestions = CalculateCompletion.countNumberOfAnsweredQuestions(answers);
+                scope.percentageComplete = CalculateCompletion.calculatePercentageComplete(numberOfCompletedQuestions, totalQuestionCount);
+            }, true);
         }
     };
 }]);
