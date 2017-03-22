@@ -42,7 +42,7 @@ class SurveyConfig(AppConfig):
             'serializer_field_factory': serializer_fields.MultipleChoiceFieldGenerator,
         }),
         ('proportion', {
-            'display_text': _('Proportions of one or more numbers'),
+            'display_text': _('Multiple percentage sliders'),
             'serializer_field_factory': serializer_fields.MultipleIntegerFieldGenerator,
         }),
     ))
