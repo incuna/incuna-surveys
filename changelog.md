@@ -2,7 +2,7 @@
 
 This project uses Semantic Versioning (2.0).
 
-#Upcoming
+### 0.15.2
 
 * bugfix: Prevent calculate percentage directive setting percentageComplete to infinity.
 * bugfix: Update proportion field display text.

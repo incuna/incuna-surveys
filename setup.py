@@ -2,7 +2,7 @@ from setuptools import find_packages, setup
 
 
 setup(
-    version='0.15.1',
+    version='0.15.2',
     name='incuna-surveys',
     packages=find_packages(exclude=('test_project', 'web')),
     include_package_data=True,
