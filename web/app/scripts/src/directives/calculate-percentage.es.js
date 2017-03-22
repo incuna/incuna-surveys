@@ -30,9 +30,13 @@ module.directive('calculatePercentage', [
 
                 // Using true to compare the sub-elements.
                 scope.$watch('model', (answers) => {
+                    if (totalQuestionCount === 0) {
+                        return;
+                    }
                     const numberOfCompletedQuestions = CalculateCompletion.countNumberOfAnsweredQuestions(answers);
                     scope.percentageComplete = CalculateCompletion.calculatePercentageComplete(numberOfCompletedQuestions, totalQuestionCount);
                 }, true);
+
             }
         };
     }

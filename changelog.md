@@ -2,6 +2,10 @@
 
 This project uses Semantic Versioning (2.0).
 
+#Upcoming
+
+* bugfix: Prevent calculate percentage directive setting percentageComplete to infinity.
+
 ### 0.15.1
 
 * Fix proportion field for rzSlider

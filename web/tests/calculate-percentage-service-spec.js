@@ -1,4 +1,4 @@
-describe('FieldsetParserService', function () {
+describe('calculateCompletionPercentService', function () {
     const questionSet = {
         1: {
             fieldGroup: [
@@ -99,6 +99,11 @@ describe('FieldsetParserService', function () {
     });
 
     describe('calculatePercentageComplete function', function () {
+        it('should return the 0 percentage when there are no questions', function () {
+            this.percentage = this.Parser.calculatePercentageComplete(7, 0);
+            expect(this.percentage).toBe(0 + '%');
+        });
+
         it('should return the 0 percentage when none answered', function () {
             this.percentage = this.Parser.calculatePercentageComplete(0, this.totalQuestions);
             expect(this.percentage).toBe(0 + '%');

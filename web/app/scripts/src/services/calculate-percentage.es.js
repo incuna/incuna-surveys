@@ -51,12 +51,18 @@ module.service(moduleProperties.componentName, [
         };
 
         this.calculatePercentageComplete = function (completedQuestions, totalQuestionCount) {
+            const zero = 0 + '%';
+
+            if (totalQuestionCount === 0) {
+                return zero;
+            }
+
             const result = ((completedQuestions / totalQuestionCount) * 100)
             if (result >= 0) {
                 return Math.round(result) + '%';
             }
 
-            return 0 + '%';
+            return zero;
         };
 
     }

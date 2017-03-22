@@ -15,9 +15,6 @@ describe('calculatePercentage directive', function () {
             ]
         }
     };
-    const getResponse = {
-        any: 'Any'
-    };
     const answers = {
         1: {
             2: 9,
@@ -45,20 +42,32 @@ describe('calculatePercentage directive', function () {
             this.elm = this.$compile(tpl)(this.scope);
             this.scope.$digest();
         };
-        spyOn(this.calculateCompletionPercent, 'countQuestionsTotal').and.returnValue(questionSet);
-        spyOn(this.calculateCompletionPercent, 'countNumberOfAnsweredQuestions').and.returnValue(answers);
+        spyOn(this.calculateCompletionPercent, 'countQuestionsTotal').and.callThrough();
+        spyOn(this.calculateCompletionPercent, 'countNumberOfAnsweredQuestions').and.callThrough();
     });
 
     it('should call this.calculateCompletionPercent.countQuestionsTotal with the questionSet', function () {
         this.scope.fields = questionSet;
-        this.scope.getResponse = getResponse;
         this.compileDirective(this.tpl);
-        expect(this.calculateCompletionPercent.countQuestionsTotal).toHaveBeenCalledWith(this.scope.fields)
+        expect(this.calculateCompletionPercent.countQuestionsTotal).toHaveBeenCalledWith(questionSet)
+    });
+
+    it('should return the total number of questions', function () {
+        const questionCount = this.calculateCompletionPercent.countQuestionsTotal(questionSet);
+        expect(questionCount).toEqual(6);
     });
 
     it('should call this.calculateCompletionPercent.countNumberOfAnsweredQuestions with the answer set', function () {
+        this.scope.fields = questionSet;
         this.scope.getResponse = answers;
         this.compileDirective(this.tpl);
         expect(this.calculateCompletionPercent.countNumberOfAnsweredQuestions).toHaveBeenCalledWith(this.scope.getResponse)
+    });
+
+    it('should return the percentage complete', function () {
+        const questionCount = this.calculateCompletionPercent.countQuestionsTotal(questionSet);
+        const answersCount = this.calculateCompletionPercent.countNumberOfAnsweredQuestions(answers);
+        const percentage = this.calculateCompletionPercent.calculatePercentageComplete(answersCount, questionCount);
+        expect(percentage).toEqual('67%');
     });
 });
