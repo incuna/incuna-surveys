@@ -30,6 +30,11 @@ module.directive('surveysForm', [
             templateUrl: 'templates/incuna-surveys/form/survey-form.html',
             link: function (scope) {
                 scope.model = {};
+
+                scope.parseForm = function () {
+                    scope.model = FieldsetParser.parseFormToModel(scope.form);
+                };
+
                 scope.$watch('formUrl', (url) => {
                     if (url) {
                         API.get(url).then(function (structure) {
@@ -38,7 +43,7 @@ module.directive('surveysForm', [
                             // Only set the empty model if the model has not
                             // been set.
                             if (Object.keys(scope.model).length === 0) {
-                                scope.model = FieldsetParser.parseFormToModel(structure);
+                               scope.parseForm();
                             }
                         });
                     }
@@ -47,6 +52,7 @@ module.directive('surveysForm', [
                 scope.$watch('responseUrl', (url) => {
                     if (url) {
                         API.get(url).then(function (data) {
+                            scope.parseForm();
                             scope.model = data;
                         });
                     }
