@@ -25,8 +25,7 @@ class TestSurveyFieldForm(TestCase):
         self.assertEqual(form.cleaned_data['answers'], self.answers)
 
     def test_can_have_comma_in_answers(self):
-        new_answers = ['a,comma, honestly']
-        new_answers.extend(self.answers)
+        new_answers = ['a,comma, to test,'] + self.answers
         data = {
             'name': 'Is the answer "No"?',
             'field_type': 'radio',
