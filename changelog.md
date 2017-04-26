@@ -4,7 +4,7 @@ This project uses Semantic Versioning (2.0).
 
 ### 0.15.4
 
-* Remove search for proportion slider h4 during the initialisation
+* Change proportion title from h4 to span
 
 ### 0.15.3
 
