@@ -38,10 +38,6 @@ describe('proportion-field directive', function () {
             this.compileDirective();
         });
 
-        it('should render a h4', function () {
-            expect(this.elm.find('h4').length).toEqual(1);
-        });
-
         it('should include empty fields in the scope', function () {
             const isolated = this.elm.isolateScope()
             expect(isolated.fields).toEqual([]);
