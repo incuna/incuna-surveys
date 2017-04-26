@@ -2,6 +2,10 @@
 
 This project uses Semantic Versioning (2.0).
 
+### 0.15.4
+
+* Change proportion title from h4 to span
+
 ### 0.15.3
 
 * Fix a bug where answers could not have commas in them
