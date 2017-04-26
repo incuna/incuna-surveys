@@ -2,6 +2,10 @@
 
 This project uses Semantic Versioning (2.0).
 
+### 0.15.4
+
+* Remove search for proportion slider h4 during the initialisation
+
 ### 0.15.3
 
 * Fix a bug where answers could not have commas in them
