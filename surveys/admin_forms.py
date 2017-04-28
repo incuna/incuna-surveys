@@ -6,7 +6,12 @@ from .models import SurveyField
 
 
 class SurveyFieldForm(TranslatableModelForm):
-    answers = SimpleArrayField(forms.CharField(), delimiter='\r\n', widget=forms.Textarea)
+    answers = SimpleArrayField(
+        forms.CharField(),
+        delimiter='\r\n',
+        widget=forms.Textarea,
+        required=False,
+    )
 
     class Meta:
         model = SurveyField
