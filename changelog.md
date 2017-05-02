@@ -2,6 +2,10 @@
 
 This project uses Semantic Versioning (2.0).
 
+### 0.16.0
+
+* Don't require the answers field in the admin for non-choice fields
+
 ### 0.15.4
 
 * Change proportion title from h4 to span
