@@ -35,3 +35,24 @@ class TestSurveyFieldForm(TestCase):
 
         self.assertTrue(form.is_valid(), form.errors)
         self.assertEqual(form.cleaned_data['answers'], new_answers)
+
+    def test_answers_required(self):
+        """Answers are required for a choice field (checkbox/radio)."""
+        data = {
+            'name': 'Is the answer "No"?',
+            'field_type': 'radio',
+            'answers': '',
+        }
+        form = self.form(data)
+        self.assertFalse(form.is_valid())
+        self.assertIn('A choice field must have answers.', form.non_field_errors())
+
+    def test_answers_not_required(self):
+        """Answers are not required for other field types."""
+        data = {
+            'name': 'Is the answer "No"?',
+            'field_type': 'number',
+            'answers': '',
+        }
+        form = self.form(data)
+        self.assertTrue(form.is_valid(), form.errors)

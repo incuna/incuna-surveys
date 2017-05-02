@@ -22,3 +22,14 @@ class SurveyFieldForm(TranslatableModelForm):
             'answers',
             'required',
         )
+
+    def clean(self):
+        data = super().clean()
+
+        if not data['answers'] and (
+            data['field_type'] == 'radio' or
+            data['field_type'] == 'checkbox'
+        ):
+            raise forms.ValidationError('A choice field must have answers.')
+
+        return data
