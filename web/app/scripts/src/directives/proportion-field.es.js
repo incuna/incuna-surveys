@@ -66,8 +66,14 @@ module.directive('proportionField', [
                         return;
                     }
 
-                    if ( Object.values(oldModel).every( (x) => { return x === null; } ){
+                    if ( Object.values(newModel).every( (x) => { return x === null; } ) ) {
                         return;
+                    }
+
+                    for ( var [k, v] of Object.entries(newModel) ) {
+                        if ( v === null ) {
+                            newModel[k] = 0;
+                        }
                     }
 
                     const newSum = ProportionField.calculateTotal(newModel);
