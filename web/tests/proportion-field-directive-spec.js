@@ -132,5 +132,14 @@ describe('proportion-field directive', function () {
             expect(this.scope.model[2]).toBe(75);
         });
 
+        it('should not update the model when first loaded', function () {
+            this.scope.model = {
+                0: null,
+                1: null,
+                2: null
+            };
+            this.scope.$digest();
+            expect(Object.values(this.scope.model)).toEqual([null, null, null]);
+        });
     });
 });

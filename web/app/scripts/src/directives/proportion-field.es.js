@@ -66,6 +66,10 @@ module.directive('proportionField', [
                         return;
                     }
 
+                    if ( Object.values(oldModel).every( (x) => { return x === null; } ){
+                        return;
+                    }
+
                     const newSum = ProportionField.calculateTotal(newModel);
                     scope.total = newSum;
 
