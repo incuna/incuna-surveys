@@ -2,6 +2,10 @@
 
 This project uses Semantic Versioning (2.0).
 
+### 0.16.1
+
+* bugfix: Fix null values in proportion fields.
+
 ### 0.16.0
 
 * Don't require the answers field in the admin for non-choice fields
