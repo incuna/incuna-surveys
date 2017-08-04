@@ -46,6 +46,12 @@ class SurveyField(TranslatableModel):
     )
 
     required = models.BooleanField(default=False)
+    important = models.BooleanField(
+        default=False,
+        help_text=_(
+            'Does this question contribute to the completion calculation?'
+        ),
+    )
 
     def __str__(self):
         return self.name

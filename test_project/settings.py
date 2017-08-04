@@ -7,7 +7,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 API_DESCRIPTION_DIR = os.path.join(BASE_DIR, 'api-description')
 
 DEBUG = True
-ALLOWED_HOSTS = []
+DEFAULT_ALLOWED_HOSTS = 'localhost,127.0.0.1'
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', DEFAULT_ALLOWED_HOSTS).split(',')
 ROOT_URLCONF = 'surveys.tests.urls'
 STATIC_URL = '/static/'
 
