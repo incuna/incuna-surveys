@@ -72,6 +72,7 @@ def create_api_example_data(cls):
         help_text='Search engine, friend...',
         field_type='free_text',
         required=True,
+        important=True,
         answers=[],
     )
     cls.field_two = factories.SurveyFieldFactory.create(
@@ -80,6 +81,7 @@ def create_api_example_data(cls):
         help_text='',
         field_type='number',
         required=False,
+        important=False,
         answers=[],
     )
     cls.field_three = factories.SurveyFieldFactory.create(
@@ -88,6 +90,7 @@ def create_api_example_data(cls):
         help_text='',
         field_type='percentage',
         required=True,
+        important=True,
         answers=[],
     )
     cls.field_four = factories.SurveyFieldFactory.create(
@@ -96,6 +99,7 @@ def create_api_example_data(cls):
         help_text='Choose a valid answer.',
         field_type='radio',
         required=True,
+        important=True,
         answers=['One time', 'Two times', 'Three times or more'],
     )
     cls.field_five = factories.SurveyFieldFactory.create(
@@ -104,6 +108,7 @@ def create_api_example_data(cls):
         help_text='',
         field_type='checkbox',
         required=False,
+        important=False,
         answers=['One time', 'Two times', 'Three times or more'],
     )
 
