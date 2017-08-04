@@ -2,6 +2,10 @@
 
 This project uses Semantic Versioning (2.0).
 
++### Upcoming
+
+* Add new boolean field (important) to SurveyField.
+
 ### 0.16.1
 
 * bugfix: Fix null values in proportion fields.
