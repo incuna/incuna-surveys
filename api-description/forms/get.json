@@ -22,6 +22,7 @@
                                 "help_text": "Search engine, friend...",
                                 "field_type": "free_text",
                                 "required": true,
+                                "important": true,
                                 "answers": []
                             }
                         ]
@@ -37,6 +38,7 @@
                                 "help_text": "",
                                 "field_type": "number",
                                 "required": false,
+                                "important": false,
                                 "answers": []
                             },
                             {
@@ -45,6 +47,7 @@
                                 "help_text": "",
                                 "field_type": "percentage",
                                 "required": true,
+                                "important": true,
                                 "answers": []
                             }
                         ]
@@ -60,6 +63,7 @@
                                 "help_text": "Choose a valid answer.",
                                 "field_type": "radio",
                                 "required": true,
+                                "important": true,
                                 "answers": ["One time", "Two times", "Three times or more"]
                             },
                             {
@@ -68,6 +72,7 @@
                                 "help_text": "",
                                 "field_type": "checkbox",
                                 "required": false,
+                                "important": false,
                                 "answers": ["One time", "Two times", "Three times or more"]
                             }
                         ]

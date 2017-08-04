@@ -21,6 +21,7 @@ class SurveyFieldForm(TranslatableModelForm):
             'help_text',
             'answers',
             'required',
+            'important',
         )
 
     def clean(self):
