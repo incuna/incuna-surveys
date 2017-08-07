@@ -2,8 +2,9 @@
 
 This project uses Semantic Versioning (2.0).
 
-+### Upcoming
+### Upcoming
 
+* Update survey completion percentage calculation to only calculate important questions.
 * Add new boolean field (important) to SurveyField.
 
 ### 0.16.1
