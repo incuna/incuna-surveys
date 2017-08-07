@@ -2,27 +2,77 @@ describe('calculatePercentage directive', function () {
     const questionSet = {
         1: {
             fieldGroup: [
-                1,
-                2,
-                3
+                {
+                    key: 1,
+                    templateOptions: {
+                        fieldOptions: {
+                            important: false
+                        }
+                    }
+
+                },
+                {
+                    key: 2,
+                    templateOptions: {
+                        fieldOptions: {
+                            important: true
+                        }
+                    }
+
+                },
+                {
+                    key: 3,
+                    templateOptions: {
+                        fieldOptions: {
+                            important: true
+                        }
+                    }
+
+                }
             ]
         },
         2: {
             fieldGroup: [
-                1,
-                2,
-                3
+                {
+                    key: 1,
+                    templateOptions: {
+                        fieldOptions: {
+                            important: false
+                        }
+                    }
+
+                },
+                {
+                    key: 2,
+                    templateOptions: {
+                        fieldOptions: {
+                            important: true
+                        }
+                    }
+
+                },
+                {
+                    key: 3,
+                    templateOptions: {
+                        fieldOptions: {
+                            important: true
+                        }
+                    }
+
+                }
             ]
         }
     };
     const answers = {
         1: {
-            2: 9,
-            3: 0
+            1: 9,
+            2: 0,
+            3: 1
         },
         2: {
-            4: 3,
-            5: 6
+            1: 3,
+            2: null,
+            3: ''
         }
     }
 
@@ -54,20 +104,20 @@ describe('calculatePercentage directive', function () {
 
     it('should return the total number of questions', function () {
         const questionCount = this.calculateCompletionPercent.countQuestionsTotal(questionSet);
-        expect(questionCount).toEqual(6);
+        expect(questionCount).toEqual(4);
     });
 
     it('should call this.calculateCompletionPercent.countNumberOfAnsweredQuestions with the answer set', function () {
         this.scope.fields = questionSet;
         this.scope.getResponse = answers;
         this.compileDirective(this.tpl);
-        expect(this.calculateCompletionPercent.countNumberOfAnsweredQuestions).toHaveBeenCalledWith(this.scope.getResponse)
+        expect(this.calculateCompletionPercent.countNumberOfAnsweredQuestions).toHaveBeenCalledWith(this.scope.getResponse, questionSet)
     });
 
     it('should return the percentage complete', function () {
         const questionCount = this.calculateCompletionPercent.countQuestionsTotal(questionSet);
-        const answersCount = this.calculateCompletionPercent.countNumberOfAnsweredQuestions(answers);
+        const answersCount = this.calculateCompletionPercent.countNumberOfAnsweredQuestions(answers, questionSet);
         const percentage = this.calculateCompletionPercent.calculatePercentageComplete(answersCount, questionCount);
-        expect(percentage).toEqual('67%');
+        expect(percentage).toEqual('50%');
     });
 });
