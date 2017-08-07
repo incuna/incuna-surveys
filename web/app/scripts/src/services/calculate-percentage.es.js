@@ -15,12 +15,15 @@ const module = angular.module(moduleProperties.moduleName, []);
 
 module.service(moduleProperties.componentName, [
     function () {
+        let qKeys = [];
+
         this.countQuestionsTotal = function (form) {
             let totalQuestionCount = 0;
             angular.forEach(form, function (question) {
                 angular.forEach(question.fieldGroup, function (field) {
                     if (field.templateOptions.fieldOptions.important === true) {
                         totalQuestionCount = totalQuestionCount + 1;
+                        qKeys.push(field.key)
                     }
                 });
             });
@@ -36,17 +39,9 @@ module.service(moduleProperties.componentName, [
         //     }
         // }
         // answered is a number of type number
-        this.countNumberOfAnsweredQuestions = function (answers, questions) {
+        this.countNumberOfAnsweredQuestions = function (answers) {
             let answered = 0;
-            let qKeys = [];
 
-            angular.forEach(questions, function (question) {
-                for (var i = 0; i < question.fieldGroup.length; i++) {
-                    if (question.fieldGroup[i].templateOptions.fieldOptions.important === true) {
-                        qKeys.push(question.fieldGroup[i].key)
-                    }
-                }
-            });
             for (const groupKey in answers) {
                 const answerGroup = answers[groupKey];
                 for (const answerKey in answerGroup) {

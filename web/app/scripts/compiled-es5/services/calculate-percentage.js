@@ -19,12 +19,15 @@ var moduleProperties = exports.moduleProperties = {
 var _module = _libraries.angular.module(moduleProperties.moduleName, []);
 
 _module.service(moduleProperties.componentName, [function () {
+    var qKeys = [];
+
     this.countQuestionsTotal = function (form) {
         var totalQuestionCount = 0;
         _libraries.angular.forEach(form, function (question) {
             _libraries.angular.forEach(question.fieldGroup, function (field) {
                 if (field.templateOptions.fieldOptions.important === true) {
                     totalQuestionCount = totalQuestionCount + 1;
+                    qKeys.push(field.key);
                 }
             });
         });
@@ -40,17 +43,9 @@ _module.service(moduleProperties.componentName, [function () {
     //     }
     // }
     // answered is a number of type number
-    this.countNumberOfAnsweredQuestions = function (answers, questions) {
+    this.countNumberOfAnsweredQuestions = function (answers) {
         var answered = 0;
-        var qKeys = [];
 
-        _libraries.angular.forEach(questions, function (question) {
-            for (var i = 0; i < question.fieldGroup.length; i++) {
-                if (question.fieldGroup[i].templateOptions.fieldOptions.important === true) {
-                    qKeys.push(question.fieldGroup[i].key);
-                }
-            }
-        });
         for (var groupKey in answers) {
             var answerGroup = answers[groupKey];
             for (var answerKey in answerGroup) {

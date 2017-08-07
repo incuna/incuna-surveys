@@ -100,7 +100,7 @@ describe('calculateCompletionPercentService', function () {
                     2: null
                 }
             };
-            const noQuestionsAnswered = this.Parser.countNumberOfAnsweredQuestions(emptyAnswerSet, questionSet);
+            const noQuestionsAnswered = this.Parser.countNumberOfAnsweredQuestions(emptyAnswerSet);
             expect(noQuestionsAnswered).toBe(0);
         });
 
@@ -110,7 +110,7 @@ describe('calculateCompletionPercentService', function () {
                     2: undefined
                 }
             };
-            const noQuestionsAnswered = this.Parser.countNumberOfAnsweredQuestions(emptyAnswerSet, questionSet);
+            const noQuestionsAnswered = this.Parser.countNumberOfAnsweredQuestions(emptyAnswerSet);
             expect(noQuestionsAnswered).toBe(0);
         });
 
@@ -120,7 +120,7 @@ describe('calculateCompletionPercentService', function () {
                     2: ''
                 }
             };
-            const noQuestionsAnswered = this.Parser.countNumberOfAnsweredQuestions(emptyAnswerSet, questionSet);
+            const noQuestionsAnswered = this.Parser.countNumberOfAnsweredQuestions(emptyAnswerSet);
             expect(noQuestionsAnswered).toBe(0);
         });
 
@@ -136,7 +136,7 @@ describe('calculateCompletionPercentService', function () {
                     6: ''
                 }
             };
-            const partialQuestionsAnswered = this.Parser.countNumberOfAnsweredQuestions(partialAnswerSet, questionSet);
+            const partialQuestionsAnswered = this.Parser.countNumberOfAnsweredQuestions(partialAnswerSet);
             expect(partialQuestionsAnswered).toBe(2);
         });
 
@@ -153,7 +153,7 @@ describe('calculateCompletionPercentService', function () {
                     6: 5
                 }
             }
-            const allQuestionsAnswered = this.Parser.countNumberOfAnsweredQuestions(allAnswerSet, questionSet);
+            const allQuestionsAnswered = this.Parser.countNumberOfAnsweredQuestions(allAnswerSet);
             expect(allQuestionsAnswered).toBe(2);
         });
     });
