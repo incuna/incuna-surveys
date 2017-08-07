@@ -63,18 +63,6 @@ describe('calculateCompletionPercentService', function () {
             ]
         }
     };
-    const answers = {
-        1: {
-            1: 9,
-            2: 0,
-            3: 1
-        },
-        2: {
-            1: 3,
-            2: null,
-            3: 1
-        }
-    }
 
     beforeEach(function () {
         angular.mock.module('incuna-surveys.calculate-completion-percent');
