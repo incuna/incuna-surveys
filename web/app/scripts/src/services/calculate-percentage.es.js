@@ -16,11 +16,13 @@ const module = angular.module(moduleProperties.moduleName, []);
 module.service(moduleProperties.componentName, [
     function () {
         this.countQuestionsTotal = function (form) {
-            const questions = form;
             let totalQuestionCount = 0;
-
-            angular.forEach(questions, function (question) {
-                totalQuestionCount = totalQuestionCount + question.fieldGroup.length;
+            angular.forEach(form, function (question) {
+                angular.forEach(question.fieldGroup, function (field) {
+                    if (field.templateOptions.fieldOptions.important === true) {
+                        totalQuestionCount = totalQuestionCount + 1;
+                    }
+                });
             });
 
             return totalQuestionCount;
@@ -34,15 +36,25 @@ module.service(moduleProperties.componentName, [
         //     }
         // }
         // answered is a number of type number
-        this.countNumberOfAnsweredQuestions = function (answers) {
+        this.countNumberOfAnsweredQuestions = function (answers, questions) {
             let answered = 0;
+            let qKeys = [];
 
+            angular.forEach(questions, function (question) {
+                for (var i = 0; i < question.fieldGroup.length; i++) {
+                    if (question.fieldGroup[i].templateOptions.fieldOptions.important === true) {
+                        qKeys.push(question.fieldGroup[i].key)
+                    }
+                }
+            });
             for (const groupKey in answers) {
                 const answerGroup = answers[groupKey];
                 for (const answerKey in answerGroup) {
                     const answer = answerGroup[answerKey];
-                    if (angular.isDefined(answer) && answer !== null) {
-                        answered++;
+                    if (qKeys.indexOf(parseInt(answerKey)) !== -1) {
+                        if (answer && answer !== null || answer === 0) {
+                            answered++;
+                        }
                     }
                 }
             }
