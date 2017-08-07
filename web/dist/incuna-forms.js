@@ -31,7 +31,6 @@ _module.directive('calculatePercentage', [_calculatePercentage2.default.componen
         link: function link(scope) {
             scope.percentageComplete = 0 + '%';
             var totalQuestionCount = 0;
-
             scope.$watch('questionSet', function (questions) {
                 totalQuestionCount = CalculateCompletion.countQuestionsTotal(questions);
             });
@@ -41,7 +40,7 @@ _module.directive('calculatePercentage', [_calculatePercentage2.default.componen
                 if (totalQuestionCount === 0) {
                     return;
                 }
-                var numberOfCompletedQuestions = CalculateCompletion.countNumberOfAnsweredQuestions(answers);
+                var numberOfCompletedQuestions = CalculateCompletion.countNumberOfAnsweredQuestions(answers, scope.questionSet);
                 scope.percentageComplete = CalculateCompletion.calculatePercentageComplete(numberOfCompletedQuestions, totalQuestionCount);
             }, true);
         }
@@ -574,11 +573,13 @@ var _module = _libraries.angular.module(moduleProperties.moduleName, []);
 
 _module.service(moduleProperties.componentName, [function () {
     this.countQuestionsTotal = function (form) {
-        var questions = form;
         var totalQuestionCount = 0;
-
-        _libraries.angular.forEach(questions, function (question) {
-            totalQuestionCount = totalQuestionCount + question.fieldGroup.length;
+        _libraries.angular.forEach(form, function (question) {
+            _libraries.angular.forEach(question.fieldGroup, function (field) {
+                if (field.templateOptions.fieldOptions.important === true) {
+                    totalQuestionCount = totalQuestionCount + 1;
+                }
+            });
         });
 
         return totalQuestionCount;
@@ -592,15 +593,25 @@ _module.service(moduleProperties.componentName, [function () {
     //     }
     // }
     // answered is a number of type number
-    this.countNumberOfAnsweredQuestions = function (answers) {
+    this.countNumberOfAnsweredQuestions = function (answers, questions) {
         var answered = 0;
+        var qKeys = [];
 
+        _libraries.angular.forEach(questions, function (question) {
+            for (var i = 0; i < question.fieldGroup.length; i++) {
+                if (question.fieldGroup[i].templateOptions.fieldOptions.important === true) {
+                    qKeys.push(question.fieldGroup[i].key);
+                }
+            }
+        });
         for (var groupKey in answers) {
             var answerGroup = answers[groupKey];
             for (var answerKey in answerGroup) {
                 var answer = answerGroup[answerKey];
-                if (_libraries.angular.isDefined(answer) && answer !== null) {
-                    answered++;
+                if (qKeys.indexOf(parseInt(answerKey)) !== -1) {
+                    if (answer && answer !== null || answer === 0) {
+                        answered++;
+                    }
                 }
             }
         }
@@ -727,6 +738,7 @@ _module.service(moduleProperties.componentName, [function () {
                                 // jscs:disable disallowQuotedKeysInObjects
                                 'help_text': field.help_text,
                                 required: field.required,
+                                important: field.important,
                                 label: field.name
                                 // jscs:enable disallowQuotedKeysInObjects
                             }

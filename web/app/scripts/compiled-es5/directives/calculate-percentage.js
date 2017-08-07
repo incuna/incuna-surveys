@@ -30,7 +30,6 @@ _module.directive('calculatePercentage', [_calculatePercentage2.default.componen
         link: function link(scope) {
             scope.percentageComplete = 0 + '%';
             var totalQuestionCount = 0;
-
             scope.$watch('questionSet', function (questions) {
                 totalQuestionCount = CalculateCompletion.countQuestionsTotal(questions);
             });
@@ -40,7 +39,7 @@ _module.directive('calculatePercentage', [_calculatePercentage2.default.componen
                 if (totalQuestionCount === 0) {
                     return;
                 }
-                var numberOfCompletedQuestions = CalculateCompletion.countNumberOfAnsweredQuestions(answers);
+                var numberOfCompletedQuestions = CalculateCompletion.countNumberOfAnsweredQuestions(answers, scope.questionSet);
                 scope.percentageComplete = CalculateCompletion.calculatePercentageComplete(numberOfCompletedQuestions, totalQuestionCount);
             }, true);
         }
