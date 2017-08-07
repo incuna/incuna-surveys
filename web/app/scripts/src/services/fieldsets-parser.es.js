@@ -32,6 +32,7 @@ module.service(moduleProperties.componentName, [
                                     // jscs:disable disallowQuotedKeysInObjects
                                     'help_text': field.help_text,
                                     required: field.required,
+                                    important: field.important,
                                     label: field.name
                                     // jscs:enable disallowQuotedKeysInObjects
                                 }
