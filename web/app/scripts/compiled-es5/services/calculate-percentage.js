@@ -46,6 +46,10 @@ _module.service(moduleProperties.componentName, [function () {
     this.countNumberOfAnsweredQuestions = function (answers) {
         var answered = 0;
 
+        if (qKeys.length === 0) {
+            return answered;
+        }
+
         for (var groupKey in answers) {
             var answerGroup = answers[groupKey];
             for (var answerKey in answerGroup) {
