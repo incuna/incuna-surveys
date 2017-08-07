@@ -23,7 +23,6 @@ module.directive('calculatePercentage', [
             link: function (scope) {
                 scope.percentageComplete = 0 + '%';
                 let totalQuestionCount = 0;
-
                 scope.$watch('questionSet', (questions) => {
                     totalQuestionCount = CalculateCompletion.countQuestionsTotal(questions);
                 });
@@ -33,7 +32,7 @@ module.directive('calculatePercentage', [
                     if (totalQuestionCount === 0) {
                         return;
                     }
-                    const numberOfCompletedQuestions = CalculateCompletion.countNumberOfAnsweredQuestions(answers);
+                    const numberOfCompletedQuestions = CalculateCompletion.countNumberOfAnsweredQuestions(answers, scope.questionSet);
                     scope.percentageComplete = CalculateCompletion.calculatePercentageComplete(numberOfCompletedQuestions, totalQuestionCount);
                 }, true);
 
