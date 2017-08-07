@@ -116,7 +116,7 @@ describe('calculatePercentage directive', function () {
 
     it('should return the percentage complete', function () {
         const questionCount = this.calculateCompletionPercent.countQuestionsTotal(questionSet);
-        const answersCount = this.calculateCompletionPercent.countNumberOfAnsweredQuestions(answers);
+        const answersCount = this.calculateCompletionPercent.countNumberOfAnsweredQuestions(answers, questionSet);
         const percentage = this.calculateCompletionPercent.calculatePercentageComplete(answersCount, questionCount);
         expect(percentage).toEqual('50%');
     });

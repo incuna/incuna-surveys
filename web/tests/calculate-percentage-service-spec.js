@@ -88,7 +88,7 @@ describe('calculateCompletionPercentService', function () {
                     2: null
                 }
             };
-            const noQuestionsAnswered = this.Parser.countNumberOfAnsweredQuestions(emptyAnswerSet);
+            const noQuestionsAnswered = this.Parser.countNumberOfAnsweredQuestions(emptyAnswerSet, questionSet);
             expect(noQuestionsAnswered).toBe(0);
         });
 
@@ -98,7 +98,7 @@ describe('calculateCompletionPercentService', function () {
                     2: undefined
                 }
             };
-            const noQuestionsAnswered = this.Parser.countNumberOfAnsweredQuestions(emptyAnswerSet);
+            const noQuestionsAnswered = this.Parser.countNumberOfAnsweredQuestions(emptyAnswerSet, questionSet);
             expect(noQuestionsAnswered).toBe(0);
         });
 
@@ -108,7 +108,7 @@ describe('calculateCompletionPercentService', function () {
                     2: ''
                 }
             };
-            const noQuestionsAnswered = this.Parser.countNumberOfAnsweredQuestions(emptyAnswerSet);
+            const noQuestionsAnswered = this.Parser.countNumberOfAnsweredQuestions(emptyAnswerSet, questionSet);
             expect(noQuestionsAnswered).toBe(0);
         });
 
@@ -124,7 +124,7 @@ describe('calculateCompletionPercentService', function () {
                     6: ''
                 }
             };
-            const partialQuestionsAnswered = this.Parser.countNumberOfAnsweredQuestions(partialAnswerSet);
+            const partialQuestionsAnswered = this.Parser.countNumberOfAnsweredQuestions(partialAnswerSet, questionSet);
             expect(partialQuestionsAnswered).toBe(2);
         });
 
@@ -141,7 +141,7 @@ describe('calculateCompletionPercentService', function () {
                     6: 5
                 }
             }
-            const allQuestionsAnswered = this.Parser.countNumberOfAnsweredQuestions(allAnswerSet);
+            const allQuestionsAnswered = this.Parser.countNumberOfAnsweredQuestions(allAnswerSet, questionSet);
             expect(allQuestionsAnswered).toBe(2);
         });
     });

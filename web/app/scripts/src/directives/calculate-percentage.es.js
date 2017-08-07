@@ -32,7 +32,7 @@ module.directive('calculatePercentage', [
                     if (totalQuestionCount === 0) {
                         return;
                     }
-                    const numberOfCompletedQuestions = CalculateCompletion.countNumberOfAnsweredQuestions(answers);
+                    const numberOfCompletedQuestions = CalculateCompletion.countNumberOfAnsweredQuestions(answers, scope.questions);
                     scope.percentageComplete = CalculateCompletion.calculatePercentageComplete(numberOfCompletedQuestions, totalQuestionCount);
                 }, true);
 
