@@ -111,7 +111,7 @@ describe('calculatePercentage directive', function () {
         this.scope.fields = questionSet;
         this.scope.getResponse = answers;
         this.compileDirective(this.tpl);
-        expect(this.calculateCompletionPercent.countNumberOfAnsweredQuestions).toHaveBeenCalledWith(this.scope.getResponse)
+        expect(this.calculateCompletionPercent.countNumberOfAnsweredQuestions).toHaveBeenCalledWith(answers, questionSet);
     });
 
     it('should return the percentage complete', function () {

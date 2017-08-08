@@ -16,7 +16,7 @@ const module = angular.module(moduleProperties.moduleName, []);
 module.service(moduleProperties.componentName, [
     function () {
 
-        this.ImportantQuestionKeys = function (form) {
+        this.importantQuestionKeys = function (form) {
             let qKeys = [];
             angular.forEach(form, function (question) {
                 angular.forEach(question.fieldGroup, function (field) {
@@ -30,7 +30,7 @@ module.service(moduleProperties.componentName, [
         };
 
         this.countQuestionsTotal = function (form) {
-            return ImportantQuestionKeys(form).length;
+            return this.importantQuestionKeys(form).length;
         };
 
         // answers is an object containing objects
@@ -41,10 +41,10 @@ module.service(moduleProperties.componentName, [
         //     }
         // }
         // answered is a number of type number
-        this.countNumberOfAnsweredQuestions = function (answers) {
+        this.countNumberOfAnsweredQuestions = function (answers, form) {
             let answered = 0;
 
-            const qKeys = ImportantQuestionKeys(form)
+            const qKeys = this.importantQuestionKeys(form)
 
             if (qKeys.length === 0) {
                 return answered;

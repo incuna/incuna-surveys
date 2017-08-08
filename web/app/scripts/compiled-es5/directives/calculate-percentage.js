@@ -39,7 +39,7 @@ _module.directive('calculatePercentage', [_calculatePercentage2.default.componen
                 if (totalQuestionCount === 0) {
                     return;
                 }
-                var numberOfCompletedQuestions = CalculateCompletion.countNumberOfAnsweredQuestions(answers);
+                var numberOfCompletedQuestions = CalculateCompletion.countNumberOfAnsweredQuestions(answers, scope.questionSet);
                 scope.percentageComplete = CalculateCompletion.calculatePercentageComplete(numberOfCompletedQuestions, totalQuestionCount);
             }, true);
         }

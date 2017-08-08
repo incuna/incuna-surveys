@@ -40,7 +40,7 @@ _module.directive('calculatePercentage', [_calculatePercentage2.default.componen
                 if (totalQuestionCount === 0) {
                     return;
                 }
-                var numberOfCompletedQuestions = CalculateCompletion.countNumberOfAnsweredQuestions(answers);
+                var numberOfCompletedQuestions = CalculateCompletion.countNumberOfAnsweredQuestions(answers, scope.questionSet);
                 scope.percentageComplete = CalculateCompletion.calculatePercentageComplete(numberOfCompletedQuestions, totalQuestionCount);
             }, true);
         }
@@ -572,20 +572,22 @@ var moduleProperties = exports.moduleProperties = {
 var _module = _libraries.angular.module(moduleProperties.moduleName, []);
 
 _module.service(moduleProperties.componentName, [function () {
-    var qKeys = [];
 
-    this.countQuestionsTotal = function (form) {
-        var totalQuestionCount = 0;
+    this.importantQuestionKeys = function (form) {
+        var qKeys = [];
         _libraries.angular.forEach(form, function (question) {
             _libraries.angular.forEach(question.fieldGroup, function (field) {
                 if (field.templateOptions.fieldOptions.important === true) {
-                    totalQuestionCount = totalQuestionCount + 1;
                     qKeys.push(field.key);
                 }
             });
         });
 
-        return totalQuestionCount;
+        return qKeys;
+    };
+
+    this.countQuestionsTotal = function (form) {
+        return this.importantQuestionKeys(form).length;
     };
 
     // answers is an object containing objects
@@ -596,8 +598,10 @@ _module.service(moduleProperties.componentName, [function () {
     //     }
     // }
     // answered is a number of type number
-    this.countNumberOfAnsweredQuestions = function (answers) {
+    this.countNumberOfAnsweredQuestions = function (answers, form) {
         var answered = 0;
+
+        var qKeys = this.importantQuestionKeys(form);
 
         if (qKeys.length === 0) {
             return answered;
