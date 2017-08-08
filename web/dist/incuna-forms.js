@@ -31,9 +31,10 @@ _module.directive('calculatePercentage', [_calculatePercentage2.default.componen
         link: function link(scope) {
             scope.percentageComplete = 0 + '%';
             var totalQuestionCount = 0;
-
+            var importantQuestionKeys = null;
             scope.$watch('questionSet', function (questions) {
-                totalQuestionCount = CalculateCompletion.countQuestionsTotal(questions);
+                importantQuestionKeys = CalculateCompletion.getImportantQuestionKeys(questions);
+                totalQuestionCount = importantQuestionKeys.length;
             });
 
             // Using true to compare the sub-elements.
@@ -41,7 +42,7 @@ _module.directive('calculatePercentage', [_calculatePercentage2.default.componen
                 if (totalQuestionCount === 0) {
                     return;
                 }
-                var numberOfCompletedQuestions = CalculateCompletion.countNumberOfAnsweredQuestions(answers);
+                var numberOfCompletedQuestions = CalculateCompletion.countNumberOfAnsweredQuestions(answers, importantQuestionKeys);
                 scope.percentageComplete = CalculateCompletion.calculatePercentageComplete(numberOfCompletedQuestions, totalQuestionCount);
             }, true);
         }
@@ -573,15 +574,18 @@ var moduleProperties = exports.moduleProperties = {
 var _module = _libraries.angular.module(moduleProperties.moduleName, []);
 
 _module.service(moduleProperties.componentName, [function () {
-    this.countQuestionsTotal = function (form) {
-        var questions = form;
-        var totalQuestionCount = 0;
 
-        _libraries.angular.forEach(questions, function (question) {
-            totalQuestionCount = totalQuestionCount + question.fieldGroup.length;
+    this.getImportantQuestionKeys = function (form) {
+        var qKeys = [];
+        _libraries.angular.forEach(form, function (question) {
+            _libraries.angular.forEach(question.fieldGroup, function (field) {
+                if (field.templateOptions.fieldOptions.important === true) {
+                    qKeys.push(field.key);
+                }
+            });
         });
 
-        return totalQuestionCount;
+        return qKeys;
     };
 
     // answers is an object containing objects
@@ -592,15 +596,21 @@ _module.service(moduleProperties.componentName, [function () {
     //     }
     // }
     // answered is a number of type number
-    this.countNumberOfAnsweredQuestions = function (answers) {
+    this.countNumberOfAnsweredQuestions = function (answers, qKeys) {
         var answered = 0;
+
+        if (qKeys.length === 0) {
+            return answered;
+        }
 
         for (var groupKey in answers) {
             var answerGroup = answers[groupKey];
             for (var answerKey in answerGroup) {
                 var answer = answerGroup[answerKey];
-                if (_libraries.angular.isDefined(answer) && answer !== null) {
-                    answered++;
+                if (qKeys.indexOf(parseInt(answerKey, 10)) !== -1) {
+                    if (answer && answer !== null || answer === 0) {
+                        answered++;
+                    }
                 }
             }
         }
@@ -727,6 +737,7 @@ _module.service(moduleProperties.componentName, [function () {
                                 // jscs:disable disallowQuotedKeysInObjects
                                 'help_text': field.help_text,
                                 required: field.required,
+                                important: field.important,
                                 label: field.name
                                 // jscs:enable disallowQuotedKeysInObjects
                             }
