@@ -2,7 +2,7 @@
 
 This project uses Semantic Versioning (2.0).
 
-### Upcoming
+### 0.17.0
 
 * Update django-orderable>=4.0.5,<4.1 and django-parler>=1.7.0,<1.8.
 * Update survey completion percentage calculation to only calculate important questions.
