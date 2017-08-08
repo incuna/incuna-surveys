@@ -52,7 +52,7 @@ _module.service(moduleProperties.componentName, [function () {
             var answerGroup = answers[groupKey];
             for (var answerKey in answerGroup) {
                 var answer = answerGroup[answerKey];
-                if (qKeys.indexOf(parseInt(answerKey)) !== -1) {
+                if (qKeys.indexOf(parseInt(answerKey, 10)) !== -1) {
                     if (answer && answer !== null || answer === 0) {
                         answered++;
                     }

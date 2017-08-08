@@ -48,7 +48,7 @@ module.service(moduleProperties.componentName, [
                 const answerGroup = answers[groupKey];
                 for (const answerKey in answerGroup) {
                     const answer = answerGroup[answerKey];
-                    if (qKeys.indexOf(parseInt(answerKey)) !== -1) {
+                    if (qKeys.indexOf(parseInt(answerKey, 10)) !== -1) {
                         if (answer && answer !== null || answer === 0) {
                             answered++;
                         }
