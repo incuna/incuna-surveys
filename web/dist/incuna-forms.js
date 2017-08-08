@@ -31,8 +31,10 @@ _module.directive('calculatePercentage', [_calculatePercentage2.default.componen
         link: function link(scope) {
             scope.percentageComplete = 0 + '%';
             var totalQuestionCount = 0;
+            var importantQuestionKeys = null;
             scope.$watch('questionSet', function (questions) {
-                totalQuestionCount = CalculateCompletion.countQuestionsTotal(questions);
+                importantQuestionKeys = CalculateCompletion.getImportantQuestionKeys(questions);
+                totalQuestionCount = importantQuestionKeys.length;
             });
 
             // Using true to compare the sub-elements.
@@ -40,7 +42,7 @@ _module.directive('calculatePercentage', [_calculatePercentage2.default.componen
                 if (totalQuestionCount === 0) {
                     return;
                 }
-                var numberOfCompletedQuestions = CalculateCompletion.countNumberOfAnsweredQuestions(answers, scope.questionSet);
+                var numberOfCompletedQuestions = CalculateCompletion.countNumberOfAnsweredQuestions(answers, importantQuestionKeys);
                 scope.percentageComplete = CalculateCompletion.calculatePercentageComplete(numberOfCompletedQuestions, totalQuestionCount);
             }, true);
         }
@@ -573,7 +575,7 @@ var _module = _libraries.angular.module(moduleProperties.moduleName, []);
 
 _module.service(moduleProperties.componentName, [function () {
 
-    this.importantQuestionKeys = function (form) {
+    this.getImportantQuestionKeys = function (form) {
         var qKeys = [];
         _libraries.angular.forEach(form, function (question) {
             _libraries.angular.forEach(question.fieldGroup, function (field) {
@@ -586,10 +588,6 @@ _module.service(moduleProperties.componentName, [function () {
         return qKeys;
     };
 
-    this.countQuestionsTotal = function (form) {
-        return this.importantQuestionKeys(form).length;
-    };
-
     // answers is an object containing objects
     // object {
     //     1 : {
@@ -598,10 +596,8 @@ _module.service(moduleProperties.componentName, [function () {
     //     }
     // }
     // answered is a number of type number
-    this.countNumberOfAnsweredQuestions = function (answers, form) {
+    this.countNumberOfAnsweredQuestions = function (answers, qKeys) {
         var answered = 0;
-
-        var qKeys = this.importantQuestionKeys(form);
 
         if (qKeys.length === 0) {
             return answered;

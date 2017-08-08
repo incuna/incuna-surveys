@@ -71,12 +71,12 @@ describe('calculateCompletionPercentService', function () {
             this.Parser = calculateCompletionPercent;
         });
 
-        this.totalQuestions = this.Parser.countQuestionsTotal(questionSet);
+        this.keys = this.Parser.getImportantQuestionKeys(questionSet);
     });
 
     describe('countQuestionsTotal function', function () {
         it('should return the total number of questions', function () {
-            expect(this.totalQuestions).toBe(3);
+            expect(this.keys.length).toBe(3);
         });
     });
 
@@ -88,7 +88,7 @@ describe('calculateCompletionPercentService', function () {
                     2: null
                 }
             };
-            const noQuestionsAnswered = this.Parser.countNumberOfAnsweredQuestions(emptyAnswerSet, questionSet);
+            const noQuestionsAnswered = this.Parser.countNumberOfAnsweredQuestions(emptyAnswerSet, this.keys);
             expect(noQuestionsAnswered).toBe(0);
         });
 
@@ -98,7 +98,7 @@ describe('calculateCompletionPercentService', function () {
                     2: undefined
                 }
             };
-            const noQuestionsAnswered = this.Parser.countNumberOfAnsweredQuestions(emptyAnswerSet, questionSet);
+            const noQuestionsAnswered = this.Parser.countNumberOfAnsweredQuestions(emptyAnswerSet, this.keys);
             expect(noQuestionsAnswered).toBe(0);
         });
 
@@ -108,7 +108,7 @@ describe('calculateCompletionPercentService', function () {
                     2: ''
                 }
             };
-            const noQuestionsAnswered = this.Parser.countNumberOfAnsweredQuestions(emptyAnswerSet, questionSet);
+            const noQuestionsAnswered = this.Parser.countNumberOfAnsweredQuestions(emptyAnswerSet, this.keys);
             expect(noQuestionsAnswered).toBe(0);
         });
 
@@ -124,7 +124,7 @@ describe('calculateCompletionPercentService', function () {
                     6: ''
                 }
             };
-            const partialQuestionsAnswered = this.Parser.countNumberOfAnsweredQuestions(partialAnswerSet, questionSet);
+            const partialQuestionsAnswered = this.Parser.countNumberOfAnsweredQuestions(partialAnswerSet, this.keys);
             expect(partialQuestionsAnswered).toBe(2);
         });
 
@@ -141,7 +141,7 @@ describe('calculateCompletionPercentService', function () {
                     6: 5
                 }
             }
-            const allQuestionsAnswered = this.Parser.countNumberOfAnsweredQuestions(allAnswerSet, questionSet);
+            const allQuestionsAnswered = this.Parser.countNumberOfAnsweredQuestions(allAnswerSet, this.keys);
             expect(allQuestionsAnswered).toBe(2);
         });
     });
@@ -153,22 +153,22 @@ describe('calculateCompletionPercentService', function () {
         });
 
         it('should return the 0 percentage when none answered', function () {
-            this.percentage = this.Parser.calculatePercentageComplete(0, this.totalQuestions);
+            this.percentage = this.Parser.calculatePercentageComplete(0, this.keys.length);
             expect(this.percentage).toBe(0 + '%');
         });
 
         it('should return 33% when 2/3 questions answered', function () {
-            this.percentage = this.Parser.calculatePercentageComplete(1, this.totalQuestions);
+            this.percentage = this.Parser.calculatePercentageComplete(1, this.keys.length);
             expect(this.percentage).toBe(33 + '%');
         });
 
         it('should return 67% when 3/3 questions answered', function () {
-            this.percentage = this.Parser.calculatePercentageComplete(2, this.totalQuestions);
+            this.percentage = this.Parser.calculatePercentageComplete(2, this.keys.length);
             expect(this.percentage).toBe(67 + '%');
         });
 
         it('should return the 100 percentage when all answered', function () {
-            this.percentage = this.Parser.calculatePercentageComplete(3, this.totalQuestions);
+            this.percentage = this.Parser.calculatePercentageComplete(3, this.keys.length);
             expect(this.percentage).toBe(100 + '%');
         });
     });
