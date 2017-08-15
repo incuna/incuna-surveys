@@ -1,9 +1,11 @@
-<div drf-form-field="to.fieldOptions" class="slider">
-    <div
-        aif-slider-input
-        model="model[to.fieldSetId][options.key]"
-        ceiling="100"
-        slider-low-label="0%"
-        slider-high-label="100%"
-    ></div>
+<div class="field-wrapper" ng-class="{important: to.fieldOptions.important}">
+    <div drf-form-field="to.fieldOptions" class="slider">
+        <div
+            aif-slider-input
+            model="model[to.fieldSetId][options.key]"
+            ceiling="100"
+            slider-low-label="0%"
+            slider-high-label="100%"
+        ></div>
+    </div>
 </div>

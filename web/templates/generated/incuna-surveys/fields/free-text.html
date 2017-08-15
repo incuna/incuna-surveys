@@ -1,3 +1,5 @@
-<div drf-form-field="to.fieldOptions" class="text {{ model[to.fieldSetId][options.key] ? 'not-empty' : '' }}" field-id="to.autoId">
-    <input type="text" class="text-input" id="{{ to.autoId }}" ng-model="model[to.fieldSetId][options.key]" ng-required="to.fieldOptions.required">
+<div class="field-wrapper" ng-class="{important: to.fieldOptions.important}">
+    <div drf-form-field="to.fieldOptions" class="text {{ model[to.fieldSetId][options.key] ? 'not-empty' : '' }}" field-id="to.autoId">
+        <input type="text" class="text-input" id="{{ to.autoId }}" ng-model="model[to.fieldSetId][options.key]" ng-required="to.fieldOptions.required">
+    </div>
 </div>
