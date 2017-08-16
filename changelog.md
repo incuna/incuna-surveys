@@ -2,6 +2,11 @@
 
 This project uses Semantic Versioning (2.0).
 
+### 0.17.1
+
+* Fix percentage complete calculation to handle proportion fields.
+* Update templates to add important class and use a base template.
+
 ### 0.17.0
 
 * Update django-orderable>=4.0.5,<4.1 and django-parler>=1.7.0,<1.8.
