@@ -112,6 +112,65 @@ describe('calculateCompletionPercentService', function () {
             expect(noQuestionsAnswered).toBe(0);
         });
 
+        it('should not count empty list answers', function () {
+            const emptyAnswerSet = {
+                1: {
+                    2: ['', null, undefined]
+                }
+            };
+            const noQuestionsAnswered = this.Parser.countNumberOfAnsweredQuestions(emptyAnswerSet, this.keys);
+            expect(noQuestionsAnswered).toBe(0);
+        });
+
+        it('should not count empty object answers', function () {
+            const emptyAnswerSet = {
+                1: {
+                    2: {
+                        0: '',
+                        1: null,
+                        2: undefined
+                    }
+                }
+            };
+            const noQuestionsAnswered = this.Parser.countNumberOfAnsweredQuestions(emptyAnswerSet, this.keys);
+            expect(noQuestionsAnswered).toBe(0);
+        });
+
+        it('should count 0 (zero) answers', function () {
+            const answerSet = {
+                1: {
+                    2: 0
+                }
+            };
+            const noQuestionsAnswered = this.Parser.countNumberOfAnsweredQuestions(answerSet, this.keys);
+            expect(noQuestionsAnswered).toBe(1);
+        });
+
+        it('should count list answers', function () {
+            const answerSet = {
+                1: {
+                    2: ['', null, undefined, 0]  // Zero is valid
+                }
+            };
+            const noQuestionsAnswered = this.Parser.countNumberOfAnsweredQuestions(answerSet, this.keys);
+            expect(noQuestionsAnswered).toBe(1);
+        });
+
+        it('should count object answers', function () {
+            const answerSet = {
+                1: {
+                    2: {
+                        0: '',
+                        1: null,
+                        2: undefined,
+                        3: 0  // zero is valid
+                    }
+                }
+            };
+            const noQuestionsAnswered = this.Parser.countNumberOfAnsweredQuestions(answerSet, this.keys);
+            expect(noQuestionsAnswered).toBe(1);
+        });
+
         it('should count the correct number of mixed questions answered', function () {
             const partialAnswerSet = {
                 1: {
